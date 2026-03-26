@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026-03-26 - AI 日报</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Noto Sans SC', sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.6;
+      color: #333;
+      background: #fff;
+    }
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: #1a1a1a;
+        color: #e0e0e0;
+      }
+      a {
+        color: #6eb5ff;
+      }
+      pre, code {
+        background: #2d2d2d !important;
+      }
+      #hljs-light { display: none; }
+      #hljs-dark { display: block; }
+    }
+    @media (prefers-color-scheme: light) {
+      #hljs-light { display: block; }
+      #hljs-dark { display: none; }
+    }
+    nav {
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #eee;
+    }
+    @media (prefers-color-scheme: dark) {
+      nav { border-bottom-color: #333; }
+    }
+    nav a {
+      text-decoration: none;
+      color: #666;
+      font-size: 14px;
+    }
+    nav a:hover { color: #333; }
+    @media (prefers-color-scheme: dark) {
+      nav a { color: #999; }
+      nav a:hover { color: #e0e0e0; }
+    }
+    .content h1 {
+      font-size: 1.8em;
+      margin-bottom: 16px;
+      color: #222;
+    }
+    @media (prefers-color-scheme: dark) {
+      .content h1 { color: #fff; }
+    }
+    .content h2 {
+      font-size: 1.4em;
+      margin: 24px 0 12px;
+      color: #444;
+    }
+    @media (prefers-color-scheme: dark) {
+      .content h2 { color: #ccc; }
+    }
+    .content h3 {
+      font-size: 1.1em;
+      margin: 16px 0 8px;
+      color: #555;
+    }
+    @media (prefers-color-scheme: dark) {
+      .content h3 { color: #b0b0b0; }
+    }
+    .content a {
+      color: #0066cc;
+      text-decoration: none;
+    }
+    .content a:hover { text-decoration: underline; }
+    .content hr {
+      border: none;
+      border-top: 1px solid #eee;
+      margin: 20px 0;
+    }
+    @media (prefers-color-scheme: dark) {
+      .content hr { border-top-color: #333; }
+    }
+    .content ul, .content ol {
+      padding-left: 24px;
+      margin: 12px 0;
+    }
+    .content li { margin: 4px 0; }
+    .content p { margin: 12px 0; }
+    .content code {
+      background: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.9em;
+    }
+    .content pre {
+      background: #f5f5f5;
+      padding: 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 16px 0;
+    }
+    .content pre code {
+      background: none;
+      padding: 0;
+    }
+    .content blockquote {
+      border-left: 4px solid #ddd;
+      padding-left: 16px;
+      margin: 16px 0;
+      color: #666;
+    }
+    @media (prefers-color-scheme: dark) {
+      .content blockquote { border-left-color: #555; color: #999; }
+    }
+    .content img {
+      max-width: 100%;
+      height: auto;
+    }
+    .content table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 16px 0;
+    }
+    .content th, .content td {
+      border: 1px solid #ddd;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .content th { background: #f5f5f5; }
+    @media (prefers-color-scheme: dark) {
+      .content th, .content td { border-color: #444; }
+      .content th { background: #2d2d2d; }
+    }
+  </style>
+</head>
+<body>
+  <nav><a href="./index.html">&larr; 返回 index</a></nav>
+  <article class="content">
+    <h1>2026-03-26-ai日报</h1>
+<hr>
+<h2>GitHub 项目</h2>
+<h3>1 jingyaogong/minimind</h3>
+<p><strong>描述&amp;亮点</strong>：2 小时完全从 0 训练 26M 小参数 GPT！这个项目旨在用 3 块钱成本和 2 小时训练时间，从 0 开始训练超小语言模型。MiniMind 系列极其轻量，主线最小版本体积约为 GPT-3 的 1/2700，让普通个人 GPU 也能快速完成训练与复现。项目开源了大模型的极简结构与完整训练链路，覆盖 MoE、数据清洗、预训练、监督微调、LoRA、RLHF、RLAIF、Tool Use、Agentic RL 等全过程代码。这不仅是一个 LLM 开源复现项目，也是一套面向 LLM 入门与实践的教程。</p>
+<p>⭐43,693 stars 🍴5,245 forks | <a href="https://github.com/jingyaogong/minimind">仓库</a></p>
+<hr>
+<h3>2 hsliuping/TradingAgents-CN</h3>
+<p><strong>描述&amp;亮点</strong>：基于多智能体 LLM 的中文金融交易框架，TradingAgents 中文增强版。这是将 AI Agent 应用于金融交易的实践项目，通过多个专业 Agent 协作进行市场分析、风险评估、交易决策。对于想做量化交易、智能投顾、金融分析的开发者，这是极好的参考实现。</p>
+<p>⭐21,260 stars 🍴4,423 forks | <a href="https://github.com/hsliuping/TradingAgents-CN">仓库</a></p>
+<hr>
+<h3>3 agentscope-ai/agentscope</h3>
+<p><strong>描述&amp;亮点</strong>：构建和运行你能看到、理解和信任的 Agent。这是一个 Agent 开发和可视化平台，让开发者能够实时监控 Agent 的行为、理解决策过程、调试问题。这是&quot;AI 可解释性&quot;和&quot;Agent 可观测性&quot;的重要工具，对于构建可信 AI 系统至关重要。</p>
+<p>⭐19,825 stars 🍴1,897 forks | <a href="https://github.com/agentscope-ai/agentscope">仓库</a></p>
+<hr>
+<h3>4 kepano/obsidian-skills</h3>
+<p><strong>描述&amp;亮点</strong>：完整的 AI Agency，为 Obsidian 用户提供从前端巫师到 Reddit 社区忍者、从创意注入器到现实检查器等各种专业 Agent。这是将多 Agent 协作引入笔记工具的尝试，让 AI 帮助你管理知识、检索信息、生成内容。</p>
+<p>⭐17,054 stars 🍴967 forks | <a href="https://github.com/kepano/obsidian-skills">仓库</a></p>
+<hr>
+<h3>5 JimLiu/baoyu-skills</h3>
+<p><strong>描述&amp;亮点</strong>：宝玉的 AI Skills 集合。这是中文社区优质的 Skills 资源，展示了如何构建和复用 Claude Code Skills。对于想学习如何编写实用 Skills 的开发者，这是极好的学习资源。</p>
+<p>⭐11,548 stars 🍴1,299 forks | <a href="https://github.com/JimLiu/baoyu-skills">仓库</a></p>
+<hr>
+<h3>6 Diolinux/PhotoGIMP</h3>
+<p><strong>描述&amp;亮点</strong>：GIMP 3+ 的 Photoshop 用户补丁。这是一个让 GIMP 界面和操作习惯更像 Photoshop 的补丁，帮助从 Photoshop 转向 GIMP 的用户快速上手。这是开源软件用户体验优化的典范。</p>
+<p>⭐7,973 stars 🍴233 forks | <a href="https://github.com/Diolinux/PhotoGIMP">仓库</a></p>
+<hr>
+<h3>7 mvanhorn/last30days-skill</h3>
+<p><strong>描述&amp;亮点</strong>：AI Agent 技能，跨 Reddit、X、YouTube、HN、Polymarket 等平台研究任何主题。这是一个强大的信息搜集和分析工具，让 AI 帮你做市场调研、竞品分析、舆情监控。对于需要做市场分析、用户研究的人非常有用。</p>
+<p>⭐7,179 stars 🍴693 forks | <a href="https://github.com/mvanhorn/last30days-skill">仓库</a></p>
+<hr>
+<h3>8 calesthio/Crucix</h3>
+<p><strong>描述&amp;亮点</strong>：你的个人智能 Agent，从多个数据源监控世界，当有变化时通知你。这是一个个性化信息监控和提醒系统，可以跟踪新闻、社交媒体、市场数据等，当有重要变化时主动通知。对于需要实时掌握行业动态的人很有价值。</p>
+<p>⭐6,854 stars 🍴1,051 forks | <a href="https://github.com/calesthio/Crucix">仓库</a></p>
+<hr>
+<h3>9 jackwener/opencli</h3>
+<p><strong>描述&amp;亮点</strong>：让任何网站成为你的 CLI。这是一个强大的、AI 原生的运行时，用于无缝浏览器自动化和动态网页数据提取。对于需要做网页爬虫、数据采集、自动化测试的开发者，这是新选择。</p>
+<p>⭐6,804 stars 🍴547 forks | <a href="https://github.com/jackwener/opencli">仓库</a></p>
+<hr>
+<h3>10 pascalorg/editor</h3>
+<p><strong>描述&amp;亮点</strong>：3D 生成编辑器。这是一个用于 3D 内容生成的编辑工具，可能支持 AI 辅助的 3D 建模、纹理生成、动画制作等。对于游戏开发、VR/AR 内容创作、3D 打印有价值。</p>
+<p>⭐6,725 stars 🍴873 forks | <a href="https://github.com/pascalorg/editor">仓库</a></p>
+<hr>
+<h2>科技（TLDR）</h2>
+<h3>OpenAI 放弃 Sora 视频平台</h3>
+<blockquote>
+<p><strong>OpenAI Scraps Sora Video Platform Months After Launch</strong></p>
+<p>OpenAI has pulled the plug on its Sora video platform. The move is one of a number of steps the company is taking to refocus its business ahead of a planned IPO.</p>
+<p><strong>信号</strong>：OpenAI 在 IPO 前重新聚焦核心业务，砍掉非核心项目。Sora 虽然技术领先，但商业化可能不如预期。这反映了 AI 公司从&quot;技术展示&quot;向&quot;商业可行&quot;的转变。</p>
+<p><a href="https://www.wsj.com/tech/ai/openai-set-to-discontinue-sora-video-platform-app-a82a9e4e">原文</a></p>
+</blockquote>
+<hr>
+<h3>Apple 计划 AI 重启 Siri</h3>
+<blockquote>
+<p><strong>Apple Plans AI Reboot With Siri App, New Look and &#39;Ask Siri&#39; Button in iOS 27</strong></p>
+<p>Apple is testing a standalone app for Siri and an &#39;Ask Siri&#39; feature that will work across the company&#39;s software. Apple has been working to transform Siri into a more capable AI assistant.</p>
+<p><strong>信号</strong>：Apple 正在重启 Siri 项目，推出独立 App 和全局&quot;Ask Siri&quot;按钮。这标志着 Apple 正式加入 AI 助手竞赛，试图追赶 OpenAI、Google 等竞争对手。</p>
+<p><a href="https://www.bloomberg.com/news/articles/2026-03-24/ios-27-features-apple-ai-reboot-with-siri-app-new-interface-ask-siri-button">原文</a></p>
+</blockquote>
+<hr>
+<h3>Amazon 收购人形机器人公司</h3>
+<blockquote>
+<p><strong>Amazon acquires &#39;approachable&#39; humanoid maker Fauna Robotics</strong></p>
+<p>Amazon has acquired Fauna Robotics, a startup that builds &#39;approachable&#39; humanoid robots. Fauna was founded in 2024 by former Meta and Google engineers.</p>
+<p><strong>信号</strong>：Amazon 正在布局人形机器人，收购成立仅一年的初创公司。这反映了科技巨头对机器人赛道的重视，可能用于物流、仓储、客服等场景。</p>
+<p><a href="https://www.cnbc.com/2026/03/24/amazon-humanoid-maker-fauna-robotics-sprout.html">原文</a></p>
+</blockquote>
+<hr>
+<h3>Claude Code 自动模式</h3>
+<blockquote>
+<p><strong>Auto mode for Claude Code</strong></p>
+<p>Auto mode for Claude Code is an alternative to --dangerously-skip-permissions. It allows Claude to make permission decisions autonomously.</p>
+<p><strong>信号</strong>：Claude Code 推出自动模式，让 AI 自主决定权限。这是 AI 自主性的重要进展，但也引发了安全和可控性的讨论。</p>
+<p><a href="https://simonwillison.net/2026/Mar/24/auto-mode-for-claude-code/">原文</a></p>
+</blockquote>
+<hr>
+<h3>Meta 关闭元宇宙项目</h3>
+<blockquote>
+<p><strong>My Prodigal Brainchild</strong></p>
+<p>Meta has decided to shut down its Metaverse project, which the company reportedly spent $80 billion on. The company&#39;s vision of people wearing devices and interacting in virtual worlds did not materialize.</p>
+<p><strong>信号</strong>：Meta 花费 800 亿美元后关闭元宇宙项目，标志着元宇宙热潮的退去。这反映了技术愿景与市场现实的差距，也预示着 AI 可能成为新的投资焦点。</p>
+<p><a href="https://nealstephenson.substack.com/p/my-prodigal-brainchild">原文</a></p>
+</blockquote>
+<hr>
+<h2>趋势分析</h2>
+<h3>技术连贯性</h3>
+<p><strong>小模型复兴</strong>：minimind（26M 参数，2 小时训练）的出现标志着&quot;小模型&quot;的复兴。从昨日的 LongCat-Flash-Prover（560B MoE 但仅激活 3B）到今日的 minimind，社区开始关注&quot;够用就好&quot;的小模型。这可能是对大模型成本高昂、部署困难的反思。</p>
+<p><strong>Agent 可观测性成熟</strong>：从昨日的 ruflo（Agent 编排）、前日的 claude-hud（可观测性插件），到今日的 agentscope（可视化平台），Agent 可观测性正在成为关键基础设施。未来的 AI 应用不仅要&quot;能用&quot;，还要&quot;可见、可理解、可信任&quot;。</p>
+<p><strong>Skills 生态持续扩张</strong>：从昨日的 awesome-claude-code、mattpocock/skills，到今日的 obsidian-skills、baoyu-skills、last30days-skill，Skills 正在从通用能力向垂直领域（笔记、金融、市场调研）扩展。</p>
+<h3>风向转变</h3>
+<p><strong>元宇宙退潮，AI 接棒</strong>：Meta 关闭花费 800 亿美元的元宇宙项目，OpenAI 砍掉 Sora 视频平台，这标志着技术投资热点从&quot;虚拟世界&quot;转向&quot;实用 AI&quot;。元宇宙是长期愿景，但 AI 是当下刚需。</p>
+<p><strong>大公司内部 AI 化</strong>：Meta 任命新领导推动&quot;AI For Work&quot; initiative，Apple 重启 Siri，Amazon 收购机器人公司——大公司正在全面 AI 化。这可能会加速 AI 在企业场景的落地。</p>
+<p><strong>预测与行动建议</strong></p>
+<p><strong>接下来两周可能发生</strong>：</p>
+<ol>
+<li><p><strong>小模型工具爆发</strong>：minimind 会引发类似小模型训练工具的涌现。建议关注小模型在特定场景（如边缘部署、个性化定制）的应用。</p>
+</li>
+<li><p><strong>Agent 监控平台竞争</strong>：agentscope 的出现会引发类似平台的开发。建议关注 Agent 可观测性领域的最新进展。</p>
+</li>
+<li><p><strong>AI 机器人加速</strong>：Amazon 收购 Fauna Robotics 可能会引发其他巨头跟进。建议关注人形机器人在物流、仓储、客服等领域的应用。</p>
+</li>
+</ol>
+<p><strong>给 nagi 的建议</strong>：</p>
+<ol>
+<li><p><strong>尝试 minimind</strong>：如果想学习 LLM 训练或部署到边缘设备，minimind 是极好的起点。2 小时 3 块钱就能完全理解 LLM 训练全流程。</p>
+</li>
+<li><p><strong>学习 Agent 可观测性</strong>：agentscope 展示了如何让 AI 行为可见、可理解。如果 nagi 想做复杂 AI 应用，这是关键技能。</p>
+</li>
+<li><p><strong>关注 Skills 开发</strong>：obsidian-skills、baoyu-skills、last30days-skill 展示了 Skills 在不同领域的应用。建议 nagi 学习如何构建垂直领域的实用 Skills。</p>
+</li>
+<li><p><strong>跟踪 AI 机器人进展</strong>：Amazon 收购 Fauna Robotics 标志着巨头入局。如果 nagi 对机器人感兴趣，这是值得关注的方向。</p>
+</li>
+<li><p><strong>反思技术愿景</strong>：Meta 关闭元宇宙项目提醒我们，技术愿景需要与市场现实平衡。建议 nagi 在关注前沿技术的同时，也要思考实际应用场景。</p>
+</li>
+</ol>
+<hr>
+<blockquote>
+<p>Generated by yui 酱 🎀<br>数据来源：GitHub Trending + TLDR AI + lightpanda 抓取<br>日期：2026-03-26</p>
+</blockquote>
+
+  </article>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.0/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      marked.setOptions({
+        gfm: true,
+        breaks: true,
+        highlight: function(code, lang) {
+          if (lang && hljs.getLanguage(lang)) {
+            return hljs.highlight(code, { language: lang }).value;
+          }
+          return hljs.highlightAuto(code).value;
+        }
+      });
+      document.querySelectorAll('.content pre code').forEach(function(block) {
+        hljs.highlightElement(block);
+      });
+    });
+  </script>
+</body>
+</html>

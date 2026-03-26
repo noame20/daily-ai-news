@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026-03-16 - AI 日报</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Noto Sans SC', sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.6;
+      color: #333;
+      background: #fff;
+    }
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: #1a1a1a;
+        color: #e0e0e0;
+      }
+      a {
+        color: #6eb5ff;
+      }
+      pre, code {
+        background: #2d2d2d !important;
+      }
+      #hljs-light { display: none; }
+      #hljs-dark { display: block; }
+    }
+    @media (prefers-color-scheme: light) {
+      #hljs-light { display: block; }
+      #hljs-dark { display: none; }
+    }
+    nav {
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #eee;
+    }
+    @media (prefers-color-scheme: dark) {
+      nav { border-bottom-color: #333; }
+    }
+    nav a {
+      text-decoration: none;
+      color: #666;
+      font-size: 14px;
+    }
+    nav a:hover { color: #333; }
+    @media (prefers-color-scheme: dark) {
+      nav a { color: #999; }
+      nav a:hover { color: #e0e0e0; }
+    }
+    .content h1 {
+      font-size: 1.8em;
+      margin-bottom: 16px;
+      color: #222;
+    }
+    @media (prefers-color-scheme: dark) {
+      .content h1 { color: #fff; }
+    }
+    .content h2 {
+      font-size: 1.4em;
+      margin: 24px 0 12px;
+      color: #444;
+    }
+    @media (prefers-color-scheme: dark) {
+      .content h2 { color: #ccc; }
+    }
+    .content h3 {
+      font-size: 1.1em;
+      margin: 16px 0 8px;
+      color: #555;
+    }
+    @media (prefers-color-scheme: dark) {
+      .content h3 { color: #b0b0b0; }
+    }
+    .content a {
+      color: #0066cc;
+      text-decoration: none;
+    }
+    .content a:hover { text-decoration: underline; }
+    .content hr {
+      border: none;
+      border-top: 1px solid #eee;
+      margin: 20px 0;
+    }
+    @media (prefers-color-scheme: dark) {
+      .content hr { border-top-color: #333; }
+    }
+    .content ul, .content ol {
+      padding-left: 24px;
+      margin: 12px 0;
+    }
+    .content li { margin: 4px 0; }
+    .content p { margin: 12px 0; }
+    .content code {
+      background: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.9em;
+    }
+    .content pre {
+      background: #f5f5f5;
+      padding: 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 16px 0;
+    }
+    .content pre code {
+      background: none;
+      padding: 0;
+    }
+    .content blockquote {
+      border-left: 4px solid #ddd;
+      padding-left: 16px;
+      margin: 16px 0;
+      color: #666;
+    }
+    @media (prefers-color-scheme: dark) {
+      .content blockquote { border-left-color: #555; color: #999; }
+    }
+    .content img {
+      max-width: 100%;
+      height: auto;
+    }
+    .content table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 16px 0;
+    }
+    .content th, .content td {
+      border: 1px solid #ddd;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .content th { background: #f5f5f5; }
+    @media (prefers-color-scheme: dark) {
+      .content th, .content td { border-color: #444; }
+      .content th { background: #2d2d2d; }
+    }
+  </style>
+</head>
+<body>
+  <nav><a href="./index.html">&larr; 返回 index</a></nav>
+  <article class="content">
+    <h1>AI 技术日报 2026-03-16</h1>
+<p><font color="info">GitHub Trending + TLDR AI</font></p>
+<hr>
+<h2>🔥 GitHub 精选</h2>
+<h3>1. claudian - Obsidian 的 Claude Code 插件</h3>
+<p><font color="comment">⭐ +109 | 4,017</font></p>
+<p>将 Claude Code 嵌入 Obsidian 知识库，支持完整 Agent 能力。</p>
+<p><strong>核心功能</strong>：</p>
+<ul>
+<li>文件读写/搜索/bash 命令/多步工作流</li>
+<li>上下文感知：自动附加当前笔记、`@` 文件</li>
+<li>视觉支持：拖拽/粘贴图片分析</li>
+<li>内联编辑：word-level diff 预览</li>
+<li>Slash 命令、Skills 扩展、自定义 Agent</li>
+<li>MCP 支持：连接外部工具</li>
+<li>计划模式：Shift+Tab 先设计后实施</li>
+</ul>
+<p><strong>要求</strong>：Claude Code CLI + Obsidian v1.8.9+</p>
+<p><a href="https://github.com/YishenTu/claudian">GitHub</a></p>
+<hr>
+<h3>2. vite-plus - Web 开发统一工具链</h3>
+<p><font color="comment">⭐ +622 | 2,096</font></p>
+<p>整合 Vite/Vitest/Oxlint/Rolldown 等于一体。</p>
+<p><strong>核心命令</strong>：</p>
+<ul>
+<li>`vp env` - 管理 Node.js</li>
+<li>`vp install` - 安装依赖</li>
+<li>`vp dev` - 开发服务器，瞬间 HMR</li>
+<li>`vp check` - 格式化/lint/类型检查</li>
+<li>`vp test` - 运行测试</li>
+<li>`vp build` - 生产构建</li>
+<li>`vp run` - 单体仓库任务</li>
+</ul>
+<p><strong>安装</strong>：`curl -fsSL <a href="https://vite.plus">https://vite.plus</a> | bash`</p>
+<p><a href="https://github.com/voidzero-dev/vite-plus">GitHub</a></p>
+<hr>
+<h2>📰 TLDR 快讯</h2>
+<h3><font color="warning">Big Tech</font></h3>
+<blockquote>
+<p><strong>Meta 裁员 20%+</strong></p>
+<p>AI 基础设施成本高昂，准备通过 AI 辅助员工提升效率。或成 2022-23 年后最大规模重组。</p>
+</blockquote>
+<blockquote>
+<p><strong>Musk 重建 xAI</strong></p>
+<p>联合创始人相继离开，从 Cursor 挖来两位大佬，成立 Digital Optimus 与 Tesla 深度整合。</p>
+</blockquote>
+<blockquote>
+<p><strong>Nvidia GTC 聚焦 CPU</strong></p>
+<p>Agent AI 需要大量通用算力，CPU 市场增速或于 2028 年超越 GPU，中国区已现供应短缺。</p>
+</blockquote>
+<h3><font color="warning">前沿科技</font></h3>
+<blockquote>
+<p><strong>Travis Kalanick 推&quot;就业机器人&quot;</strong></p>
+<p>前 Uber CEO 创业公司 Atoms 专注食品、采矿、交通行业的机器人基础设施。</p>
+</blockquote>
+<blockquote>
+<p><strong>中国批准首个脑机接口</strong></p>
+<p>针对脊髓损伤导致部分瘫痪的成年患者，试验中帮助患者改善抓握能力。BCI 成国家战略产业。</p>
+</blockquote>
+<h3><font color="warning">开发者</font></h3>
+<blockquote>
+<p><strong>&quot;夜班&quot;Agent 工作流</strong></p>
+<p>开发者上&quot;白班&quot;做准备，AI Agent&quot;夜班&quot;自主执行，次日上午完成任务，减少&quot;保姆式&quot;监督。</p>
+</blockquote>
+<blockquote>
+<p><strong>理解债务</strong></p>
+<p>系统代码量与人类真正理解的部分之间的差距正在扩大，利息快速累积。</p>
+</blockquote>
+<hr>
+<h2>💡 趋势分析</h2>
+<p><font color="info">关键词：Agent 工具链、AI 成本、硬件变化</font></p>
+<p><strong>1. Agent 工具链成熟</strong></p>
+<p>claudian 让 Claude Code 住进知识库，vite-plus 统一 Web 开发流程，&quot;夜班工作流&quot;让 Agent 成为真正协作者。</p>
+<blockquote>
+<p>Agent 开发从&quot;手写 prompts&quot;转向&quot;工程化工作流&quot;。</p>
+</blockquote>
+<p><strong>2. AI 成本压力显现</strong></p>
+<p>Meta 因 AI 基础设施成本高昂计划裁员 20%+，AI 投资回报压力传导到组织层面。</p>
+<p><strong>3. 硬件格局变化</strong></p>
+<p>Nvidia pivot 到 CPU 反映 Agent AI 对通用算力需求增长；中国脑机接口获批，BCI 成战略产业。</p>
+<hr>
+<p><font color="comment">by yui 酱 🎀</font></p>
+
+  </article>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.0/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      marked.setOptions({
+        gfm: true,
+        breaks: true,
+        highlight: function(code, lang) {
+          if (lang && hljs.getLanguage(lang)) {
+            return hljs.highlight(code, { language: lang }).value;
+          }
+          return hljs.highlightAuto(code).value;
+        }
+      });
+      document.querySelectorAll('.content pre code').forEach(function(block) {
+        hljs.highlightElement(block);
+      });
+    });
+  </script>
+</body>
+</html>

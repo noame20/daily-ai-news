@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026-03-17 - AI 日报</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Noto Sans SC', sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.6;
+      color: #333;
+      background: #fff;
+    }
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: #1a1a1a;
+        color: #e0e0e0;
+      }
+      a {
+        color: #6eb5ff;
+      }
+      pre, code {
+        background: #2d2d2d !important;
+      }
+      #hljs-light { display: none; }
+      #hljs-dark { display: block; }
+    }
+    @media (prefers-color-scheme: light) {
+      #hljs-light { display: block; }
+      #hljs-dark { display: none; }
+    }
+    nav {
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #eee;
+    }
+    @media (prefers-color-scheme: dark) {
+      nav { border-bottom-color: #333; }
+    }
+    nav a {
+      text-decoration: none;
+      color: #666;
+      font-size: 14px;
+    }
+    nav a:hover { color: #333; }
+    @media (prefers-color-scheme: dark) {
+      nav a { color: #999; }
+      nav a:hover { color: #e0e0e0; }
+    }
+    .content h1 {
+      font-size: 1.8em;
+      margin-bottom: 16px;
+      color: #222;
+    }
+    @media (prefers-color-scheme: dark) {
+      .content h1 { color: #fff; }
+    }
+    .content h2 {
+      font-size: 1.4em;
+      margin: 24px 0 12px;
+      color: #444;
+    }
+    @media (prefers-color-scheme: dark) {
+      .content h2 { color: #ccc; }
+    }
+    .content h3 {
+      font-size: 1.1em;
+      margin: 16px 0 8px;
+      color: #555;
+    }
+    @media (prefers-color-scheme: dark) {
+      .content h3 { color: #b0b0b0; }
+    }
+    .content a {
+      color: #0066cc;
+      text-decoration: none;
+    }
+    .content a:hover { text-decoration: underline; }
+    .content hr {
+      border: none;
+      border-top: 1px solid #eee;
+      margin: 20px 0;
+    }
+    @media (prefers-color-scheme: dark) {
+      .content hr { border-top-color: #333; }
+    }
+    .content ul, .content ol {
+      padding-left: 24px;
+      margin: 12px 0;
+    }
+    .content li { margin: 4px 0; }
+    .content p { margin: 12px 0; }
+    .content code {
+      background: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.9em;
+    }
+    .content pre {
+      background: #f5f5f5;
+      padding: 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 16px 0;
+    }
+    .content pre code {
+      background: none;
+      padding: 0;
+    }
+    .content blockquote {
+      border-left: 4px solid #ddd;
+      padding-left: 16px;
+      margin: 16px 0;
+      color: #666;
+    }
+    @media (prefers-color-scheme: dark) {
+      .content blockquote { border-left-color: #555; color: #999; }
+    }
+    .content img {
+      max-width: 100%;
+      height: auto;
+    }
+    .content table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 16px 0;
+    }
+    .content th, .content td {
+      border: 1px solid #ddd;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .content th { background: #f5f5f5; }
+    @media (prefers-color-scheme: dark) {
+      .content th, .content td { border-color: #444; }
+      .content th { background: #2d2d2d; }
+    }
+  </style>
+</head>
+<body>
+  <nav><a href="./index.html">&larr; 返回 index</a></nav>
+  <article class="content">
+    <h1>AI 技术日报 2026-03-17</h1>
+<blockquote>
+<p>GitHub Trending | 精选 6 项</p>
+</blockquote>
+<hr>
+<h2>🔥 GitHub 精选</h2>
+<h3>1. superpowers - Agent 技能框架与开发方法论</h3>
+<p><strong>An agentic skills framework &amp; software development methodology that works.</strong></p>
+<ul>
+<li>完整的 Agent 软件开发工作流，基于可组合的&quot;skills&quot;</li>
+<li>核心流程：需求提取 → 设计确认 → 实现计划 → Subagent 执行</li>
+<li>强调 TDD、YAGNI、DRY 原则</li>
+<li>Claude Code 可用，支持插件市场安装</li>
+</ul>
+<p><strong>安装</strong>（Claude Code）：<br>```<br>/plugin marketplace add obra/superpowers<br>/plugin install superpowers<br>```</p>
+<p><a href="https://github.com/obra/superpowers">GitHub</a></p>
+<hr>
+<h3>2. build-your-own-x - 从零构建技术</h3>
+<p><strong>Master programming by recreating your favorite technologies from scratch.</strong></p>
+<ul>
+<li>通过从头 recreate 技术来掌握编程</li>
+<li>涵盖数据库、编译器、操作系统、网络协议等</li>
+<li>47.8 万星标，最受欢迎的编程学习资源之一</li>
+<li>实践导向，边做边学</li>
+</ul>
+<p><a href="https://github.com/codecrafters-io/build-your-own-x">GitHub</a></p>
+<hr>
+<h3>3. GitNexus - 零服务器代码智能引擎</h3>
+<p><strong>GitNexus: The Zero-Server Code Intelligence Engine - A client-side knowledge graph creator that runs entirely in your browser.</strong></p>
+<ul>
+<li>将任意代码库索引为知识图谱</li>
+<li>纯浏览器端运行，无需服务器</li>
+<li>内置 Graph RAG Agent，支持代码探索</li>
+<li>每个依赖、调用链、聚类、执行流程清晰可见</li>
+<li>支持 GitHub 仓库或 ZIP 文件输入</li>
+</ul>
+<p><strong>快速开始</strong>：<br>```bash<br>npx gitnexus analyze<br>```</p>
+<p><a href="https://github.com/abhigyanpatwari/GitNexus">GitHub</a></p>
+<hr>
+<h3>4. deepagents - LangChain 全功能 Agent Harness</h3>
+<p><strong>Agent harness built with LangChain and LangGraph. Equipped with a planning tool, a filesystem backend, and the ability to spawn subagents.</strong></p>
+<ul>
+<li>开箱即用的 Agent，无需自己接线 prompts 和工具</li>
+<li>内置 planning (`write_todos`)、filesystem、shell、sub-agents 工具</li>
+<li>自动上下文管理，对话变长时自动摘要</li>
+<li>大输出自动保存到文件</li>
+<li>支持自定义工具、模型、系统提示</li>
+</ul>
+<p><strong>快速开始</strong>：<br>```python<br>from deepagents import create_deep_agent<br>agent = create_deep_agent()<br>result = agent.invoke({&quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Research LangGraph&quot;}]})<br>```</p>
+<p><a href="https://github.com/langchain-ai/deepagents">GitHub</a></p>
+<hr>
+<h3>5. claude-hud - Claude Code 状态显示插件</h3>
+<p><strong>A Claude Code plugin that shows what&#39;s happening - context usage, active tools, running agents, and todo progress.</strong></p>
+<ul>
+<li>实时显示上下文使用量、活动工具、运行 Agent、任务进度</li>
+<li>始终显示在输入框下方，无需切换视图</li>
+<li>支持项目路径、Git 分支显示</li>
+<li>上下文健康度可视化（进度条）</li>
+<li>默认 2 行显示，可配置</li>
+</ul>
+<p><strong>默认显示</strong>：<br>```<br>[Opus | Max] │ my-project git:&#39;(main*)<br>Context █████░░░░░ 45% │ Usage ██░░░░░░░░ 25% (1h 30m / 5h)<br>```</p>
+<p><strong>安装</strong>：<br>```<br>/plugin marketplace add jarrodwatts/claude-hud<br>/plugin install claude-hud<br>/claude-hud:setup<br>```</p>
+<p><a href="https://github.com/jarrodwatts/claude-hud">GitHub</a></p>
+<hr>
+<h3>6. workerd - Cloudflare JS/Wasm 运行时</h3>
+<p><strong>The JavaScript / Wasm runtime that powers Cloudflare Workers.</strong></p>
+<ul>
+<li>Cloudflare Workers 背后的开源运行时</li>
+<li>用途：自托管 Workers 应用、本地开发测试、可编程 HTTP 代理</li>
+<li><strong>设计原则</strong>：Server-first、Standard-based、Nanoservices、Homogeneous deployment、Capability bindings、永久向后兼容</li>
+<li><strong>Nanoservices</strong>：类似微服务但性能如本地函数调用</li>
+<li><strong>安全</strong>：Capability 绑定免疫 SSRF 攻击</li>
+</ul>
+<p><strong>警告</strong>：workerd 本身不是硬化的沙箱，运行不可信代码时需在安全沙箱（如虚拟机）中运行</p>
+<p><strong>支持平台</strong>：Linux、macOS（x86-64 和 arm64）、Windows（x86-64）</p>
+<p><a href="https://github.com/cloudflare/workerd">GitHub</a></p>
+<hr>
+<h2>💡 趋势分析</h2>
+<h3>1. Agent 开发方法论成熟化</h3>
+<p><strong>superpowers</strong> 和 <strong>deepagents</strong> 反映 Agent 开发从&quot;手写 prompts&quot;转向&quot;工程化工作流&quot;：</p>
+<ul>
+<li>superpowers：先设计后实现，subagent-driven development</li>
+<li>deepagents：开箱即用的全功能 harness，内置 planning/filesystem/shell</li>
+</ul>
+<blockquote>
+<p>Agent 开发正在标准化、工程化，降低使用门槛。</p>
+</blockquote>
+<h3>2. 代码理解与知识图谱</h3>
+<p><strong>GitNexus</strong> 将代码库索引为知识图谱，让 AI 不再&quot;漏掉代码&quot;：</p>
+<ul>
+<li>浏览器端运行，无需服务器</li>
+<li>内置 Graph RAG Agent</li>
+<li>追踪每个依赖和调用链</li>
+</ul>
+<blockquote>
+<p>代码理解从&quot;文本搜索&quot;转向&quot;图谱分析&quot;，连小模型也能获得完整架构视野。</p>
+</blockquote>
+<h3>3. AI 工具透明化</h3>
+<p><strong>claude-hud</strong> 让 Claude Code 的工作状态一目了然：</p>
+<ul>
+<li>实时上下文使用量</li>
+<li>活动工具追踪</li>
+<li>Agent 执行进度可视化</li>
+</ul>
+<blockquote>
+<p>AI 工具从&quot;黑盒&quot;转向&quot;透明化&quot;，让开发者真正掌控 AI 协作者。</p>
+</blockquote>
+<h3>4. 学习方法回归实践</h3>
+<p><strong>build-your-own-x</strong> 47.8 万星反映开发者对深度理解的渴望：</p>
+<ul>
+<li>从&quot;会用&quot;到&quot;理解原理&quot;</li>
+<li>亲手重建是最佳学习方式</li>
+<li>涵盖数据库/编译器/操作系统/网络协议</li>
+</ul>
+<h3>5. 开源运行时生态成熟</h3>
+<p><strong>workerd</strong> 开源标志着 Web 运行时生态进一步成熟：</p>
+<ul>
+<li>Cloudflare Workers 架构公开</li>
+<li>Nanoservices 概念挑战微服务范式</li>
+<li>Capability-based 安全模型成为新标准</li>
+</ul>
+<hr>
+<h2>📊 今日统计</h2>
+<table>
+<thead>
+<tr>
+<th>来源</th>
+<th>数量</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GitHub Trending</td>
+<td>6</td>
+</tr>
+<tr>
+<td>总星标数</td>
+<td>610,000+</td>
+</tr>
+<tr>
+<td>今日新增星标</td>
+<td>1,071</td>
+</tr>
+</tbody></table>
+<hr>
+<blockquote>
+<p>Generated by yui 酱 🎀</p>
+</blockquote>
+
+  </article>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.0/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      marked.setOptions({
+        gfm: true,
+        breaks: true,
+        highlight: function(code, lang) {
+          if (lang && hljs.getLanguage(lang)) {
+            return hljs.highlight(code, { language: lang }).value;
+          }
+          return hljs.highlightAuto(code).value;
+        }
+      });
+      document.querySelectorAll('.content pre code').forEach(function(block) {
+        hljs.highlightElement(block);
+      });
+    });
+  </script>
+</body>
+</html>
