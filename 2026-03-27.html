@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3月27日 AI 日报</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark">
+  <style>
+    
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #FFF8F0; --surface: #FFFFFF; --primary: #FFB5C5; --primary-dark: #FF8FAB;
+    --secondary: #E8D5F5; --accent: #A8E6CF; --accent-dark: #7DD3B0;
+    --text: #4A4458; --text-light: #8E8A9E; --border: #F0E8E0;
+    --shadow: rgba(255,181,197,0.2); --shadow-lg: rgba(255,181,197,0.35);
+    --code-bg: #FFF0F5; --radius: 20px; --bar: var(--primary);
+    --nav-height: 60px;
+  }
+  [data-theme="dark"] {
+    --bg: #1A1625; --surface: #2D2640; --primary: #FFB5C5; --primary-dark: #FF8FAB;
+    --secondary: #C9A8E8; --accent: #7DD3B0; --accent-dark: #6BC49A;
+    --text: #F0EBF8; --text-light: #A8A0BC; --border: #3D3555;
+    --shadow: rgba(0,0,0,0.4); --shadow-lg: rgba(0,0,0,0.5); --code-bg: #2D2640;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1A1625; --surface: #2D2640; --primary: #FFB5C5; --primary-dark: #FF8FAB;
+      --secondary: #C9A8E8; --accent: #7DD3B0; --accent-dark: #6BC49A;
+      --text: #F0EBF8; --text-light: #A8A0BC; --border: #3D3555;
+      --shadow: rgba(0,0,0,0.4); --shadow-lg: rgba(0,0,0,0.5); --code-bg: #2D2640;
+    }
+  }
+  body {
+    font-family: 'Noto Sans SC','Quicksand',ui-sans-serif,system-ui,sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.8;
+    min-height: 100vh;
+    /* S-curve momentum scroll feel */
+    scroll-behavior: auto;
+  }
+  html { scroll-behavior: auto; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto !important; }
+  }
+  a { color: var(--primary-dark); text-decoration: none; font-weight: 500; }
+  a:hover { text-decoration: underline; }
+
+  /* ── Top navbar ── */
+  .navbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+    height: var(--nav-height);
+    background: rgba(255,248,240,0.85);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border-bottom: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 20px;
+    transition: transform 320ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  [data-theme="dark"] .navbar { background: rgba(26,22,37,0.88); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .navbar { background: rgba(26,22,37,0.88); }
+  }
+  .navbar.nav-hidden { transform: translateY(-100%); }
+  .nav-logo {
+    font-family:'Quicksand','Noto Sans SC',sans-serif;
+    font-size:1.1rem; font-weight:700; color:var(--text);
+    display:flex; align-items:center; gap:8px;
+  }
+  .nav-logo svg { color:var(--primary-dark); }
+  .nav-links { display:flex; gap:4px; }
+  .nav-link {
+    display:inline-flex; align-items:center; gap:6px;
+    padding:8px 16px; border-radius:100px; font-size:0.875rem; font-weight:600;
+    color:var(--text-light); cursor:pointer; border:none;
+    background:transparent; transition:all 200ms ease;
+  }
+  .nav-link:hover { color:var(--text); background:var(--surface); box-shadow:0 2px 8px var(--shadow); }
+  .nav-link.active { color:var(--primary-dark); background:var(--surface); box-shadow:0 2px 12px var(--shadow); }
+  .nav-right { display:flex; align-items:center; gap:8px; }
+  /* Theme toggle in navbar */
+  .nav-theme-toggle {
+    width:36px; height:36px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--surface); border:1.5px solid var(--border);
+    border-radius:10px; cursor:pointer; color:var(--text);
+    box-shadow:0 2px 8px var(--shadow); transition:all 200ms ease;
+  }
+  .nav-theme-toggle:hover { box-shadow:0 4px 12px var(--shadow-lg); transform:scale(1.05); }
+
+  /* ── Page content offset for fixed navbar ── */
+  .page-body { padding-top: var(--nav-height); }
+
+  /* ── Reading progress bar ── */
+  #progress-bar {
+    position: fixed; bottom: 0; left: 0; z-index: 600;
+    width: 0%; height: 3px;
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    transition: width 60ms linear;
+  }
+
+  /* ── Floating buttons ── */
+  .float-btns {
+    position: fixed; bottom: 20px; right: 20px; z-index: 400;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .float-btn.is-fav { color: #FF6B8A; }
+  .float-btn {
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: 12px; cursor: pointer; color: var(--text);
+    box-shadow: 0 2px 8px var(--shadow); transition: box-shadow 200ms ease, transform 200ms ease;
+    text-decoration: none;
+  }
+  .float-btn:hover { box-shadow: 0 4px 16px var(--shadow-lg); transform: scale(1.05); color: var(--primary-dark); }
+  .float-btn:active { transform: scale(0.95); }
+
+    body::before { content:''; position:fixed; top:0; left:0; right:0; height:360px; background:linear-gradient(180deg,rgba(255,181,197,0.18) 0%,transparent 100%); pointer-events:none; z-index:0; }
+    .container { position:relative; z-index:1; max-width:760px; margin:0 auto; padding:0 16px 80px; }
+    .article-meta { display:flex; align-items:center; gap:12px; margin-bottom:32px; padding-bottom:24px; border-bottom:2px solid var(--border); flex-wrap:wrap; }
+    .article-date-badge { display:inline-flex; align-items:center; gap:6px; background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%); color:#fff; font-family:'Quicksand',sans-serif; font-size:0.875rem; font-weight:700; padding:6px 14px; border-radius:100px; }
+    article { background:var(--surface); border-radius:var(--radius); padding:40px 36px; box-shadow:0 4px 24px var(--shadow); border:1.5px solid var(--border); animation:slideUp 0.4s ease-out both; }
+    @keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    @media(prefers-reduced-motion:reduce){article{animation:none}}
+    .content h1 { font-family:'Quicksand','Noto Sans SC',sans-serif; font-size:1.6rem; font-weight:700; color:var(--text); margin:28px 0 16px; letter-spacing:-0.01em; }
+    .content h2 { font-family:'Quicksand','Noto Sans SC',sans-serif; font-size:1.2rem; font-weight:700; color:var(--text); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--border); }
+    .content h3 { font-family:'Quicksand','Noto Sans SC',sans-serif; font-size:1.05rem; font-weight:600; color:var(--primary-dark); margin:24px 0 8px; }
+    .content h4 { font-size:0.9rem; font-weight:600; color:var(--text-light); text-transform:uppercase; letter-spacing:0.06em; margin:20px 0 6px; }
+    .content p { margin:0 0 16px; font-size:1rem; line-height:1.85; }
+    .content ul,.content ol { margin:0 0 16px; padding-left:24px; }
+    .content li { margin:6px 0; line-height:1.7; }
+    .content code { font-family:'Fira Code','Consolas',monospace; font-size:0.875em; background:var(--code-bg); color:var(--primary-dark); padding:2px 8px; border-radius:6px; font-weight:500; }
+    .content pre { background:var(--code-bg) !important; border-radius:14px; padding:20px !important; overflow-x:auto; margin:20px 0 !important; border:1.5px solid var(--border); }
+    .content pre code { background:transparent !important; color:inherit; padding:0; font-size:0.875rem; line-height:1.65; }
+    .content blockquote { margin:20px 0; padding:14px 20px; background:linear-gradient(135deg,rgba(255,181,197,0.12) 0%,rgba(232,213,245,0.12) 100%); border-left:4px solid var(--primary); border-radius:0 12px 12px 0; }
+    .content blockquote p { margin:0; }
+    .content table { width:100%; border-collapse:collapse; margin:20px 0; font-size:0.9375rem; border-radius:12px; overflow:hidden; border:1.5px solid var(--border); }
+    .content th,.content td { padding:10px 14px; text-align:left; border-bottom:1px solid var(--border); }
+    .content th { background:var(--code-bg); font-weight:600; font-size:0.875rem; }
+    .content tr:last-child td { border-bottom:none; }
+    .content tr:nth-child(even) td { background:rgba(255,181,197,0.05); }
+    .content img { max-width:100%; height:auto; border-radius:12px; margin:8px 0; }
+    .content hr { border:none; border-top:2px solid var(--border); margin:32px 0; }
+    .content strong { font-weight:600; }
+    @media(max-width:600px){article{padding:24px 20px}.content h1{font-size:1.35rem}.content h2{font-size:1.1rem}}
+
+    /* ── Prev/Next navigation ── */
+    .article-nav { display:flex; justify-content:space-between; align-items:center; margin-top:32px; padding-top:24px; border-top:2px solid var(--border); gap:12px; }
+    .nav-btn { display:inline-flex; align-items:center; gap:8px; padding:10px 18px; background:var(--surface); border:1.5px solid var(--border); border-radius:100px; text-decoration:none; color:var(--text); font-size:0.875rem; font-weight:600; box-shadow:0 2px 8px var(--shadow); transition:all 200ms ease; }
+    .nav-btn:hover:not(.nav-btn--disabled) { color:var(--primary-dark); border-color:var(--primary); box-shadow:0 4px 16px var(--shadow-lg); transform:scale(1.02); }
+    .nav-btn--disabled { opacity:0.4; cursor:default; pointer-events:none; }
+    .nav-btn span { max-width:120px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  </style>
+</head>
+<body>
+  
+  <nav class="navbar" id="navbar">
+    <div class="nav-logo"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L13.5 8.5L19 10L13.5 11.5L12 17L10.5 11.5L5 10L10.5 8.5L12 3Z"/><path d="M5 3L5.5 5L7 5.5L5.5 6L5 8L4.5 6L3 5.5L4.5 5L5 3Z"/><path d="M19 17L19.5 19L21 19.5L19.5 20L19 22L18.5 20L17 19.5L18.5 19L19 17Z"/></svg> AI 日报</div>
+    <div class="nav-links">
+      <a href="./index.html" class="nav-link " data-nav="home">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>首页</span>
+      </a>
+      <a href="./favorites.html" class="nav-link " data-nav="favorites">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>收藏</span>
+      </a>
+    </div>
+    <div class="nav-right">
+      <button class="nav-theme-toggle" id="navThemeToggle" aria-label="切换主题"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
+    </div>
+  </nav>
+
+  <div class="container" style="padding-top:calc(var(--nav-height) + 8px)">
+    <article>
+      <div class="article-meta">
+        <span class="article-date-badge">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          3月27日
+        </span>
+        <span style="color:var(--text-light);font-size:0.875rem;">AI 日报</span>
+      </div>
+      <div class="content"><h1>2026-03-27-ai日报</h1>
+<hr>
+<h2>GitHub 项目</h2>
+<h3>1 datalab-to/chandra</h3>
+<p><strong>描述&amp;亮点</strong>：SOTA OCR 模型，可以将图片和 PDF 转换为结构化的 HTML/Markdown/JSON，同时保留布局信息。支持 90+ 语言，在数学公式、表格、多语言识别上有显著提升。这是文档数字化的利器，特别适合处理复杂版式的文档（如论文、报告、表单）。</p>
+<p>⭐6,003 stars 🍴663 forks | <a href="https://github.com/datalab-to/chandra">仓库</a></p>
+<hr>
+<h3>2 MiniMax-AI/skills</h3>
+<p><strong>描述&amp;亮点</strong>：MiniMax 官方的 AI Agent 和 Skills 集合。这是大模型公司官方下场提供 Skills 资源，标志着 Skills 生态正在获得大厂认可。对于使用 MiniMax 模型的开发者，这是权威的技能和最佳实践参考。</p>
+<p>⭐5,999 stars 🍴430 forks | <a href="https://github.com/MiniMax-AI/skills">仓库</a></p>
+<hr>
+<h3>3 Donchitos/Claude-Code-Game-Studios</h3>
+<p><strong>描述&amp;亮点</strong>：使用 Claude Code 进行游戏开发的 Agent 工作流和技能集合。这是将 AI 应用于游戏开发的实践项目，包含游戏设计、关卡生成、角色对话、平衡性调整等技能。对于独立游戏开发者，这是提升效率的新工具。</p>
+<p>⭐5,969 stars 🍴809 forks | <a href="https://github.com/Donchitos/Claude-Code-Game-Studios">仓库</a></p>
+<hr>
+<h3>4 tiajinsha/JKVideo</h3>
+<p><strong>描述&amp;亮点</strong>：高颜值的第三方 B 站 React Native 客户端，支持安卓、H5、iOS。支持 DASH 播放、弹幕、WBI 签名和直播流。这是 B 站第三方客户端的优质选择，界面精美、功能完整。</p>
+<p>⭐4,673 stars 🍴2,823 forks | <a href="https://github.com/tiajinsha/JKVideo">仓库</a></p>
+<hr>
+<h3>5 zubair-trabzada/geo-seo-claude</h3>
+<p><strong>描述&amp;亮点</strong>：Claude Code 的 GEO 优先 SEO 技能。提供全面的 AI 搜索优化——可引用性评分、AI 爬虫分析、品牌权威性、Schema 标记、平台特定优化等。这是针对&quot;AI 搜索优化&quot;（GEO）的新技能，帮助网站在 AI 搜索结果中获得更好排名。</p>
+<p>⭐3,990 stars 🍴647 forks | <a href="https://github.com/zubair-trabzada/geo-seo-claude">仓库</a></p>
+<hr>
+<h3>6 mukul975/Anthropic-Cybersecurity-Skills</h3>
+<p><strong>描述&amp;亮点</strong>：734+ 结构化网络安全技能，映射 MITRE ATT&amp;CK 框架，符合 agentskills.io 标准。支持 Claude Code、Copilot、Codex CLI、Cursor、Gemini CLI。这是网络安全领域的 Skills 大全，让 AI 能够进行安全审计、漏洞分析、渗透测试等任务。</p>
+<p>⭐3,737 stars 🍴384 forks | <a href="https://github.com/mukul975/Anthropic-Cybersecurity-Skills">仓库</a></p>
+<hr>
+<h3>7 tirth8205/code-review-graph</h3>
+<p><strong>描述&amp;亮点</strong>：Claude Code 的本地知识图谱，构建代码库的持久映射，让 Claude 只读取关键内容——代码审查减少 6.8 倍 token，日常编码任务减少高达 49 倍 token。这是&quot;代码知识图谱&quot;的代表作，通过理解代码结构大幅降低 AI 的 token 消耗。</p>
+<p>⭐3,648 stars 🍴323 forks | <a href="https://github.com/tirth8205/code-review-graph">仓库</a></p>
+<hr>
+<h3>8 sgoudelis/ground-station</h3>
+<p><strong>描述&amp;亮点</strong>：一站式卫星监控套件。这是卫星数据监控和分析平台，支持实时卫星跟踪、数据采集、轨道计算等功能。对于卫星通信、遥感、航天爱好者，这是实用的工具。</p>
+<p>⭐3,293 stars 🍴570 forks | <a href="https://github.com/sgoudelis/ground-station">仓库</a></p>
+<hr>
+<h2>科技（TLDR）</h2>
+<blockquote>
+<p><strong>Google&#39;s TurboQuant AI-compression algorithm can reduce LLM memory usage by 6x（Google 的 TurboQuant 算法可将 LLM 内存使用减少 6 倍）</strong></p>
+<p>TurboQuant 是一种压缩算法，在保持精度的同时减少大模型的内存占用，同时提升速度。这意味着未来可以在更少的硬件上运行更大的模型。</p>
+<p><a href="https://arstechnica.com/ai/2026/03/google-says-new-turboquant-compression-can-lower-ai-memory-usage-without-sacrificing-quality/">原文</a></p>
+</blockquote>
+<hr>
+<blockquote>
+<p><strong>Apple Can Create Smaller On-Device AI Models From Google&#39;s Gemini（Apple 可从 Google Gemini 蒸馏更小的端侧模型）</strong></p>
+<p>Apple 在自己的数据中心可以完全访问 Google Gemini 模型，并可以编辑模型以确保其响应符合 Apple 的标准。这为 Apple 的端侧 AI 能力提供了强大的模型支持。</p>
+<p><a href="https://www.macrumors.com/2026/03/25/apple-google-gemini-distill-models/">原文</a></p>
+</blockquote>
+<hr>
+<blockquote>
+<p><strong>Google bumps up Q Day estimate to 2029, far sooner than previously thought（Google 将 Q Day 预测提前至 2029 年）</strong></p>
+<p>Q Day 是量子计算机可以破解公钥加密算法的时刻。Google 呼吁所有人通过采用后量子密码学来做好准备。这对长期安全通信有重大影响。</p>
+<p><a href="https://arstechnica.com/security/2026/03/google-bumps-up-q-day-estimate-to-2029-far-sooner-than-previously-thought/">原文</a></p>
+</blockquote>
+<hr>
+<h2>趋势总结</h2>
+<p>今日观察到一个明显趋势：<strong>LLM 基础设施优化加速</strong>。从 TurboQuant（内存压缩 6 倍）到 code-review-graph（token 消耗减少 49 倍），社区正在从&quot;增加硬件&quot;转向&quot;优化效率&quot;。这标志着 LLM 正在从&quot;暴力Scaling&quot;向&quot;精细化优化&quot;演进。</p>
+<p>另外，GEO（AI 搜索优化）持续热门——geo-seo-claude 的出现和持续增长说明，AI 搜索正在成为新的流量入口。</p>
+<h2>给 nagi 的建议</h2>
+<ol>
+<li><p><strong>关注模型压缩技术</strong>：TurboQuant 将内存减少 6 倍但保持精度，这是重大突破。如果 nagi 想在有限硬件上跑大模型，这类压缩技术值得关注。</p>
+</li>
+<li><p><strong>尝试 code-review-graph</strong>：如果 nagi 用 Claude Code，这个技能可以节省高达 49 倍 token，长期使用能大幅降低成本。</p>
+</li>
+<li><p><strong>学习 Chandra OCR</strong>：如果 nagi 有文档数字化的需求，这个支持 90+ 语言的 OCR 工具值得一试。</p>
+</li>
+<li><p><strong>关注 GEO 优化</strong>：geo-seo-claude 展示了 AI 搜索优化的方法。如果 nagi 做内容创作或网站运营，这是未来 SEO 的方向。</p>
+</li>
+<li><p><strong>关注量子计算威胁</strong>：Q Day 提前至 2029 年。如果 nagi 涉及长期安全通信或加密应用，需要开始关注后量子密码学。</p>
+</li>
+</ol>
+<hr>
+<blockquote>
+<p>Generated by yui 酱 🎀<br>数据来源：GitHub Trending + TLDR AI + lightpanda 抓取<br>日期：2026-03-27</p>
+</blockquote>
+</div>
+      <div class="article-nav">
+        <a href="#" id="favPrevLink" class="nav-btn" aria-label="上一篇"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg><span id="favPrevLabel">加载中…</span></a>
+        <a href="#" id="favNextLink" class="nav-btn" aria-label="下一篇"><span id="favNextLabel">加载中…</span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </article>
+  </div>
+
+  <div class="float-btns">
+    <a href="./index.html" class="float-btn" id="homeBtn" aria-label="返回"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></a>
+    <button class="float-btn" id="backToTop" aria-label="返回顶部"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg></button>
+    <button class="float-btn" id="favBtn" data-date="2026-03-27" aria-label="收藏本文">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    </button>
+  </div>
+
+  <div id="progress-bar"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.0/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script>
+    
+// Native browser smooth scroll — browser handles physics & compositing
+function smoothScrollTo(target) {
+  if (typeof target === 'number') {
+    window.scrollTo({ top: target, behavior: 'smooth' });
+  } else if (target) {
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+// Navbar hide/show on scroll (up = show, down = hide)
+// Uses native scroll, no rAF loop fighting the browser
+(function() {
+  var navbar = document.getElementById('navbar');
+  if (!navbar) return;
+  var lastScrollY = 0;
+  var rafPending = false;
+
+  function updateNavbar() {
+    var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+    if (scrollY <= 10) {
+      navbar.classList.remove('nav-hidden');
+      rafPending = false;
+      return;
+    }
+    if (scrollY > lastScrollY && scrollY > 80) {
+      navbar.classList.add('nav-hidden');
+    } else {
+      navbar.classList.remove('nav-hidden');
+    }
+    lastScrollY = scrollY;
+    rafPending = false;
+  }
+
+  window.addEventListener('scroll', function() {
+    if (!rafPending) {
+      rafPending = true;
+      requestAnimationFrame(updateNavbar);
+    }
+  }, { passive: true });
+})();
+
+
+    // ── Determine where home button should go ──
+    // localStorage flag is set by favorites page when clicking any card
+    var CURRENT_DATE = '2026-03-27';
+    var FAVS_ENTRY_KEY = 'ainews_enter_from_favs';
+    var fromFavs = localStorage.getItem(FAVS_ENTRY_KEY) === '1';
+    // Clear immediately so next direct page load defaults to homepage
+    localStorage.removeItem(FAVS_ENTRY_KEY);
+    document.getElementById('homeBtn').href = fromFavs ? './favorites.html' : './index.html';
+
+    // Theme toggle
+    var btn = document.getElementById('navThemeToggle');
+    var html = document.documentElement;
+    var stored = localStorage.getItem('theme');
+    var sunI = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>';
+    var moonI = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>';
+    if (stored === 'dark') { html.setAttribute('data-theme','dark'); btn.innerHTML = moonI; }
+    else if (stored === 'light') { html.setAttribute('data-theme','light'); btn.innerHTML = sunI; }
+    btn.addEventListener('click', function() {
+      var cur = html.getAttribute('data-theme');
+      if (cur === 'dark') { html.removeAttribute('data-theme'); localStorage.setItem('theme','light'); btn.innerHTML = sunI; }
+      else { html.setAttribute('data-theme','dark'); localStorage.setItem('theme','dark'); btn.innerHTML = moonI; }
+    });
+
+    // Back to top — uses native browser smooth scroll
+    document.getElementById('backToTop').addEventListener('click', function() {
+      smoothScrollTo(0);
+    });
+
+    // ── Favorites-aware prev/next navigation ──
+    var FAV_KEY = 'ainews_favs';
+    var favDates = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+    var curIdx = favDates.indexOf(CURRENT_DATE);
+    var prevLink = document.getElementById('favPrevLink');
+    var prevLabel = document.getElementById('favPrevLabel');
+    var nextLink = document.getElementById('favNextLink');
+    var nextLabel = document.getElementById('favNextLabel');
+    var noPrevHtml = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg><span>没有更早的</span>';
+    var noNextHtml = '<span>没有更新的</span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+
+    if (curIdx === -1 || favDates.length === 0) {
+      // Not in favorites — hide prev/next or show placeholders
+      prevLink.href = '#';
+      prevLink.className = 'nav-btn nav-btn--disabled';
+      prevLink.innerHTML = noPrevHtml;
+      nextLink.href = '#';
+      nextLink.className = 'nav-btn nav-btn--disabled';
+      nextLink.innerHTML = noNextHtml;
+    } else {
+      if (curIdx < favDates.length - 1) {
+        var prevD = favDates[curIdx + 1];
+        prevLink.href = './' + prevD + '.html';
+        prevLabel.textContent = prevD;
+      } else {
+        prevLink.href = '#';
+        prevLink.className = 'nav-btn nav-btn--disabled';
+        prevLink.innerHTML = noPrevHtml;
+      }
+      if (curIdx > 0) {
+        var nextD = favDates[curIdx - 1];
+        nextLink.href = './' + nextD + '.html';
+        nextLabel.textContent = nextD;
+      } else {
+        nextLink.href = '#';
+        nextLink.className = 'nav-btn nav-btn--disabled';
+        nextLink.innerHTML = noNextHtml;
+      }
+    }
+
+    // ── Favorites toggle ──
+    var favBtn = document.getElementById('favBtn');
+    function updateFavBtn() {
+      var cur = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+      var isFav = cur.indexOf(CURRENT_DATE) !== -1;
+      favBtn.innerHTML = isFav ? '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill="currentColor"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>';
+      favBtn.classList.toggle('is-fav', isFav);
+    }
+    updateFavBtn();
+    favBtn.addEventListener('click', function() {
+      var cur = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+      var idx = cur.indexOf(CURRENT_DATE);
+      if (idx === -1) {
+        cur.push(CURRENT_DATE); // add
+      } else {
+        cur.splice(idx, 1); // remove
+      }
+      localStorage.setItem(FAV_KEY, JSON.stringify(cur));
+      updateFavBtn();
+    });
+
+    // Progress bar
+    window.addEventListener('scroll', function() {
+      var scrolled = document.documentElement.scrollTop;
+      var total = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      document.getElementById('progress-bar').style.width = (total > 0 ? (scrolled / total * 100) : 0) + '%';
+    }, { passive: true });
+
+    // Markdown highlight
+    document.addEventListener('DOMContentLoaded', function() {
+      marked.setOptions({ gfm:true, breaks:true, highlight:function(code,lang){
+        if(lang && hljs.getLanguage(lang)) return hljs.highlight(code,{language:lang}).value;
+        return hljs.highlightAuto(code).value;
+      }});
+      document.querySelectorAll('.content pre code').forEach(function(b){ hljs.highlightElement(b); });
+    });
+  </script>
+</body>
+</html>
