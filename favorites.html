@@ -40,6 +40,9 @@
     scroll-behavior: auto;
   }
   html { scroll-behavior: auto; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto !important; }
+  }
   a { color: var(--primary-dark); text-decoration: none; font-weight: 500; }
   a:hover { text-decoration: underline; }
 
@@ -198,43 +201,28 @@
   <script>
     const ALL_ENTRIES = [{"date":"2026-03-26-2","displayDate":"3月26日"},{"date":"2026-03-26-1","displayDate":"3月26日"},{"date":"2026-03-26","displayDate":"3月26日"},{"date":"2026-03-25","displayDate":"3月25日"},{"date":"2026-03-24","displayDate":"3月24日"},{"date":"2026-03-23","displayDate":"3月23日"},{"date":"2026-03-22","displayDate":"3月22日"},{"date":"2026-03-21","displayDate":"3月21日"},{"date":"2026-03-20","displayDate":"3月20日"},{"date":"2026-03-19","displayDate":"3月19日"},{"date":"2026-03-18","displayDate":"3月18日"},{"date":"2026-03-17","displayDate":"3月17日"},{"date":"2026-03-16","displayDate":"3月16日"},{"date":"2026-03-15","displayDate":"3月15日"},{"date":"2026-03-14","displayDate":"3月14日"},{"date":"2026-03-12","displayDate":"3月12日"},{"date":"2026-03-10","displayDate":"3月10日"},{"date":"2026-03-09","displayDate":"3月9日"},{"date":"2026-03-08","displayDate":"3月8日"},{"date":"2026-03-07","displayDate":"3月7日"},{"date":"2026-03-06","displayDate":"3月6日"},{"date":"2026-03-05","displayDate":"3月5日"}];
     
-// S-curve momentum smooth scroll (for programmatic scrolling)
-function smoothScrollTo(target, duration) {
-  duration = duration || 600;
-  var start = window.pageYOffset || document.documentElement.scrollTop;
-  var end = typeof target === 'number' ? target : (target ? target.offsetTop : 0);
-  var change = end - start;
-  var startTime = null;
-
-  function easeInOutCubic(t) {
-    // S-curve: slow start, fast middle, slow end
-    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+// Native browser smooth scroll — browser handles physics & compositing
+function smoothScrollTo(target) {
+  if (typeof target === 'number') {
+    window.scrollTo({ top: target, behavior: 'smooth' });
+  } else if (target) {
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
-
-  function animationLoop(currentTime) {
-    if (!startTime) startTime = currentTime;
-    var elapsed = currentTime - startTime;
-    var progress = Math.min(elapsed / duration, 1);
-    var eased = easeInOutCubic(progress);
-    window.scrollTo(0, start + change * eased);
-    if (progress < 1) {
-      requestAnimationFrame(animationLoop);
-    }
-  }
-  requestAnimationFrame(animationLoop);
 }
 
 // Navbar hide/show on scroll (up = show, down = hide)
+// Uses native scroll, no rAF loop fighting the browser
 (function() {
   var navbar = document.getElementById('navbar');
   if (!navbar) return;
   var lastScrollY = 0;
-  var ticking = false;
+  var rafPending = false;
 
   function updateNavbar() {
     var scrollY = window.pageYOffset || document.documentElement.scrollTop;
     if (scrollY <= 10) {
       navbar.classList.remove('nav-hidden');
+      rafPending = false;
       return;
     }
     if (scrollY > lastScrollY && scrollY > 80) {
@@ -243,13 +231,13 @@ function smoothScrollTo(target, duration) {
       navbar.classList.remove('nav-hidden');
     }
     lastScrollY = scrollY;
-    ticking = false;
+    rafPending = false;
   }
 
   window.addEventListener('scroll', function() {
-    if (!ticking) {
+    if (!rafPending) {
+      rafPending = true;
       requestAnimationFrame(updateNavbar);
-      ticking = true;
     }
   }, { passive: true });
 })();

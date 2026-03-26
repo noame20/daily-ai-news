@@ -42,6 +42,9 @@
     scroll-behavior: auto;
   }
   html { scroll-behavior: auto; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto !important; }
+  }
   a { color: var(--primary-dark); text-decoration: none; font-weight: 500; }
   a:hover { text-decoration: underline; }
 
@@ -249,43 +252,28 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
   <script>
     
-// S-curve momentum smooth scroll (for programmatic scrolling)
-function smoothScrollTo(target, duration) {
-  duration = duration || 600;
-  var start = window.pageYOffset || document.documentElement.scrollTop;
-  var end = typeof target === 'number' ? target : (target ? target.offsetTop : 0);
-  var change = end - start;
-  var startTime = null;
-
-  function easeInOutCubic(t) {
-    // S-curve: slow start, fast middle, slow end
-    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+// Native browser smooth scroll — browser handles physics & compositing
+function smoothScrollTo(target) {
+  if (typeof target === 'number') {
+    window.scrollTo({ top: target, behavior: 'smooth' });
+  } else if (target) {
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
-
-  function animationLoop(currentTime) {
-    if (!startTime) startTime = currentTime;
-    var elapsed = currentTime - startTime;
-    var progress = Math.min(elapsed / duration, 1);
-    var eased = easeInOutCubic(progress);
-    window.scrollTo(0, start + change * eased);
-    if (progress < 1) {
-      requestAnimationFrame(animationLoop);
-    }
-  }
-  requestAnimationFrame(animationLoop);
 }
 
 // Navbar hide/show on scroll (up = show, down = hide)
+// Uses native scroll, no rAF loop fighting the browser
 (function() {
   var navbar = document.getElementById('navbar');
   if (!navbar) return;
   var lastScrollY = 0;
-  var ticking = false;
+  var rafPending = false;
 
   function updateNavbar() {
     var scrollY = window.pageYOffset || document.documentElement.scrollTop;
     if (scrollY <= 10) {
       navbar.classList.remove('nav-hidden');
+      rafPending = false;
       return;
     }
     if (scrollY > lastScrollY && scrollY > 80) {
@@ -294,13 +282,13 @@ function smoothScrollTo(target, duration) {
       navbar.classList.remove('nav-hidden');
     }
     lastScrollY = scrollY;
-    ticking = false;
+    rafPending = false;
   }
 
   window.addEventListener('scroll', function() {
-    if (!ticking) {
+    if (!rafPending) {
+      rafPending = true;
       requestAnimationFrame(updateNavbar);
-      ticking = true;
     }
   }, { passive: true });
 })();
@@ -320,9 +308,9 @@ function smoothScrollTo(target, duration) {
       else { html.setAttribute('data-theme','dark'); localStorage.setItem('theme','dark'); btn.innerHTML = moonI; }
     });
 
-    // Back to top with S-curve scroll
+    // Back to top — uses native browser smooth scroll (best performance/compat)
     document.getElementById('backToTop').addEventListener('click', function() {
-      smoothScrollTo(0, 600);
+      smoothScrollTo(0);
     });
 
     // Favorites
