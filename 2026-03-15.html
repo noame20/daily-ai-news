@@ -61,6 +61,7 @@
     position: fixed; bottom: 20px; right: 20px; z-index: 200;
     display: flex; flex-direction: column; gap: 8px;
   }
+  .float-btn.is-fav { color: #FF6B8A; }
   .float-btn {
     width: 40px; height: 40px;
     display: flex; align-items: center; justify-content: center;
@@ -261,6 +262,9 @@
   <div class="float-btns">
     <a href="./index.html" class="float-btn" aria-label="返回索引"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></a>
     <button class="float-btn" id="backToTop" aria-label="返回顶部"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg></button>
+    <button class="float-btn" id="favBtn" data-date="2026-03-15" aria-label="收藏本文">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    </button>
   </div>
 
   <div id="progress-bar"></div>
@@ -281,6 +285,24 @@
     });
     // Back to top
     document.getElementById('backToTop').addEventListener('click', () => window.scrollTo({ top:0, behavior:'smooth' }));
+    // Favorites
+    const favBtn = document.getElementById('favBtn');
+    const dateStr = favBtn.getAttribute('data-date');
+    const favs = JSON.parse(localStorage.getItem('ainews_favs') || '[]');
+    function updateFavBtn() {
+      const cur = JSON.parse(localStorage.getItem('ainews_favs') || '[]');
+      const isFav = cur.includes(dateStr);
+      favBtn.innerHTML = isFav ? '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill="currentColor"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>';
+      favBtn.classList.toggle('is-fav', isFav);
+    }
+    updateFavBtn();
+    favBtn.addEventListener('click', () => {
+      const cur = JSON.parse(localStorage.getItem('ainews_favs') || '[]');
+      const idx = cur.indexOf(dateStr);
+      if (idx === -1) { cur.push(dateStr); } else { cur.splice(idx, 1); }
+      localStorage.setItem('ainews_favs', JSON.stringify(cur));
+      updateFavBtn();
+    });
     // Progress bar
     window.addEventListener('scroll', () => {
       const scrolled = document.documentElement.scrollTop;
