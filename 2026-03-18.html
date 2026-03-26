@@ -18,6 +18,7 @@
     --text: #4A4458; --text-light: #8E8A9E; --border: #F0E8E0;
     --shadow: rgba(255,181,197,0.2); --shadow-lg: rgba(255,181,197,0.35);
     --code-bg: #FFF0F5; --radius: 20px; --bar: var(--primary);
+    --nav-height: 60px;
   }
   [data-theme="dark"] {
     --bg: #1A1625; --surface: #2D2640; --primary: #FFB5C5; --primary-dark: #FF8FAB;
@@ -33,32 +34,74 @@
       --shadow: rgba(0,0,0,0.4); --shadow-lg: rgba(0,0,0,0.5); --code-bg: #2D2640;
     }
   }
-  body { font-family: 'Noto Sans SC','Quicksand',ui-sans-serif,system-ui,sans-serif; background: var(--bg); color: var(--text); line-height: 1.8; min-height: 100vh; }
+  body {
+    font-family: 'Noto Sans SC','Quicksand',ui-sans-serif,system-ui,sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.8;
+    min-height: 100vh;
+    /* S-curve momentum scroll feel */
+    scroll-behavior: auto;
+  }
+  html { scroll-behavior: auto; }
   a { color: var(--primary-dark); text-decoration: none; font-weight: 500; }
   a:hover { text-decoration: underline; }
 
-  /* ── Theme toggle ── */
-  .theme-toggle {
-    position: fixed; top: 16px; right: 16px; z-index: 200;
-    width: 40px; height: 40px;
-    display: flex; align-items: center; justify-content: center;
-    background: var(--surface); border: 1.5px solid var(--border);
-    border-radius: 12px; cursor: pointer; color: var(--text);
-    box-shadow: 0 2px 8px var(--shadow); transition: all 200ms ease;
+  /* ── Top navbar ── */
+  .navbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+    height: var(--nav-height);
+    background: rgba(255,248,240,0.85);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border-bottom: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 20px;
+    transition: transform 320ms cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .theme-toggle:hover { box-shadow: 0 4px 16px var(--shadow-lg); transform: scale(1.05); }
+  [data-theme="dark"] .navbar { background: rgba(26,22,37,0.88); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .navbar { background: rgba(26,22,37,0.88); }
+  }
+  .navbar.nav-hidden { transform: translateY(-100%); }
+  .nav-logo {
+    font-family:'Quicksand','Noto Sans SC',sans-serif;
+    font-size:1.1rem; font-weight:700; color:var(--text);
+    display:flex; align-items:center; gap:8px;
+  }
+  .nav-logo svg { color:var(--primary-dark); }
+  .nav-links { display:flex; gap:4px; }
+  .nav-link {
+    display:inline-flex; align-items:center; gap:6px;
+    padding:8px 16px; border-radius:100px; font-size:0.875rem; font-weight:600;
+    color:var(--text-light); cursor:pointer; border:none;
+    background:transparent; transition:all 200ms ease;
+  }
+  .nav-link:hover { color:var(--text); background:var(--surface); box-shadow:0 2px 8px var(--shadow); }
+  .nav-link.active { color:var(--primary-dark); background:var(--surface); box-shadow:0 2px 12px var(--shadow); }
+  .nav-right { display:flex; align-items:center; gap:8px; }
+  /* Theme toggle in navbar */
+  .nav-theme-toggle {
+    width:36px; height:36px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--surface); border:1.5px solid var(--border);
+    border-radius:10px; cursor:pointer; color:var(--text);
+    box-shadow:0 2px 8px var(--shadow); transition:all 200ms ease;
+  }
+  .nav-theme-toggle:hover { box-shadow:0 4px 12px var(--shadow-lg); transform:scale(1.05); }
+
+  /* ── Page content offset for fixed navbar ── */
+  .page-body { padding-top: var(--nav-height); }
 
   /* ── Reading progress bar ── */
   #progress-bar {
-    position: fixed; bottom: 0; left: 0; z-index: 300;
+    position: fixed; bottom: 0; left: 0; z-index: 600;
     width: 0%; height: 3px;
     background: linear-gradient(to right, var(--primary), var(--secondary));
-    transition: width 80ms linear;
+    transition: width 60ms linear;
   }
 
   /* ── Floating buttons ── */
   .float-btns {
-    position: fixed; bottom: 20px; right: 20px; z-index: 200;
+    position: fixed; bottom: 20px; right: 20px; z-index: 400;
     display: flex; flex-direction: column; gap: 8px;
   }
   .float-btn.is-fav { color: #FF6B8A; }
@@ -67,16 +110,14 @@
     display: flex; align-items: center; justify-content: center;
     background: var(--surface); border: 1.5px solid var(--border);
     border-radius: 12px; cursor: pointer; color: var(--text);
-    box-shadow: 0 2px 8px var(--shadow); transition: all 200ms ease;
+    box-shadow: 0 2px 8px var(--shadow); transition: box-shadow 200ms ease, transform 200ms ease;
     text-decoration: none;
   }
   .float-btn:hover { box-shadow: 0 4px 16px var(--shadow-lg); transform: scale(1.05); color: var(--primary-dark); }
+  .float-btn:active { transform: scale(0.95); }
 
     body::before { content:''; position:fixed; top:0; left:0; right:0; height:360px; background:linear-gradient(180deg,rgba(255,181,197,0.18) 0%,transparent 100%); pointer-events:none; z-index:0; }
     .container { position:relative; z-index:1; max-width:760px; margin:0 auto; padding:0 16px 80px; }
-    nav { padding:28px 0 32px; display:flex; align-items:center; gap:10px; }
-    nav a { display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:var(--text-light); font-size:0.875rem; font-weight:600; padding:8px 16px; background:var(--surface); border-radius:100px; box-shadow:0 2px 8px var(--shadow); border:1.5px solid var(--border); transition:all 200ms ease; }
-    nav a:hover { color:var(--primary-dark); border-color:var(--primary); box-shadow:0 4px 16px var(--shadow-lg); transform:translateX(-2px); }
     .article-meta { display:flex; align-items:center; gap:12px; margin-bottom:32px; padding-bottom:24px; border-bottom:2px solid var(--border); flex-wrap:wrap; }
     .article-date-badge { display:inline-flex; align-items:center; gap:6px; background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%); color:#fff; font-family:'Quicksand',sans-serif; font-size:0.875rem; font-weight:700; padding:6px 14px; border-radius:100px; }
     article { background:var(--surface); border-radius:var(--radius); padding:40px 36px; box-shadow:0 4px 24px var(--shadow); border:1.5px solid var(--border); animation:slideUp 0.4s ease-out both; }
@@ -113,13 +154,23 @@
   </style>
 </head>
 <body>
-  <button class="theme-toggle" id="themeToggle" aria-label="切换主题"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
+  
+  <nav class="navbar" id="navbar">
+    <div class="nav-logo"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L13.5 8.5L19 10L13.5 11.5L12 17L10.5 11.5L5 10L10.5 8.5L12 3Z"/><path d="M5 3L5.5 5L7 5.5L5.5 6L5 8L4.5 6L3 5.5L4.5 5L5 3Z"/><path d="M19 17L19.5 19L21 19.5L19.5 20L19 22L18.5 20L17 19.5L18.5 19L19 17Z"/></svg> AI 日报</div>
+    <div class="nav-links">
+      <a href="./index.html" class="nav-link " data-nav="home">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>首页</span>
+      </a>
+      <a href="./favorites.html" class="nav-link " data-nav="favorites">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>收藏</span>
+      </a>
+    </div>
+    <div class="nav-right">
+      <button class="nav-theme-toggle" id="navThemeToggle" aria-label="切换主题"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
+    </div>
+  </nav>
 
-  <div class="container">
-    <nav>
-      <a href="./index.html"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>返回索引</span></a>
-    </nav>
-
+  <div class="container" style="padding-top:calc(var(--nav-height) + 8px)">
     <article>
       <div class="article-meta">
         <span class="article-date-badge">
@@ -341,7 +392,7 @@
   </div>
 
   <div class="float-btns">
-    <a href="./index.html" class="float-btn" aria-label="返回索引"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></a>
+    <a href="./index.html" class="float-btn" aria-label="返回首页"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></a>
     <button class="float-btn" id="backToTop" aria-label="返回顶部"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg></button>
     <button class="float-btn" id="favBtn" data-date="2026-03-18" aria-label="收藏本文">
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
@@ -353,43 +404,108 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.0/marked.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
   <script>
+    
+// S-curve momentum smooth scroll (for programmatic scrolling)
+function smoothScrollTo(target, duration) {
+  duration = duration || 600;
+  var start = window.pageYOffset || document.documentElement.scrollTop;
+  var end = typeof target === 'number' ? target : (target ? target.offsetTop : 0);
+  var change = end - start;
+  var startTime = null;
+
+  function easeInOutCubic(t) {
+    // S-curve: slow start, fast middle, slow end
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
+
+  function animationLoop(currentTime) {
+    if (!startTime) startTime = currentTime;
+    var elapsed = currentTime - startTime;
+    var progress = Math.min(elapsed / duration, 1);
+    var eased = easeInOutCubic(progress);
+    window.scrollTo(0, start + change * eased);
+    if (progress < 1) {
+      requestAnimationFrame(animationLoop);
+    }
+  }
+  requestAnimationFrame(animationLoop);
+}
+
+// Navbar hide/show on scroll (up = show, down = hide)
+(function() {
+  var navbar = document.getElementById('navbar');
+  if (!navbar) return;
+  var lastScrollY = 0;
+  var ticking = false;
+
+  function updateNavbar() {
+    var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+    if (scrollY <= 10) {
+      navbar.classList.remove('nav-hidden');
+      return;
+    }
+    if (scrollY > lastScrollY && scrollY > 80) {
+      navbar.classList.add('nav-hidden');
+    } else {
+      navbar.classList.remove('nav-hidden');
+    }
+    lastScrollY = scrollY;
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', function() {
+    if (!ticking) {
+      requestAnimationFrame(updateNavbar);
+      ticking = true;
+    }
+  }, { passive: true });
+})();
+
+
     // Theme toggle
-    const btn = document.getElementById('themeToggle');
-    const html = document.documentElement;
-    const stored = localStorage.getItem('theme');
-    if (stored === 'dark') { html.setAttribute('data-theme','dark'); btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>'; }
-    else if (stored === 'light') { html.setAttribute('data-theme','light'); btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>'; }
-    btn.addEventListener('click', () => {
-      const cur = html.getAttribute('data-theme');
-      if (cur === 'dark') { html.removeAttribute('data-theme'); localStorage.setItem('theme','light'); btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>'; }
-      else { html.setAttribute('data-theme','dark'); localStorage.setItem('theme','dark'); btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>'; }
+    var btn = document.getElementById('navThemeToggle');
+    var html = document.documentElement;
+    var stored = localStorage.getItem('theme');
+    var sunI = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>';
+    var moonI = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>';
+    if (stored === 'dark') { html.setAttribute('data-theme','dark'); btn.innerHTML = moonI; }
+    else if (stored === 'light') { html.setAttribute('data-theme','light'); btn.innerHTML = sunI; }
+    btn.addEventListener('click', function() {
+      var cur = html.getAttribute('data-theme');
+      if (cur === 'dark') { html.removeAttribute('data-theme'); localStorage.setItem('theme','light'); btn.innerHTML = sunI; }
+      else { html.setAttribute('data-theme','dark'); localStorage.setItem('theme','dark'); btn.innerHTML = moonI; }
     });
-    // Back to top
-    document.getElementById('backToTop').addEventListener('click', () => window.scrollTo({ top:0, behavior:'smooth' }));
+
+    // Back to top with S-curve scroll
+    document.getElementById('backToTop').addEventListener('click', function() {
+      smoothScrollTo(0, 600);
+    });
+
     // Favorites
-    const favBtn = document.getElementById('favBtn');
-    const dateStr = favBtn.getAttribute('data-date');
-    const favs = JSON.parse(localStorage.getItem('ainews_favs') || '[]');
+    var favBtn = document.getElementById('favBtn');
+    var dateStr = favBtn.getAttribute('data-date');
     function updateFavBtn() {
-      const cur = JSON.parse(localStorage.getItem('ainews_favs') || '[]');
-      const isFav = cur.includes(dateStr);
+      var cur = JSON.parse(localStorage.getItem('ainews_favs') || '[]');
+      var isFav = cur.indexOf(dateStr) !== -1;
       favBtn.innerHTML = isFav ? '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill="currentColor"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>';
       favBtn.classList.toggle('is-fav', isFav);
     }
     updateFavBtn();
-    favBtn.addEventListener('click', () => {
-      const cur = JSON.parse(localStorage.getItem('ainews_favs') || '[]');
-      const idx = cur.indexOf(dateStr);
+    favBtn.addEventListener('click', function() {
+      var cur = JSON.parse(localStorage.getItem('ainews_favs') || '[]');
+      var idx = cur.indexOf(dateStr);
       if (idx === -1) { cur.push(dateStr); } else { cur.splice(idx, 1); }
       localStorage.setItem('ainews_favs', JSON.stringify(cur));
       updateFavBtn();
     });
+
     // Progress bar
-    window.addEventListener('scroll', () => {
-      const scrolled = document.documentElement.scrollTop;
-      const total = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    window.addEventListener('scroll', function() {
+      var scrolled = document.documentElement.scrollTop;
+      var total = document.documentElement.scrollHeight - document.documentElement.clientHeight;
       document.getElementById('progress-bar').style.width = (total > 0 ? (scrolled / total * 100) : 0) + '%';
     }, { passive: true });
+
     // Markdown highlight
     document.addEventListener('DOMContentLoaded', function() {
       marked.setOptions({ gfm:true, breaks:true, highlight:function(code,lang){

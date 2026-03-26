@@ -16,6 +16,7 @@
     --text: #4A4458; --text-light: #8E8A9E; --border: #F0E8E0;
     --shadow: rgba(255,181,197,0.2); --shadow-lg: rgba(255,181,197,0.35);
     --code-bg: #FFF0F5; --radius: 20px; --bar: var(--primary);
+    --nav-height: 60px;
   }
   [data-theme="dark"] {
     --bg: #1A1625; --surface: #2D2640; --primary: #FFB5C5; --primary-dark: #FF8FAB;
@@ -31,32 +32,74 @@
       --shadow: rgba(0,0,0,0.4); --shadow-lg: rgba(0,0,0,0.5); --code-bg: #2D2640;
     }
   }
-  body { font-family: 'Noto Sans SC','Quicksand',ui-sans-serif,system-ui,sans-serif; background: var(--bg); color: var(--text); line-height: 1.8; min-height: 100vh; }
+  body {
+    font-family: 'Noto Sans SC','Quicksand',ui-sans-serif,system-ui,sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.8;
+    min-height: 100vh;
+    /* S-curve momentum scroll feel */
+    scroll-behavior: auto;
+  }
+  html { scroll-behavior: auto; }
   a { color: var(--primary-dark); text-decoration: none; font-weight: 500; }
   a:hover { text-decoration: underline; }
 
-  /* ── Theme toggle ── */
-  .theme-toggle {
-    position: fixed; top: 16px; right: 16px; z-index: 200;
-    width: 40px; height: 40px;
-    display: flex; align-items: center; justify-content: center;
-    background: var(--surface); border: 1.5px solid var(--border);
-    border-radius: 12px; cursor: pointer; color: var(--text);
-    box-shadow: 0 2px 8px var(--shadow); transition: all 200ms ease;
+  /* ── Top navbar ── */
+  .navbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+    height: var(--nav-height);
+    background: rgba(255,248,240,0.85);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border-bottom: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 20px;
+    transition: transform 320ms cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .theme-toggle:hover { box-shadow: 0 4px 16px var(--shadow-lg); transform: scale(1.05); }
+  [data-theme="dark"] .navbar { background: rgba(26,22,37,0.88); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .navbar { background: rgba(26,22,37,0.88); }
+  }
+  .navbar.nav-hidden { transform: translateY(-100%); }
+  .nav-logo {
+    font-family:'Quicksand','Noto Sans SC',sans-serif;
+    font-size:1.1rem; font-weight:700; color:var(--text);
+    display:flex; align-items:center; gap:8px;
+  }
+  .nav-logo svg { color:var(--primary-dark); }
+  .nav-links { display:flex; gap:4px; }
+  .nav-link {
+    display:inline-flex; align-items:center; gap:6px;
+    padding:8px 16px; border-radius:100px; font-size:0.875rem; font-weight:600;
+    color:var(--text-light); cursor:pointer; border:none;
+    background:transparent; transition:all 200ms ease;
+  }
+  .nav-link:hover { color:var(--text); background:var(--surface); box-shadow:0 2px 8px var(--shadow); }
+  .nav-link.active { color:var(--primary-dark); background:var(--surface); box-shadow:0 2px 12px var(--shadow); }
+  .nav-right { display:flex; align-items:center; gap:8px; }
+  /* Theme toggle in navbar */
+  .nav-theme-toggle {
+    width:36px; height:36px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--surface); border:1.5px solid var(--border);
+    border-radius:10px; cursor:pointer; color:var(--text);
+    box-shadow:0 2px 8px var(--shadow); transition:all 200ms ease;
+  }
+  .nav-theme-toggle:hover { box-shadow:0 4px 12px var(--shadow-lg); transform:scale(1.05); }
+
+  /* ── Page content offset for fixed navbar ── */
+  .page-body { padding-top: var(--nav-height); }
 
   /* ── Reading progress bar ── */
   #progress-bar {
-    position: fixed; bottom: 0; left: 0; z-index: 300;
+    position: fixed; bottom: 0; left: 0; z-index: 600;
     width: 0%; height: 3px;
     background: linear-gradient(to right, var(--primary), var(--secondary));
-    transition: width 80ms linear;
+    transition: width 60ms linear;
   }
 
   /* ── Floating buttons ── */
   .float-btns {
-    position: fixed; bottom: 20px; right: 20px; z-index: 200;
+    position: fixed; bottom: 20px; right: 20px; z-index: 400;
     display: flex; flex-direction: column; gap: 8px;
   }
   .float-btn.is-fav { color: #FF6B8A; }
@@ -65,19 +108,21 @@
     display: flex; align-items: center; justify-content: center;
     background: var(--surface); border: 1.5px solid var(--border);
     border-radius: 12px; cursor: pointer; color: var(--text);
-    box-shadow: 0 2px 8px var(--shadow); transition: all 200ms ease;
+    box-shadow: 0 2px 8px var(--shadow); transition: box-shadow 200ms ease, transform 200ms ease;
     text-decoration: none;
   }
   .float-btn:hover { box-shadow: 0 4px 16px var(--shadow-lg); transform: scale(1.05); color: var(--primary-dark); }
+  .float-btn:active { transform: scale(0.95); }
 
     body::before { content:''; position:fixed; top:-80px; right:-80px; width:320px; height:320px; background:radial-gradient(circle,rgba(255,181,197,0.3) 0%,transparent 70%); pointer-events:none; z-index:0; }
     body::after { content:''; position:fixed; bottom:-60px; left:-60px; width:280px; height:280px; background:radial-gradient(circle,rgba(168,230,207,0.3) 0%,transparent 70%); pointer-events:none; z-index:0; }
     .container { position:relative; z-index:1; max-width:720px; margin:0 auto; }
 
-    header { text-align:center; padding:56px 0 40px; }
+    header { text-align:center; padding:40px 0 32px; }
     .header-icon { margin-bottom:12px; display:flex; justify-content:center; }
     .header-icon svg { color:var(--primary); animation:float 3s ease-in-out infinite; }
     @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    @media(prefers-reduced-motion:reduce){.header-icon svg{animation:none}}
     h1 { font-family:'Quicksand','Noto Sans SC',sans-serif; font-size:2rem; font-weight:700; color:var(--text); letter-spacing:-0.02em; margin-bottom:6px; }
     .subtitle { font-size:0.9rem; color:var(--text-light); font-weight:500; }
     .divider { display:flex; align-items:center; gap:12px; margin:0 auto 32px; max-width:200px; }
@@ -92,9 +137,9 @@
     @media(min-width:768px){.grid{grid-template-columns:repeat(3,1fr)}}
     .card { display:block; text-decoration:none; border-radius:var(--radius); animation:slideUp 0.4s ease-out both; }
     @keyframes slideUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
-    @media(prefers-reduced-motion:reduce){.card{animation:none}.header-icon svg{animation:none}}
+    @media(prefers-reduced-motion:reduce){.card{animation:none}}
     .card-inner { background:var(--surface); border-radius:var(--radius); padding:20px; display:flex; align-items:center; gap:14px; box-shadow:0 2px 12px var(--shadow); border:2px solid transparent; transition:transform 200ms ease,box-shadow 200ms ease,border-color 200ms ease; }
-    .card:hover .card-inner { transform:translateY(-4px) scale(1.01); box-shadow:0 8px 24px var(--shadow-hover); border-color:var(--primary); }
+    .card:hover .card-inner { transform:translateY(-4px) scale(1.01); box-shadow:0 8px 24px var(--shadow-lg); border-color:var(--primary); }
     .card:active .card-inner { transform:translateY(-2px) scale(0.99); }
     .card-icon { width:44px; height:44px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:var(--bg); border-radius:14px; color:var(--primary-dark); }
     .info { flex:1; min-width:0; }
@@ -112,13 +157,27 @@
   </style>
 </head>
 <body>
-  <button class="theme-toggle" id="themeToggle" aria-label="切换主题"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
+  
+  <nav class="navbar" id="navbar">
+    <div class="nav-logo"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L13.5 8.5L19 10L13.5 11.5L12 17L10.5 11.5L5 10L10.5 8.5L12 3Z"/><path d="M5 3L5.5 5L7 5.5L5.5 6L5 8L4.5 6L3 5.5L4.5 5L5 3Z"/><path d="M19 17L19.5 19L21 19.5L19.5 20L19 22L18.5 20L17 19.5L18.5 19L19 17Z"/></svg> AI 日报</div>
+    <div class="nav-links">
+      <a href="./index.html" class="nav-link active" data-nav="home">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>首页</span>
+      </a>
+      <a href="./favorites.html" class="nav-link " data-nav="favorites">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>收藏</span>
+      </a>
+    </div>
+    <div class="nav-right">
+      <button class="nav-theme-toggle" id="navThemeToggle" aria-label="切换主题"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
+    </div>
+  </nav>
 
-  <div class="container">
+  <div class="container page-body">
     <header>
       <div class="header-icon"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L13.5 8.5L19 10L13.5 11.5L12 17L10.5 11.5L5 10L10.5 8.5L12 3Z"/><path d="M5 3L5.5 5L7 5.5L5.5 6L5 8L4.5 6L3 5.5L4.5 5L5 3Z"/><path d="M19 17L19.5 19L21 19.5L19.5 20L19 22L18.5 20L17 19.5L18.5 19L19 17Z"/></svg></div>
       <h1>AI 日报</h1>
-      <div class="subtitle">2026年3月26日</div>
+      <div class="subtitle">2026年3月27日</div>
     </header>
     <div class="divider">
       <div class="divider-line"></div>
@@ -133,7 +192,7 @@
     </div>
 
     <div class="grid" id="mainGrid">
-    <a href="./2026-03-26-2.html" class="card" data-date="2026-03-26-2" style="animation-delay:0ms">
+<a href="./2026-03-26-2.html" class="card" data-date="2026-03-26-2" style="animation-delay:0ms">
       <div class="card-inner">
         <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
@@ -144,7 +203,7 @@
         <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-    <a href="./2026-03-26-1.html" class="card" data-date="2026-03-26-1" style="animation-delay:50ms">
+<a href="./2026-03-26-1.html" class="card" data-date="2026-03-26-1" style="animation-delay:50ms">
       <div class="card-inner">
         <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
@@ -155,7 +214,7 @@
         <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-    <a href="./2026-03-26.html" class="card" data-date="2026-03-26" style="animation-delay:100ms">
+<a href="./2026-03-26.html" class="card" data-date="2026-03-26" style="animation-delay:100ms">
       <div class="card-inner">
         <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
@@ -166,7 +225,7 @@
         <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-    <a href="./2026-03-25.html" class="card" data-date="2026-03-25" style="animation-delay:150ms">
+<a href="./2026-03-25.html" class="card" data-date="2026-03-25" style="animation-delay:150ms">
       <div class="card-inner">
         <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
@@ -177,7 +236,7 @@
         <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-    <a href="./2026-03-24.html" class="card" data-date="2026-03-24" style="animation-delay:200ms">
+<a href="./2026-03-24.html" class="card" data-date="2026-03-24" style="animation-delay:200ms">
       <div class="card-inner">
         <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
@@ -188,7 +247,7 @@
         <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-    <a href="./2026-03-23.html" class="card" data-date="2026-03-23" style="animation-delay:250ms">
+<a href="./2026-03-23.html" class="card" data-date="2026-03-23" style="animation-delay:250ms">
       <div class="card-inner">
         <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
@@ -199,7 +258,7 @@
         <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-    <a href="./2026-03-22.html" class="card" data-date="2026-03-22" style="animation-delay:300ms">
+<a href="./2026-03-22.html" class="card" data-date="2026-03-22" style="animation-delay:300ms">
       <div class="card-inner">
         <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
@@ -210,7 +269,7 @@
         <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-    <a href="./2026-03-21.html" class="card" data-date="2026-03-21" style="animation-delay:350ms">
+<a href="./2026-03-21.html" class="card" data-date="2026-03-21" style="animation-delay:350ms">
       <div class="card-inner">
         <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
@@ -221,7 +280,7 @@
         <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-    <a href="./2026-03-20.html" class="card" data-date="2026-03-20" style="animation-delay:400ms">
+<a href="./2026-03-20.html" class="card" data-date="2026-03-20" style="animation-delay:400ms">
       <div class="card-inner">
         <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
@@ -232,7 +291,7 @@
         <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-    <a href="./2026-03-19.html" class="card" data-date="2026-03-19" style="animation-delay:450ms">
+<a href="./2026-03-19.html" class="card" data-date="2026-03-19" style="animation-delay:450ms">
       <div class="card-inner">
         <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
@@ -243,7 +302,7 @@
         <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-    <a href="./2026-03-18.html" class="card" data-date="2026-03-18" style="animation-delay:500ms">
+<a href="./2026-03-18.html" class="card" data-date="2026-03-18" style="animation-delay:500ms">
       <div class="card-inner">
         <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
@@ -254,7 +313,7 @@
         <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-    <a href="./2026-03-17.html" class="card" data-date="2026-03-17" style="animation-delay:550ms">
+<a href="./2026-03-17.html" class="card" data-date="2026-03-17" style="animation-delay:550ms">
       <div class="card-inner">
         <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
@@ -265,7 +324,7 @@
         <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-    <a href="./2026-03-16.html" class="card" data-date="2026-03-16" style="animation-delay:600ms">
+<a href="./2026-03-16.html" class="card" data-date="2026-03-16" style="animation-delay:600ms">
       <div class="card-inner">
         <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
@@ -276,7 +335,7 @@
         <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-    <a href="./2026-03-15.html" class="card" data-date="2026-03-15" style="animation-delay:650ms">
+<a href="./2026-03-15.html" class="card" data-date="2026-03-15" style="animation-delay:650ms">
       <div class="card-inner">
         <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
@@ -287,7 +346,7 @@
         <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-    <a href="./2026-03-14.html" class="card" data-date="2026-03-14" style="animation-delay:700ms">
+<a href="./2026-03-14.html" class="card" data-date="2026-03-14" style="animation-delay:700ms">
       <div class="card-inner">
         <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
@@ -298,7 +357,7 @@
         <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-    <a href="./2026-03-12.html" class="card" data-date="2026-03-12" style="animation-delay:750ms">
+<a href="./2026-03-12.html" class="card" data-date="2026-03-12" style="animation-delay:750ms">
       <div class="card-inner">
         <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
@@ -309,7 +368,7 @@
         <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-    <a href="./2026-03-10.html" class="card" data-date="2026-03-10" style="animation-delay:800ms">
+<a href="./2026-03-10.html" class="card" data-date="2026-03-10" style="animation-delay:800ms">
       <div class="card-inner">
         <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
@@ -320,7 +379,7 @@
         <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-    <a href="./2026-03-09.html" class="card" data-date="2026-03-09" style="animation-delay:850ms">
+<a href="./2026-03-09.html" class="card" data-date="2026-03-09" style="animation-delay:850ms">
       <div class="card-inner">
         <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
@@ -331,7 +390,7 @@
         <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-    <a href="./2026-03-08.html" class="card" data-date="2026-03-08" style="animation-delay:900ms">
+<a href="./2026-03-08.html" class="card" data-date="2026-03-08" style="animation-delay:900ms">
       <div class="card-inner">
         <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
@@ -342,7 +401,7 @@
         <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-    <a href="./2026-03-07.html" class="card" data-date="2026-03-07" style="animation-delay:950ms">
+<a href="./2026-03-07.html" class="card" data-date="2026-03-07" style="animation-delay:950ms">
       <div class="card-inner">
         <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
@@ -353,7 +412,7 @@
         <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-    <a href="./2026-03-06.html" class="card" data-date="2026-03-06" style="animation-delay:1000ms">
+<a href="./2026-03-06.html" class="card" data-date="2026-03-06" style="animation-delay:1000ms">
       <div class="card-inner">
         <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
@@ -364,7 +423,7 @@
         <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-    <a href="./2026-03-05.html" class="card" data-date="2026-03-05" style="animation-delay:1050ms">
+<a href="./2026-03-05.html" class="card" data-date="2026-03-05" style="animation-delay:1050ms">
       <div class="card-inner">
         <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
@@ -383,36 +442,93 @@
 
   <script>
     const ALL_ENTRIES = [{"date":"2026-03-26-2","displayDate":"3月26日"},{"date":"2026-03-26-1","displayDate":"3月26日"},{"date":"2026-03-26","displayDate":"3月26日"},{"date":"2026-03-25","displayDate":"3月25日"},{"date":"2026-03-24","displayDate":"3月24日"},{"date":"2026-03-23","displayDate":"3月23日"},{"date":"2026-03-22","displayDate":"3月22日"},{"date":"2026-03-21","displayDate":"3月21日"},{"date":"2026-03-20","displayDate":"3月20日"},{"date":"2026-03-19","displayDate":"3月19日"},{"date":"2026-03-18","displayDate":"3月18日"},{"date":"2026-03-17","displayDate":"3月17日"},{"date":"2026-03-16","displayDate":"3月16日"},{"date":"2026-03-15","displayDate":"3月15日"},{"date":"2026-03-14","displayDate":"3月14日"},{"date":"2026-03-12","displayDate":"3月12日"},{"date":"2026-03-10","displayDate":"3月10日"},{"date":"2026-03-09","displayDate":"3月9日"},{"date":"2026-03-08","displayDate":"3月8日"},{"date":"2026-03-07","displayDate":"3月7日"},{"date":"2026-03-06","displayDate":"3月6日"},{"date":"2026-03-05","displayDate":"3月5日"}];
+    
+// S-curve momentum smooth scroll (for programmatic scrolling)
+function smoothScrollTo(target, duration) {
+  duration = duration || 600;
+  var start = window.pageYOffset || document.documentElement.scrollTop;
+  var end = typeof target === 'number' ? target : (target ? target.offsetTop : 0);
+  var change = end - start;
+  var startTime = null;
+
+  function easeInOutCubic(t) {
+    // S-curve: slow start, fast middle, slow end
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
+
+  function animationLoop(currentTime) {
+    if (!startTime) startTime = currentTime;
+    var elapsed = currentTime - startTime;
+    var progress = Math.min(elapsed / duration, 1);
+    var eased = easeInOutCubic(progress);
+    window.scrollTo(0, start + change * eased);
+    if (progress < 1) {
+      requestAnimationFrame(animationLoop);
+    }
+  }
+  requestAnimationFrame(animationLoop);
+}
+
+// Navbar hide/show on scroll (up = show, down = hide)
+(function() {
+  var navbar = document.getElementById('navbar');
+  if (!navbar) return;
+  var lastScrollY = 0;
+  var ticking = false;
+
+  function updateNavbar() {
+    var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+    if (scrollY <= 10) {
+      navbar.classList.remove('nav-hidden');
+      return;
+    }
+    if (scrollY > lastScrollY && scrollY > 80) {
+      navbar.classList.add('nav-hidden');
+    } else {
+      navbar.classList.remove('nav-hidden');
+    }
+    lastScrollY = scrollY;
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', function() {
+    if (!ticking) {
+      requestAnimationFrame(updateNavbar);
+      ticking = true;
+    }
+  }, { passive: true });
+})();
+
 
     // Theme toggle
-    const btn = document.getElementById('themeToggle');
-    const html = document.documentElement;
-    const storedTheme = localStorage.getItem('theme');
-    if (storedTheme === 'dark') { html.setAttribute('data-theme','dark'); btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>'; }
-    else if (storedTheme === 'light') { html.setAttribute('data-theme','light'); btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>'; }
-    btn.addEventListener('click', () => {
-      const cur = html.getAttribute('data-theme');
-      if (cur === 'dark') { html.removeAttribute('data-theme'); localStorage.setItem('theme','light'); btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>'; }
-      else { html.setAttribute('data-theme','dark'); localStorage.setItem('theme','dark'); btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>'; }
+    var btn = document.getElementById('navThemeToggle');
+    var html = document.documentElement;
+    var storedTheme = localStorage.getItem('theme');
+    var sunI = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>';
+    var moonI = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>';
+    if (storedTheme === 'dark') { html.setAttribute('data-theme','dark'); btn.innerHTML = moonI; }
+    else if (storedTheme === 'light') { html.setAttribute('data-theme','light'); btn.innerHTML = sunI; }
+    btn.addEventListener('click', function() {
+      var cur = html.getAttribute('data-theme');
+      if (cur === 'dark') { html.removeAttribute('data-theme'); localStorage.setItem('theme','light'); btn.innerHTML = sunI; }
+      else { html.setAttribute('data-theme','dark'); localStorage.setItem('theme','dark'); btn.innerHTML = moonI; }
     });
 
     // Progress bar
-    window.addEventListener('scroll', () => {
-      const scrolled = document.documentElement.scrollTop;
-      const total = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    window.addEventListener('scroll', function() {
+      var scrolled = document.documentElement.scrollTop;
+      var total = document.documentElement.scrollHeight - document.documentElement.clientHeight;
       document.getElementById('progress-bar').style.width = (total > 0 ? (scrolled / total * 100) : 0) + '%';
     }, { passive: true });
 
     // Favorites
-    const FAV_KEY = 'ainews_favs';
-    const favs = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+    var FAV_KEY = 'ainews_favs';
 
     function makeCard(entry, isFav) {
-      const favCls = isFav ? ' is-fav' : '';
-      const favIcon = isFav ? '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill="currentColor"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>';
-      const iconColor = isFav ? '#FF6B8A' : 'var(--primary-dark)';
-      const iconBg = isFav ? 'rgba(255,107,138,0.1)' : 'var(--bg)';
-      return '<a href="./' + entry.date + '.html" class="card' + favCls + '" data-date="' + entry.date + '">' +
+      var iconColor = isFav ? '#FF6B8A' : 'var(--primary-dark)';
+      var iconBg = isFav ? 'rgba(255,107,138,0.1)' : 'var(--bg)';
+      var favIcon = isFav ? '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill="currentColor"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>';
+      return '<a href="./' + entry.date + '.html" class="card' + (isFav ? ' is-fav' : '') + '" data-date="' + entry.date + '">' +
         '<div class="card-inner">' +
         '<div class="card-icon" style="color:' + iconColor + ';background:' + iconBg + '"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>' +
         '<div class="info"><span class="date">' + entry.displayDate + '</span><span class="label">AI 日报</span></div>' +
@@ -422,16 +538,16 @@
     }
 
     function renderFavs() {
-      const favDates = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
-      const favSection = document.getElementById('favsSection');
-      const favsGrid = document.getElementById('favsGrid');
+      var favDates = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+      var favSection = document.getElementById('favsSection');
+      var favsGrid = document.getElementById('favsGrid');
       if (favDates.length === 0) {
         favSection.style.display = 'none';
         return;
       }
       favSection.style.display = 'block';
-      const favEntries = ALL_ENTRIES.filter(e => favDates.includes(e.date));
-      favsGrid.innerHTML = favEntries.map(e => makeCard(e, true)).join('');
+      var favEntries = ALL_ENTRIES.filter(function(e) { return favDates.indexOf(e.date) !== -1; });
+      favsGrid.innerHTML = favEntries.map(function(e) { return makeCard(e, true); }).join('');
     }
 
     renderFavs();
