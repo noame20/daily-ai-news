@@ -365,19 +365,14 @@ function smoothScrollTo(target) {
 })();
 
 
-    // ── Mark that we entered from favorites page ──
-    // Set 'fromFavs' session flag so home button knows to return to favorites
+    // ── Determine where home button should go ──
+    // localStorage flag is set by favorites page when clicking any card
     var CURRENT_DATE = '2026-03-26';
-    var HOME_URL = sessionStorage.getItem('ainews_from_favs') === '1'
-      ? './favorites.html' : './index.html';
-    document.getElementById('homeBtn').href = HOME_URL;
-
-    // Clear the favs session flag when user navigates away via top navbar
-    document.querySelectorAll('.nav-link').forEach(function(link) {
-      link.addEventListener('click', function() {
-        sessionStorage.removeItem('ainews_from_favs');
-      });
-    });
+    var FAVS_ENTRY_KEY = 'ainews_enter_from_favs';
+    var fromFavs = localStorage.getItem(FAVS_ENTRY_KEY) === '1';
+    // Clear immediately so next direct page load defaults to homepage
+    localStorage.removeItem(FAVS_ENTRY_KEY);
+    document.getElementById('homeBtn').href = fromFavs ? './favorites.html' : './index.html';
 
     // Theme toggle
     var btn = document.getElementById('navThemeToggle');
