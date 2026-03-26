@@ -265,14 +265,14 @@
 </blockquote>
 </div>
       <div class="article-nav">
-        <a href="./2026-03-26.html" class="nav-btn" aria-label="上一篇：2026-03-26"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg><span>3月26日</span></a>
-        <a href="./2026-03-26-2.html" class="nav-btn" aria-label="下一篇：2026-03-26-2"><span>3月26日</span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a href="#" id="favPrevLink" class="nav-btn" aria-label="上一篇"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg><span id="favPrevLabel">加载中…</span></a>
+        <a href="#" id="favNextLink" class="nav-btn" aria-label="下一篇"><span id="favNextLabel">加载中…</span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
       </div>
     </article>
   </div>
 
   <div class="float-btns">
-    <a href="./index.html" class="float-btn" aria-label="返回首页"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></a>
+    <a href="./index.html" class="float-btn" id="homeBtn" aria-label="返回"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></a>
     <button class="float-btn" id="backToTop" aria-label="返回顶部"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg></button>
     <button class="float-btn" id="favBtn" data-date="2026-03-26-1" aria-label="收藏本文">
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
@@ -327,6 +327,20 @@ function smoothScrollTo(target) {
 })();
 
 
+    // ── Mark that we entered from favorites page ──
+    // Set 'fromFavs' session flag so home button knows to return to favorites
+    var CURRENT_DATE = '2026-03-26-1';
+    var HOME_URL = sessionStorage.getItem('ainews_from_favs') === '1'
+      ? './favorites.html' : './index.html';
+    document.getElementById('homeBtn').href = HOME_URL;
+
+    // Clear the favs session flag when user navigates away via top navbar
+    document.querySelectorAll('.nav-link').forEach(function(link) {
+      link.addEventListener('click', function() {
+        sessionStorage.removeItem('ainews_from_favs');
+      });
+    });
+
     // Theme toggle
     var btn = document.getElementById('navThemeToggle');
     var html = document.documentElement;
@@ -341,26 +355,69 @@ function smoothScrollTo(target) {
       else { html.setAttribute('data-theme','dark'); localStorage.setItem('theme','dark'); btn.innerHTML = moonI; }
     });
 
-    // Back to top — uses native browser smooth scroll (best performance/compat)
+    // Back to top — uses native browser smooth scroll
     document.getElementById('backToTop').addEventListener('click', function() {
       smoothScrollTo(0);
     });
 
-    // Favorites
+    // ── Favorites-aware prev/next navigation ──
+    var FAV_KEY = 'ainews_favs';
+    var favDates = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+    var curIdx = favDates.indexOf(CURRENT_DATE);
+    var prevLink = document.getElementById('favPrevLink');
+    var prevLabel = document.getElementById('favPrevLabel');
+    var nextLink = document.getElementById('favNextLink');
+    var nextLabel = document.getElementById('favNextLabel');
+    var noPrevHtml = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg><span>没有更早的</span>';
+    var noNextHtml = '<span>没有更新的</span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+
+    if (curIdx === -1 || favDates.length === 0) {
+      // Not in favorites — hide prev/next or show placeholders
+      prevLink.href = '#';
+      prevLink.className = 'nav-btn nav-btn--disabled';
+      prevLink.innerHTML = noPrevHtml;
+      nextLink.href = '#';
+      nextLink.className = 'nav-btn nav-btn--disabled';
+      nextLink.innerHTML = noNextHtml;
+    } else {
+      if (curIdx < favDates.length - 1) {
+        var prevD = favDates[curIdx + 1];
+        prevLink.href = './' + prevD + '.html';
+        prevLabel.textContent = prevD;
+      } else {
+        prevLink.href = '#';
+        prevLink.className = 'nav-btn nav-btn--disabled';
+        prevLink.innerHTML = noPrevHtml;
+      }
+      if (curIdx > 0) {
+        var nextD = favDates[curIdx - 1];
+        nextLink.href = './' + nextD + '.html';
+        nextLabel.textContent = nextD;
+      } else {
+        nextLink.href = '#';
+        nextLink.className = 'nav-btn nav-btn--disabled';
+        nextLink.innerHTML = noNextHtml;
+      }
+    }
+
+    // ── Favorites toggle ──
     var favBtn = document.getElementById('favBtn');
-    var dateStr = favBtn.getAttribute('data-date');
     function updateFavBtn() {
-      var cur = JSON.parse(localStorage.getItem('ainews_favs') || '[]');
-      var isFav = cur.indexOf(dateStr) !== -1;
+      var cur = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+      var isFav = cur.indexOf(CURRENT_DATE) !== -1;
       favBtn.innerHTML = isFav ? '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill="currentColor"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>';
       favBtn.classList.toggle('is-fav', isFav);
     }
     updateFavBtn();
     favBtn.addEventListener('click', function() {
-      var cur = JSON.parse(localStorage.getItem('ainews_favs') || '[]');
-      var idx = cur.indexOf(dateStr);
-      if (idx === -1) { cur.push(dateStr); } else { cur.splice(idx, 1); }
-      localStorage.setItem('ainews_favs', JSON.stringify(cur));
+      var cur = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+      var idx = cur.indexOf(CURRENT_DATE);
+      if (idx === -1) {
+        cur.push(CURRENT_DATE); // add
+      } else {
+        cur.splice(idx, 1); // remove
+      }
+      localStorage.setItem(FAV_KEY, JSON.stringify(cur));
       updateFavBtn();
     });
 
