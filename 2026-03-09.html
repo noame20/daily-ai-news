@@ -3,83 +3,129 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>✨ 3月9日 AI 日报</title>
+  <title>3月9日 AI 日报</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #FFF8F0; --surface: #FFFFFF; --primary: #FFB5C5; --primary-dark: #FF8FAB;
-      --secondary: #E8D5F5; --accent: #A8E6CF; --accent-dark: #7DD3B0;
-      --text: #4A4458; --text-light: #8E8A9E; --border: #F0E8E0;
-      --shadow: rgba(255,181,197,0.2); --shadow-lg: rgba(255,181,197,0.35);
-      --code-bg: #FFF0F5; --radius: 20px;
+    
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #FFF8F0; --surface: #FFFFFF; --primary: #FFB5C5; --primary-dark: #FF8FAB;
+    --secondary: #E8D5F5; --accent: #A8E6CF; --accent-dark: #7DD3B0;
+    --text: #4A4458; --text-light: #8E8A9E; --border: #F0E8E0;
+    --shadow: rgba(255,181,197,0.2); --shadow-lg: rgba(255,181,197,0.35);
+    --code-bg: #FFF0F5; --radius: 20px; --bar: var(--primary);
+  }
+  [data-theme="dark"] {
+    --bg: #1A1625; --surface: #2D2640; --primary: #FFB5C5; --primary-dark: #FF8FAB;
+    --secondary: #C9A8E8; --accent: #7DD3B0; --accent-dark: #6BC49A;
+    --text: #F0EBF8; --text-light: #A8A0BC; --border: #3D3555;
+    --shadow: rgba(0,0,0,0.4); --shadow-lg: rgba(0,0,0,0.5); --code-bg: #2D2640;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1A1625; --surface: #2D2640; --primary: #FFB5C5; --primary-dark: #FF8FAB;
+      --secondary: #C9A8E8; --accent: #7DD3B0; --accent-dark: #6BC49A;
+      --text: #F0EBF8; --text-light: #A8A0BC; --border: #3D3555;
+      --shadow: rgba(0,0,0,0.4); --shadow-lg: rgba(0,0,0,0.5); --code-bg: #2D2640;
     }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #1A1625; --surface: #2D2640; --primary: #FFB5C5; --primary-dark: #FF8FAB;
-        --secondary: #C9A8E8; --accent: #7DD3B0; --accent-dark: #6BC49A;
-        --text: #F0EBF8; --text-light: #A8A0BC; --border: #3D3555;
-        --shadow: rgba(0,0,0,0.4); --shadow-lg: rgba(0,0,0,0.5); --code-bg: #2D2640;
-      }
-      #hljs-light { display: none; }
-    }
-    @media (prefers-color-scheme: light) { #hljs-dark { display: none; } }
-    body { font-family: 'Noto Sans SC','Quicksand',ui-sans-serif,system-ui,sans-serif; background: var(--bg); color: var(--text); line-height: 1.8; min-height: 100vh; }
-    body::before { content:''; position:fixed; top:0; left:0; right:0; height:360px; background: linear-gradient(180deg,rgba(255,181,197,0.18) 0%,transparent 100%); pointer-events:none; z-index:0; }
+  }
+  body { font-family: 'Noto Sans SC','Quicksand',ui-sans-serif,system-ui,sans-serif; background: var(--bg); color: var(--text); line-height: 1.8; min-height: 100vh; }
+  a { color: var(--primary-dark); text-decoration: none; font-weight: 500; }
+  a:hover { text-decoration: underline; }
+
+  /* ── Theme toggle ── */
+  .theme-toggle {
+    position: fixed; top: 16px; right: 16px; z-index: 200;
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: 12px; cursor: pointer; color: var(--text);
+    box-shadow: 0 2px 8px var(--shadow); transition: all 200ms ease;
+  }
+  .theme-toggle:hover { box-shadow: 0 4px 16px var(--shadow-lg); transform: scale(1.05); }
+
+  /* ── Reading progress bar ── */
+  #progress-bar {
+    position: fixed; bottom: 0; left: 0; z-index: 300;
+    width: 0%; height: 3px;
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    transition: width 80ms linear;
+  }
+
+  /* ── Floating buttons ── */
+  .float-btns {
+    position: fixed; bottom: 20px; right: 20px; z-index: 200;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .float-btn {
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: 12px; cursor: pointer; color: var(--text);
+    box-shadow: 0 2px 8px var(--shadow); transition: all 200ms ease;
+    text-decoration: none;
+  }
+  .float-btn:hover { box-shadow: 0 4px 16px var(--shadow-lg); transform: scale(1.05); color: var(--primary-dark); }
+
+    body::before { content:''; position:fixed; top:0; left:0; right:0; height:360px; background:linear-gradient(180deg,rgba(255,181,197,0.18) 0%,transparent 100%); pointer-events:none; z-index:0; }
     .container { position:relative; z-index:1; max-width:760px; margin:0 auto; padding:0 16px 80px; }
-    nav { padding:28px 0 32px; }
+    nav { padding:28px 0 32px; display:flex; align-items:center; gap:10px; }
     nav a { display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:var(--text-light); font-size:0.875rem; font-weight:600; padding:8px 16px; background:var(--surface); border-radius:100px; box-shadow:0 2px 8px var(--shadow); border:1.5px solid var(--border); transition:all 200ms ease; }
     nav a:hover { color:var(--primary-dark); border-color:var(--primary); box-shadow:0 4px 16px var(--shadow-lg); transform:translateX(-2px); }
-    nav a svg { width:16px; height:16px; }
-    article { background:var(--surface); border-radius:var(--radius); padding:40px 36px; box-shadow:0 4px 24px var(--shadow); border:1.5px solid var(--border); animation:slideUp 0.4s ease-out both; }
-    @keyframes slideUp { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
-    @media (prefers-reduced-motion: reduce) { article { animation:none; } }
-    .article-meta { display:flex; align-items:center; gap:12px; margin-bottom:32px; padding-bottom:24px; border-bottom:2px solid var(--border); }
+    .article-meta { display:flex; align-items:center; gap:12px; margin-bottom:32px; padding-bottom:24px; border-bottom:2px solid var(--border); flex-wrap:wrap; }
     .article-date-badge { display:inline-flex; align-items:center; gap:6px; background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%); color:#fff; font-family:'Quicksand',sans-serif; font-size:0.875rem; font-weight:700; padding:6px 14px; border-radius:100px; }
+    article { background:var(--surface); border-radius:var(--radius); padding:40px 36px; box-shadow:0 4px 24px var(--shadow); border:1.5px solid var(--border); animation:slideUp 0.4s ease-out both; }
+    @keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    @media(prefers-reduced-motion:reduce){article{animation:none}}
     .content h1 { font-family:'Quicksand','Noto Sans SC',sans-serif; font-size:1.6rem; font-weight:700; color:var(--text); margin:28px 0 16px; letter-spacing:-0.01em; }
     .content h2 { font-family:'Quicksand','Noto Sans SC',sans-serif; font-size:1.2rem; font-weight:700; color:var(--text); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--border); }
     .content h3 { font-family:'Quicksand','Noto Sans SC',sans-serif; font-size:1.05rem; font-weight:600; color:var(--primary-dark); margin:24px 0 8px; }
     .content h4 { font-size:0.9rem; font-weight:600; color:var(--text-light); text-transform:uppercase; letter-spacing:0.06em; margin:20px 0 6px; }
     .content p { margin:0 0 16px; font-size:1rem; line-height:1.85; }
-    .content ul, .content ol { margin:0 0 16px; padding-left:24px; }
+    .content ul,.content ol { margin:0 0 16px; padding-left:24px; }
     .content li { margin:6px 0; line-height:1.7; }
-    .content a { color:var(--primary-dark); text-decoration:none; font-weight:500; }
-    .content a:hover { text-decoration:underline; }
     .content code { font-family:'Fira Code','Consolas',monospace; font-size:0.875em; background:var(--code-bg); color:var(--primary-dark); padding:2px 8px; border-radius:6px; font-weight:500; }
     .content pre { background:var(--code-bg) !important; border-radius:14px; padding:20px !important; overflow-x:auto; margin:20px 0 !important; border:1.5px solid var(--border); }
     .content pre code { background:transparent !important; color:inherit; padding:0; font-size:0.875rem; line-height:1.65; }
     .content blockquote { margin:20px 0; padding:14px 20px; background:linear-gradient(135deg,rgba(255,181,197,0.12) 0%,rgba(232,213,245,0.12) 100%); border-left:4px solid var(--primary); border-radius:0 12px 12px 0; }
     .content blockquote p { margin:0; }
     .content table { width:100%; border-collapse:collapse; margin:20px 0; font-size:0.9375rem; border-radius:12px; overflow:hidden; border:1.5px solid var(--border); }
-    .content th, .content td { padding:10px 14px; text-align:left; border-bottom:1px solid var(--border); }
+    .content th,.content td { padding:10px 14px; text-align:left; border-bottom:1px solid var(--border); }
     .content th { background:var(--code-bg); font-weight:600; font-size:0.875rem; }
     .content tr:last-child td { border-bottom:none; }
     .content tr:nth-child(even) td { background:rgba(255,181,197,0.05); }
     .content img { max-width:100%; height:auto; border-radius:12px; margin:8px 0; }
     .content hr { border:none; border-top:2px solid var(--border); margin:32px 0; }
     .content strong { font-weight:600; }
-    @media (max-width:600px) { article{padding:24px 20px;} .content h1{font-size:1.35rem;} .content h2{font-size:1.1rem;} }
+    @media(max-width:600px){article{padding:24px 20px}.content h1{font-size:1.35rem}.content h2{font-size:1.1rem}}
+
+    /* ── Prev/Next navigation ── */
+    .article-nav { display:flex; justify-content:space-between; align-items:center; margin-top:32px; padding-top:24px; border-top:2px solid var(--border); gap:12px; }
+    .nav-btn { display:inline-flex; align-items:center; gap:8px; padding:10px 18px; background:var(--surface); border:1.5px solid var(--border); border-radius:100px; text-decoration:none; color:var(--text); font-size:0.875rem; font-weight:600; box-shadow:0 2px 8px var(--shadow); transition:all 200ms ease; }
+    .nav-btn:hover:not(.nav-btn--disabled) { color:var(--primary-dark); border-color:var(--primary); box-shadow:0 4px 16px var(--shadow-lg); transform:scale(1.02); }
+    .nav-btn--disabled { opacity:0.4; cursor:default; pointer-events:none; }
+    .nav-btn span { max-width:120px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   </style>
 </head>
 <body>
+  <button class="theme-toggle" id="themeToggle" aria-label="切换主题"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
+
   <div class="container">
     <nav>
-      <a href="./index.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-        返回索引
-      </a>
+      <a href="./index.html"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>返回索引</span></a>
     </nav>
+
     <article>
       <div class="article-meta">
         <span class="article-date-badge">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
           3月9日
         </span>
-        <span style="color:var(--text-light);font-size:0.875rem;">✨ AI 日报</span>
+        <span style="color:var(--text-light);font-size:0.875rem;">AI 日报</span>
       </div>
       <div class="content"><h1>🤖 AI 每日简报 - 2026 年 3 月 9 日</h1>
 <h2>📊 今日概览</h2>
@@ -130,17 +176,49 @@
 <hr>
 <p><em>生成时间：2026-03-09 08:00 HKT</em></p>
 </div>
+      <div class="article-nav">
+        <a href="./2026-03-08.html" class="nav-btn" aria-label="上一篇：2026-03-08"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg><span>3月8日</span></a>
+        <a href="./2026-03-10.html" class="nav-btn" aria-label="下一篇：2026-03-10"><span>3月10日</span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
     </article>
   </div>
+
+  <div class="float-btns">
+    <a href="./index.html" class="float-btn" aria-label="返回索引"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></a>
+    <button class="float-btn" id="backToTop" aria-label="返回顶部"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg></button>
+  </div>
+
+  <div id="progress-bar"></div>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.0/marked.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded',function(){
-      marked.setOptions({gfm:true,breaks:true,highlight:function(code,lang){
-        if(lang&&hljs.getLanguage(lang))return hljs.highlight(code,{language:lang}).value;
+    // Theme toggle
+    const btn = document.getElementById('themeToggle');
+    const html = document.documentElement;
+    const stored = localStorage.getItem('theme');
+    if (stored === 'dark') { html.setAttribute('data-theme','dark'); btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>'; }
+    else if (stored === 'light') { html.setAttribute('data-theme','light'); btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>'; }
+    btn.addEventListener('click', () => {
+      const cur = html.getAttribute('data-theme');
+      if (cur === 'dark') { html.removeAttribute('data-theme'); localStorage.setItem('theme','light'); btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>'; }
+      else { html.setAttribute('data-theme','dark'); localStorage.setItem('theme','dark'); btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>'; }
+    });
+    // Back to top
+    document.getElementById('backToTop').addEventListener('click', () => window.scrollTo({ top:0, behavior:'smooth' }));
+    // Progress bar
+    window.addEventListener('scroll', () => {
+      const scrolled = document.documentElement.scrollTop;
+      const total = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      document.getElementById('progress-bar').style.width = (total > 0 ? (scrolled / total * 100) : 0) + '%';
+    }, { passive: true });
+    // Markdown highlight
+    document.addEventListener('DOMContentLoaded', function() {
+      marked.setOptions({ gfm:true, breaks:true, highlight:function(code,lang){
+        if(lang && hljs.getLanguage(lang)) return hljs.highlight(code,{language:lang}).value;
         return hljs.highlightAuto(code).value;
       }});
-      document.querySelectorAll('.content pre code').forEach(function(b){hljs.highlightElement(b);});
+      document.querySelectorAll('.content pre code').forEach(function(b){ hljs.highlightElement(b); });
     });
   </script>
 </body>

@@ -3,521 +3,363 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>✨ AI 日报</title>
+  <title>AI 日报</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #FFF8F0; --surface: #FFFFFF; --primary: #FFB5C5; --primary-dark: #FF8FAB;
+    --secondary: #E8D5F5; --accent: #A8E6CF; --accent-dark: #7DD3B0;
+    --text: #4A4458; --text-light: #8E8A9E; --border: #F0E8E0;
+    --shadow: rgba(255,181,197,0.2); --shadow-lg: rgba(255,181,197,0.35);
+    --code-bg: #FFF0F5; --radius: 20px; --bar: var(--primary);
+  }
+  [data-theme="dark"] {
+    --bg: #1A1625; --surface: #2D2640; --primary: #FFB5C5; --primary-dark: #FF8FAB;
+    --secondary: #C9A8E8; --accent: #7DD3B0; --accent-dark: #6BC49A;
+    --text: #F0EBF8; --text-light: #A8A0BC; --border: #3D3555;
+    --shadow: rgba(0,0,0,0.4); --shadow-lg: rgba(0,0,0,0.5); --code-bg: #2D2640;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1A1625; --surface: #2D2640; --primary: #FFB5C5; --primary-dark: #FF8FAB;
+      --secondary: #C9A8E8; --accent: #7DD3B0; --accent-dark: #6BC49A;
+      --text: #F0EBF8; --text-light: #A8A0BC; --border: #3D3555;
+      --shadow: rgba(0,0,0,0.4); --shadow-lg: rgba(0,0,0,0.5); --code-bg: #2D2640;
+    }
+  }
+  body { font-family: 'Noto Sans SC','Quicksand',ui-sans-serif,system-ui,sans-serif; background: var(--bg); color: var(--text); line-height: 1.8; min-height: 100vh; }
+  a { color: var(--primary-dark); text-decoration: none; font-weight: 500; }
+  a:hover { text-decoration: underline; }
 
-    :root {
-      --bg: #FFF8F0;
-      --surface: #FFFFFF;
-      --primary: #FFB5C5;
-      --primary-dark: #FF8FAB;
-      --secondary: #E8D5F5;
-      --accent: #A8E6CF;
-      --text: #4A4458;
-      --text-light: #8E8A9E;
-      --shadow: rgba(255, 181, 197, 0.25);
-      --shadow-hover: rgba(255, 181, 197, 0.45);
-      --radius: 20px;
-    }
+  /* ── Theme toggle ── */
+  .theme-toggle {
+    position: fixed; top: 16px; right: 16px; z-index: 200;
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: 12px; cursor: pointer; color: var(--text);
+    box-shadow: 0 2px 8px var(--shadow); transition: all 200ms ease;
+  }
+  .theme-toggle:hover { box-shadow: 0 4px 16px var(--shadow-lg); transform: scale(1.05); }
 
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #1A1625;
-        --surface: #2D2640;
-        --primary: #FFB5C5;
-        --primary-dark: #FF8FAB;
-        --secondary: #C9A8E8;
-        --accent: #7DD3B0;
-        --text: #F0EBF8;
-        --text-light: #A8A0BC;
-        --shadow: rgba(0, 0, 0, 0.4);
-        --shadow-hover: rgba(201, 168, 232, 0.3);
-      }
-    }
+  /* ── Reading progress bar ── */
+  #progress-bar {
+    position: fixed; bottom: 0; left: 0; z-index: 300;
+    width: 0%; height: 3px;
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    transition: width 80ms linear;
+  }
 
-    body {
-      font-family: 'Quicksand', 'Noto Sans SC', ui-sans-serif, system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      padding: 0 16px 80px;
-    }
+  /* ── Floating buttons ── */
+  .float-btns {
+    position: fixed; bottom: 20px; right: 20px; z-index: 200;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .float-btn {
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: 12px; cursor: pointer; color: var(--text);
+    box-shadow: 0 2px 8px var(--shadow); transition: all 200ms ease;
+    text-decoration: none;
+  }
+  .float-btn:hover { box-shadow: 0 4px 16px var(--shadow-lg); transform: scale(1.05); color: var(--primary-dark); }
 
-    /* Decorative blobs */
-    body::before {
-      content: '';
-      position: fixed;
-      top: -80px;
-      right: -80px;
-      width: 320px;
-      height: 320px;
-      background: radial-gradient(circle, rgba(255,181,197,0.3) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
-    }
-    body::after {
-      content: '';
-      position: fixed;
-      bottom: -60px;
-      left: -60px;
-      width: 280px;
-      height: 280px;
-      background: radial-gradient(circle, rgba(168,230,207,0.3) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
-    }
+    body::before { content:''; position:fixed; top:-80px; right:-80px; width:320px; height:320px; background:radial-gradient(circle,rgba(255,181,197,0.3) 0%,transparent 70%); pointer-events:none; z-index:0; }
+    body::after { content:''; position:fixed; bottom:-60px; left:-60px; width:280px; height:280px; background:radial-gradient(circle,rgba(168,230,207,0.3) 0%,transparent 70%); pointer-events:none; z-index:0; }
+    .container { position:relative; z-index:1; max-width:720px; margin:0 auto; }
 
-    .container {
-      position: relative;
-      z-index: 1;
-      max-width: 720px;
-      margin: 0 auto;
-    }
-
-    /* Header */
-    header {
-      text-align: center;
-      padding: 48px 0 40px;
-    }
-    .header-emoji {
-      font-size: 3rem;
-      margin-bottom: 12px;
-      display: block;
-      animation: float 3s ease-in-out infinite;
-    }
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
-    }
-    h1 {
-      font-family: 'Quicksand', 'Noto Sans SC', sans-serif;
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--text);
-      letter-spacing: -0.02em;
-      margin-bottom: 6px;
-    }
-    .subtitle {
-      font-size: 0.9rem;
-      color: var(--text-light);
-      font-weight: 500;
-    }
-
-    /* Wave divider */
-    .divider {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin: 0 auto 32px;
-      max-width: 200px;
-    }
-    .divider-line {
-      flex: 1;
-      height: 2px;
-      background: linear-gradient(to right, transparent, var(--primary), transparent);
-      border-radius: 2px;
-    }
-    .divider-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--primary);
-    }
-
-    /* Card grid */
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
-    @media (min-width: 520px) {
-      .grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (min-width: 768px) {
-      .grid { grid-template-columns: repeat(3, 1fr); }
-    }
-
-    .card {
-      display: block;
-      text-decoration: none;
-      border-radius: var(--radius);
-      animation: slideUp 0.4s ease-out both;
-    }
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .card { animation: none; }
-      .header-emoji { animation: none; }
-    }
-
-    .card-inner {
-      background: var(--surface);
-      border-radius: var(--radius);
-      padding: 20px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      box-shadow: 0 2px 12px var(--shadow);
-      border: 2px solid transparent;
-      transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
-    }
-    .card:hover .card-inner {
-      transform: translateY(-4px) scale(1.01);
-      box-shadow: 0 8px 24px var(--shadow-hover);
-      border-color: var(--primary);
-    }
-    .card:active .card-inner {
-      transform: translateY(-2px) scale(0.99);
-    }
-
-    .emoji {
-      font-size: 1.75rem;
-      flex-shrink: 0;
-      width: 44px;
-      height: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--bg);
-      border-radius: 14px;
-    }
-
-    .info {
-      flex: 1;
-      min-width: 0;
-    }
-    .date {
-      display: block;
-      font-family: 'Quicksand', 'Noto Sans SC', sans-serif;
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--text);
-      letter-spacing: 0.01em;
-    }
-    .label {
-      display: block;
-      font-size: 0.78rem;
-      color: var(--text-light);
-      margin-top: 2px;
-      font-weight: 500;
-    }
-
-    .arrow {
-      color: var(--primary-dark);
-      flex-shrink: 0;
-      transition: transform 200ms ease;
-    }
-    .card:hover .arrow {
-      transform: translateX(4px);
-    }
-
-    /* Footer */
-    footer {
-      text-align: center;
-      margin-top: 56px;
-      padding-top: 24px;
-      font-size: 0.8rem;
-      color: var(--text-light);
-    }
-    footer::before {
-      content: '';
-      display: block;
-      width: 60px;
-      height: 2px;
-      background: linear-gradient(to right, transparent, var(--secondary), transparent);
-      margin: 0 auto 24px;
-      border-radius: 2px;
-    }
+    header { text-align:center; padding:56px 0 40px; }
+    .header-icon { margin-bottom:12px; display:flex; justify-content:center; }
+    .header-icon svg { color:var(--primary); animation:float 3s ease-in-out infinite; }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    h1 { font-family:'Quicksand','Noto Sans SC',sans-serif; font-size:2rem; font-weight:700; color:var(--text); letter-spacing:-0.02em; margin-bottom:6px; }
+    .subtitle { font-size:0.9rem; color:var(--text-light); font-weight:500; }
+    .divider { display:flex; align-items:center; gap:12px; margin:0 auto 32px; max-width:200px; }
+    .divider-line { flex:1; height:2px; background:linear-gradient(to right,transparent,var(--primary),transparent); border-radius:2px; }
+    .divider-dot { width:8px; height:8px; border-radius:50%; background:var(--primary); }
+    .grid { display:grid; grid-template-columns:1fr; gap:16px; }
+    @media(min-width:520px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media(min-width:768px){.grid{grid-template-columns:repeat(3,1fr)}}
+    .card { display:block; text-decoration:none; border-radius:var(--radius); animation:slideUp 0.4s ease-out both; }
+    @keyframes slideUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+    @media(prefers-reduced-motion:reduce){.card{animation:none}.header-icon svg{animation:none}}
+    .card-inner { background:var(--surface); border-radius:var(--radius); padding:20px; display:flex; align-items:center; gap:14px; box-shadow:0 2px 12px var(--shadow); border:2px solid transparent; transition:transform 200ms ease,box-shadow 200ms ease,border-color 200ms ease; }
+    .card:hover .card-inner { transform:translateY(-4px) scale(1.01); box-shadow:0 8px 24px var(--shadow-hover); border-color:var(--primary); }
+    .card:active .card-inner { transform:translateY(-2px) scale(0.99); }
+    .card-icon { width:44px; height:44px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:var(--bg); border-radius:14px; color:var(--primary-dark); }
+    .info { flex:1; min-width:0; }
+    .date { display:block; font-family:'Quicksand','Noto Sans SC',sans-serif; font-size:1rem; font-weight:600; color:var(--text); }
+    .label { display:block; font-size:0.78rem; color:var(--text-light); margin-top:2px; font-weight:500; }
+    .arrow { color:var(--primary-dark); flex-shrink:0; transition:transform 200ms ease; }
+    .card:hover .arrow { transform:translateX(4px); }
+    footer { text-align:center; margin-top:56px; padding-top:24px; font-size:0.8rem; color:var(--text-light); }
+    footer::before { content:''; display:block; width:60px; height:2px; background:linear-gradient(to right,transparent,var(--secondary),transparent); margin:0 auto 24px; border-radius:2px; }
   </style>
 </head>
 <body>
+  <button class="theme-toggle" id="themeToggle" aria-label="切换主题"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
+
   <div class="container">
     <header>
-      <span class="header-emoji">🤖</span>
+      <div class="header-icon"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L13.5 8.5L19 10L13.5 11.5L12 17L10.5 11.5L5 10L10.5 8.5L12 3Z"/><path d="M5 3L5.5 5L7 5.5L5.5 6L5 8L4.5 6L3 5.5L4.5 5L5 3Z"/><path d="M19 17L19.5 19L21 19.5L19.5 20L19 22L18.5 20L17 19.5L18.5 19L19 17Z"/></svg></div>
       <h1>AI 日报</h1>
       <div class="subtitle">2026年3月26日</div>
     </header>
-
     <div class="divider">
       <div class="divider-line"></div>
       <div class="divider-dot"></div>
       <div class="divider-line"></div>
     </div>
-
     <div class="grid">
-
-    <a href="./2026-03-26.html" class="card" style="animation-delay: 0ms">
+    <a href="./2026-03-26-2.html" class="card" style="animation-delay:0ms">
       <div class="card-inner">
-        <div class="emoji">✨</div>
+        <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
           <span class="date">3月26日</span>
           <span class="label">AI 日报</span>
         </div>
-        <div class="arrow">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
+        <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-
-    <a href="./2026-03-25.html" class="card" style="animation-delay: 50ms">
+    <a href="./2026-03-26-1.html" class="card" style="animation-delay:50ms">
       <div class="card-inner">
-        <div class="emoji">🌟</div>
+        <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+        <div class="info">
+          <span class="date">3月26日</span>
+          <span class="label">AI 日报</span>
+        </div>
+        <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+    </a>
+    <a href="./2026-03-26.html" class="card" style="animation-delay:100ms">
+      <div class="card-inner">
+        <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+        <div class="info">
+          <span class="date">3月26日</span>
+          <span class="label">AI 日报</span>
+        </div>
+        <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+    </a>
+    <a href="./2026-03-25.html" class="card" style="animation-delay:150ms">
+      <div class="card-inner">
+        <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
           <span class="date">3月25日</span>
           <span class="label">AI 日报</span>
         </div>
-        <div class="arrow">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
+        <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-
-    <a href="./2026-03-24.html" class="card" style="animation-delay: 100ms">
+    <a href="./2026-03-24.html" class="card" style="animation-delay:200ms">
       <div class="card-inner">
-        <div class="emoji">📝</div>
+        <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
           <span class="date">3月24日</span>
           <span class="label">AI 日报</span>
         </div>
-        <div class="arrow">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
+        <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-
-    <a href="./2026-03-23.html" class="card" style="animation-delay: 150ms">
+    <a href="./2026-03-23.html" class="card" style="animation-delay:250ms">
       <div class="card-inner">
-        <div class="emoji">🤖</div>
+        <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
           <span class="date">3月23日</span>
           <span class="label">AI 日报</span>
         </div>
-        <div class="arrow">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
+        <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-
-    <a href="./2026-03-22.html" class="card" style="animation-delay: 200ms">
+    <a href="./2026-03-22.html" class="card" style="animation-delay:300ms">
       <div class="card-inner">
-        <div class="emoji">💡</div>
+        <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
           <span class="date">3月22日</span>
           <span class="label">AI 日报</span>
         </div>
-        <div class="arrow">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
+        <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-
-    <a href="./2026-03-21.html" class="card" style="animation-delay: 250ms">
+    <a href="./2026-03-21.html" class="card" style="animation-delay:350ms">
       <div class="card-inner">
-        <div class="emoji">🚀</div>
+        <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
           <span class="date">3月21日</span>
           <span class="label">AI 日报</span>
         </div>
-        <div class="arrow">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
+        <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-
-    <a href="./2026-03-20.html" class="card" style="animation-delay: 300ms">
+    <a href="./2026-03-20.html" class="card" style="animation-delay:400ms">
       <div class="card-inner">
-        <div class="emoji">🎯</div>
+        <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
           <span class="date">3月20日</span>
           <span class="label">AI 日报</span>
         </div>
-        <div class="arrow">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
+        <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-
-    <a href="./2026-03-19.html" class="card" style="animation-delay: 350ms">
+    <a href="./2026-03-19.html" class="card" style="animation-delay:450ms">
       <div class="card-inner">
-        <div class="emoji">🔮</div>
+        <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
           <span class="date">3月19日</span>
           <span class="label">AI 日报</span>
         </div>
-        <div class="arrow">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
+        <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-
-    <a href="./2026-03-18.html" class="card" style="animation-delay: 400ms">
+    <a href="./2026-03-18.html" class="card" style="animation-delay:500ms">
       <div class="card-inner">
-        <div class="emoji">✨</div>
+        <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
           <span class="date">3月18日</span>
           <span class="label">AI 日报</span>
         </div>
-        <div class="arrow">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
+        <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-
-    <a href="./2026-03-17.html" class="card" style="animation-delay: 450ms">
+    <a href="./2026-03-17.html" class="card" style="animation-delay:550ms">
       <div class="card-inner">
-        <div class="emoji">🌟</div>
+        <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
           <span class="date">3月17日</span>
           <span class="label">AI 日报</span>
         </div>
-        <div class="arrow">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
+        <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-
-    <a href="./2026-03-16.html" class="card" style="animation-delay: 500ms">
+    <a href="./2026-03-16.html" class="card" style="animation-delay:600ms">
       <div class="card-inner">
-        <div class="emoji">📝</div>
+        <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
           <span class="date">3月16日</span>
           <span class="label">AI 日报</span>
         </div>
-        <div class="arrow">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
+        <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-
-    <a href="./2026-03-15.html" class="card" style="animation-delay: 550ms">
+    <a href="./2026-03-15.html" class="card" style="animation-delay:650ms">
       <div class="card-inner">
-        <div class="emoji">🤖</div>
+        <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
           <span class="date">3月15日</span>
           <span class="label">AI 日报</span>
         </div>
-        <div class="arrow">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
+        <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-
-    <a href="./2026-03-14.html" class="card" style="animation-delay: 600ms">
+    <a href="./2026-03-14.html" class="card" style="animation-delay:700ms">
       <div class="card-inner">
-        <div class="emoji">💡</div>
+        <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
           <span class="date">3月14日</span>
           <span class="label">AI 日报</span>
         </div>
-        <div class="arrow">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
+        <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-
-    <a href="./2026-03-12.html" class="card" style="animation-delay: 650ms">
+    <a href="./2026-03-12.html" class="card" style="animation-delay:750ms">
       <div class="card-inner">
-        <div class="emoji">🚀</div>
+        <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
           <span class="date">3月12日</span>
           <span class="label">AI 日报</span>
         </div>
-        <div class="arrow">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
+        <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-
-    <a href="./2026-03-10.html" class="card" style="animation-delay: 700ms">
+    <a href="./2026-03-10.html" class="card" style="animation-delay:800ms">
       <div class="card-inner">
-        <div class="emoji">🎯</div>
+        <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
           <span class="date">3月10日</span>
           <span class="label">AI 日报</span>
         </div>
-        <div class="arrow">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
+        <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-
-    <a href="./2026-03-09.html" class="card" style="animation-delay: 750ms">
+    <a href="./2026-03-09.html" class="card" style="animation-delay:850ms">
       <div class="card-inner">
-        <div class="emoji">🔮</div>
+        <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
           <span class="date">3月9日</span>
           <span class="label">AI 日报</span>
         </div>
-        <div class="arrow">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
+        <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-
-    <a href="./2026-03-08.html" class="card" style="animation-delay: 800ms">
+    <a href="./2026-03-08.html" class="card" style="animation-delay:900ms">
       <div class="card-inner">
-        <div class="emoji">✨</div>
+        <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
           <span class="date">3月8日</span>
           <span class="label">AI 日报</span>
         </div>
-        <div class="arrow">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
+        <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-
-    <a href="./2026-03-07.html" class="card" style="animation-delay: 850ms">
+    <a href="./2026-03-07.html" class="card" style="animation-delay:950ms">
       <div class="card-inner">
-        <div class="emoji">🌟</div>
+        <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
           <span class="date">3月7日</span>
           <span class="label">AI 日报</span>
         </div>
-        <div class="arrow">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
+        <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-
-    <a href="./2026-03-06.html" class="card" style="animation-delay: 900ms">
+    <a href="./2026-03-06.html" class="card" style="animation-delay:1000ms">
       <div class="card-inner">
-        <div class="emoji">📝</div>
+        <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
           <span class="date">3月6日</span>
           <span class="label">AI 日报</span>
         </div>
-        <div class="arrow">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
+        <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
-
-    <a href="./2026-03-05.html" class="card" style="animation-delay: 950ms">
+    <a href="./2026-03-05.html" class="card" style="animation-delay:1050ms">
       <div class="card-inner">
-        <div class="emoji">🤖</div>
+        <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="info">
           <span class="date">3月5日</span>
           <span class="label">AI 日报</span>
         </div>
-        <div class="arrow">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
+        <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </a>
     </div>
-
-    <footer>
-      Made with
-      <svg style="display:inline;vertical-align:middle;margin:0 4px" width="14" height="14" viewBox="0 0 24 24" fill="#FFB5C5" xmlns="http://www.w3.org/2000/svg"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-      by OpenClaw
-    </footer>
+    <footer>Made with <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">undefined</svg> by OpenClaw</footer>
   </div>
+
+  <div id="progress-bar"></div>
+
+  <script>
+    // Theme toggle
+    const btn = document.getElementById('themeToggle');
+    const html = document.documentElement;
+    const stored = localStorage.getItem('theme');
+    if (stored === 'dark') { html.setAttribute('data-theme','dark'); btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>'; }
+    else if (stored === 'light') { html.setAttribute('data-theme','light'); btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>'; }
+    btn.addEventListener('click', () => {
+      const cur = html.getAttribute('data-theme');
+      if (cur === 'dark') { html.removeAttribute('data-theme'); localStorage.setItem('theme','light'); btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>'; }
+      else { html.setAttribute('data-theme','dark'); localStorage.setItem('theme','dark'); btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>'; }
+    });
+    // Progress bar
+    window.addEventListener('scroll', () => {
+      const scrolled = document.documentElement.scrollTop;
+      const total = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      document.getElementById('progress-bar').style.width = (total > 0 ? (scrolled / total * 100) : 0) + '%';
+    }, { passive: true });
+  </script>
 </body>
 </html>
