@@ -123,56 +123,33 @@
     .container { position:relative; z-index:1; max-width:760px; margin:0 auto; padding:0 16px 80px; }
 
     /* ── Edge navigation (A+B: invisible hit area + subtle arrow hint) ── */
+    /* position:fixed relative to viewport — set by JS */
     .edge-nav {
-      position:absolute; top:50%; transform:translateY(-50%);
+      position:fixed;
       width:56px; height:80px;
       display:flex; align-items:center; justify-content:center;
-      z-index:10;
+      z-index:300;
       cursor:pointer;
       text-decoration:none;
-      /* always show a visible hint so users know it's clickable */
-      background:rgba(255,181,197,0.06);
+      background:rgba(255,181,197,0.08);
       border-radius:12px;
       transition: background 150ms ease;
     }
-    .edge-nav:hover { background:rgba(255,181,197,0.16); }
-    .edge-nav-left  { left:-8px; }
-    .edge-nav-right { right:-8px; }
-    /* Arrow hint — subtle by default, clear on hover */
+    .edge-nav:hover { background:rgba(255,181,197,0.18); }
+    .edge-nav-left  { left:0; }
+    .edge-nav-right { right:0; }
+    /* Arrow hint */
     .edge-nav .edge-arrow {
       color:var(--primary-dark);
       transition:opacity 150ms ease, transform 150ms ease;
-      opacity:0.35;
+      opacity:0.4;
       pointer-events:none;
     }
     .edge-nav:hover .edge-arrow,
-    .edge-nav:focus .edge-arrow {
-      opacity:1;
-    }
-    .edge-nav:active .edge-arrow {
-      transform:scale(0.9);
-    }
-    /* Gradient fade on inner edge of the nav */
-    .edge-nav::before {
-      content:'';
-      position:absolute;
-      top:0; bottom:0;
-      width:20px;
-      pointer-events:none;
-      z-index:-1;
-    }
-    .edge-nav-left::before {
-      left:0;
-      background:linear-gradient(to right, rgba(255,181,197,0.4), transparent);
-      border-radius:12px 0 0 12px;
-    }
-    .edge-nav-right::before {
-      right:0;
-      background:linear-gradient(to left, rgba(255,181,197,0.4), transparent);
-      border-radius:0 12px 12px 0;
-    }
+    .edge-nav:focus .edge-arrow { opacity:1; }
+    .edge-nav:active .edge-arrow { transform:scale(0.9); }
     @media (max-width:600px) {
-      .edge-nav { width:48px; }
+      .edge-nav { width:44px; height:72px; }
     }
 
     .article-meta { display:flex; align-items:center; gap:12px; margin-bottom:32px; padding-bottom:24px; border-bottom:2px solid var(--border); flex-wrap:wrap; }
@@ -420,6 +397,33 @@ function smoothScrollTo(target) {
   }, { passive: true });
 })();
 
+
+    // ── Position fixed edge nav relative to article horizontal edges ──
+    (function() {
+      var leftNav  = document.querySelector('.edge-nav-left');
+      var rightNav = document.querySelector('.edge-nav-right');
+      if (!leftNav && !rightNav) return;
+      function positionEdgeNavs() {
+        var article = document.querySelector('article');
+        if (!article) return;
+        var rect = article.getBoundingClientRect();
+        var vw   = window.innerWidth;
+        var vh   = window.innerHeight;
+        // Vertically centered in viewport
+        var navH = 80;
+        var top  = Math.max(0, (vh - navH) / 2);
+        if (leftNav) {
+          leftNav.style.top  = top + 'px';
+          leftNav.style.left = rect.left + 'px';
+        }
+        if (rightNav) {
+          rightNav.style.top    = top + 'px';
+          rightNav.style.right = (vw - rect.right) + 'px';
+        }
+      }
+      positionEdgeNavs();
+      window.addEventListener('resize', positionEdgeNavs);
+    })();
 
     // ── Determine where home button should go ──
     // localStorage flag is set by favorites page when clicking any card
