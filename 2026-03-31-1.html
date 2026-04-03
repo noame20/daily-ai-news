@@ -200,8 +200,8 @@
 <p>macOS菜单栏语音输入应用，macOS 14+系统全局按住Fn键录音，松开后自动将语音转换为文字并注入到当前输入框。采用Apple Speech Recognition框架，支持流式转录，浮动窗口显示5栏波形动画。支持多语言和LLM纠错（通过OpenAI兼容API提升转录准确率），智能处理CJK输入法切换问题。<br>⭐Stars 1,089 🍴Forks 104 🔀PRs 0 🔖Issues 3</p>
 </div>
       <div class="article-nav">
-        <a href="#" id="favPrevLink" class="nav-btn" aria-label="上一篇"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg><span id="favPrevLabel">加载中…</span></a>
-        <a href="#" id="favNextLink" class="nav-btn" aria-label="下一篇"><span id="favNextLabel">加载中…</span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a href="./2026-03-31.html" id="favPrevLink" class="nav-btn" aria-label="上一篇"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg><span id="favPrevLabel">2026-03-31</span></a>
+        <a href="./2026-03-31-2.html" id="favNextLink" class="nav-btn" aria-label="下一篇"><span id="favNextLabel">2026-03-31-2</span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
       </div>
     </article>
   </div>
@@ -291,6 +291,8 @@ function smoothScrollTo(target) {
     });
 
     // ── Favorites-aware prev/next navigation ──
+    // prevDate/nextDate come from the HTML as chronological neighbors;
+    // if the current page is in favorites, override to navigate within favorites list.
     var FAV_KEY = 'ainews_favs';
     var favDates = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
     var curIdx = favDates.indexOf(CURRENT_DATE);
@@ -298,18 +300,9 @@ function smoothScrollTo(target) {
     var prevLabel = document.getElementById('favPrevLabel');
     var nextLink = document.getElementById('favNextLink');
     var nextLabel = document.getElementById('favNextLabel');
-    var noPrevHtml = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg><span>没有更早的</span>';
-    var noNextHtml = '<span>没有更新的</span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
 
-    if (curIdx === -1 || favDates.length === 0) {
-      // Not in favorites — hide prev/next or show placeholders
-      prevLink.href = '#';
-      prevLink.className = 'nav-btn nav-btn--disabled';
-      prevLink.innerHTML = noPrevHtml;
-      nextLink.href = '#';
-      nextLink.className = 'nav-btn nav-btn--disabled';
-      nextLink.innerHTML = noNextHtml;
-    } else {
+    if (curIdx !== -1 && favDates.length > 0) {
+      // Override with favorites-only navigation
       if (curIdx < favDates.length - 1) {
         var prevD = favDates[curIdx + 1];
         prevLink.href = './' + prevD + '.html';
@@ -317,7 +310,7 @@ function smoothScrollTo(target) {
       } else {
         prevLink.href = '#';
         prevLink.className = 'nav-btn nav-btn--disabled';
-        prevLink.innerHTML = noPrevHtml;
+        prevLabel.textContent = '没有更早的';
       }
       if (curIdx > 0) {
         var nextD = favDates[curIdx - 1];
@@ -326,9 +319,10 @@ function smoothScrollTo(target) {
       } else {
         nextLink.href = '#';
         nextLink.className = 'nav-btn nav-btn--disabled';
-        nextLink.innerHTML = noNextHtml;
+        nextLabel.textContent = '没有更新的';
       }
     }
+    // else: keep chronological href/label from HTML — already set at generate time
 
     // ── Favorites toggle ──
     var favBtn = document.getElementById('favBtn');
