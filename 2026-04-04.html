@@ -123,9 +123,9 @@
     .container { position:relative; z-index:1; max-width:760px; margin:0 auto; padding:0 16px 80px; }
 
     /* ── Edge navigation (A+B: invisible hit area + subtle arrow hint) ── */
-    /* position:fixed relative to viewport — set by JS */
     .edge-nav {
       position:fixed;
+      top:50%; transform:translateY(-50%);
       width:56px; height:80px;
       display:flex; align-items:center; justify-content:center;
       z-index:300;
@@ -378,38 +378,6 @@ function smoothScrollTo(target) {
   }, { passive: true });
 })();
 
-
-    // ── Position fixed edge nav relative to article horizontal edges ──
-    (function() {
-      var leftNav  = document.querySelector('.edge-nav-left');
-      var rightNav = document.querySelector('.edge-nav-right');
-      if (!leftNav && !rightNav) return;
-      function positionEdgeNavs() {
-        var article = document.querySelector('article');
-        if (!article) return;
-        var rect = article.getBoundingClientRect();
-        var vw   = window.innerWidth;
-        var vh   = window.innerHeight;
-        // Place near bottom of viewport so it never blocks reading content
-        // Desktop: 75vh, Mobile (≤600px): 85vh
-        var isMobile = vw <= 600;
-        var navH = isMobile ? 72 : 80;
-        var vhRatio = isMobile ? 0.85 : 0.75;
-        var top  = Math.max(0, vh * vhRatio - navH / 2);
-        if (leftNav) {
-          leftNav.style.top  = top + 'px';
-          leftNav.style.left = rect.left + 'px';
-          leftNav.style.height = navH + 'px';
-        }
-        if (rightNav) {
-          rightNav.style.top    = top + 'px';
-          rightNav.style.right = (vw - rect.right) + 'px';
-          rightNav.style.height = navH + 'px';
-        }
-      }
-      positionEdgeNavs();
-      window.addEventListener('resize', positionEdgeNavs);
-    })();
 
     // ── Determine where home button should go ──
     // localStorage flag is set by favorites page when clicking any card
