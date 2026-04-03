@@ -130,56 +130,49 @@
       z-index:10;
       cursor:pointer;
       text-decoration:none;
-      /* transition for the hint reveal */
-      transition: background 200ms ease;
+      /* always show a visible hint so users know it's clickable */
+      background:rgba(255,181,197,0.06);
       border-radius:12px;
+      transition: background 150ms ease;
     }
+    .edge-nav:hover { background:rgba(255,181,197,0.16); }
     .edge-nav-left  { left:-8px; }
     .edge-nav-right { right:-8px; }
-    /* Subtle hint arrow — hidden by default */
+    /* Arrow hint — subtle by default, clear on hover */
     .edge-nav .edge-arrow {
-      opacity:0;
       color:var(--primary-dark);
-      transition:opacity 200ms ease, transform 200ms ease;
+      transition:opacity 150ms ease, transform 150ms ease;
+      opacity:0.35;
       pointer-events:none;
     }
-    /* Show hint on hover/focus */
     .edge-nav:hover .edge-arrow,
     .edge-nav:focus .edge-arrow {
-      opacity:0.55;
+      opacity:1;
     }
     .edge-nav:active .edge-arrow {
       transform:scale(0.9);
-      opacity:0.9;
     }
-    /* Gradient fade hint on the edge */
+    /* Gradient fade on inner edge of the nav */
     .edge-nav::before {
       content:'';
       position:absolute;
       top:0; bottom:0;
-      width:32px;
-      opacity:0;
-      transition:opacity 200ms ease;
+      width:20px;
       pointer-events:none;
+      z-index:-1;
     }
     .edge-nav-left::before {
       left:0;
-      background:linear-gradient(to right, var(--primary), transparent);
+      background:linear-gradient(to right, rgba(255,181,197,0.4), transparent);
       border-radius:12px 0 0 12px;
     }
     .edge-nav-right::before {
       right:0;
-      background:linear-gradient(to left, var(--primary), transparent);
+      background:linear-gradient(to left, rgba(255,181,197,0.4), transparent);
       border-radius:0 12px 12px 0;
-    }
-    .edge-nav:hover::before,
-    .edge-nav:focus::before {
-      opacity:0.12;
     }
     @media (max-width:600px) {
       .edge-nav { width:48px; }
-      .edge-nav-left::before,
-      .edge-nav-right::before { width:24px; }
     }
 
     .article-meta { display:flex; align-items:center; gap:12px; margin-bottom:32px; padding-bottom:24px; border-bottom:2px solid var(--border); flex-wrap:wrap; }
