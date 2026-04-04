@@ -197,11 +197,8 @@
 <body>
   
   <nav class="navbar" id="navbar">
-    <div class="nav-logo"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L13.5 8.5L19 10L13.5 11.5L12 17L10.5 11.5L5 10L10.5 8.5L12 3Z"/><path d="M5 3L5.5 5L7 5.5L5.5 6L5 8L4.5 6L3 5.5L4.5 5L5 3Z"/><path d="M19 17L19.5 19L21 19.5L19.5 20L19 22L18.5 20L17 19.5L18.5 19L19 17Z"/></svg> AI 日报</div>
+    <a href="./index.html" class="nav-logo" style="text-decoration:none;color:var(--text);"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L13.5 8.5L19 10L13.5 11.5L12 17L10.5 11.5L5 10L10.5 8.5L12 3Z"/><path d="M5 3L5.5 5L7 5.5L5.5 6L5 8L4.5 6L3 5.5L4.5 5L5 3Z"/><path d="M19 17L19.5 19L21 19.5L19.5 20L19 22L18.5 20L17 19.5L18.5 19L19 17Z"/></svg> AI 日报</a>
     <div class="nav-links">
-      <a href="./index.html" class="nav-link " data-nav="home">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>首页</span>
-      </a>
       <a href="./favorites.html" class="nav-link " data-nav="favorites">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>收藏</span>
       </a>
@@ -242,7 +239,7 @@
 <li>计划模式：Shift+Tab 先设计后实施</li>
 </ul>
 <p><strong>要求</strong>：Claude Code CLI + Obsidian v1.8.9+</p>
-<p><a href="https://github.com/YishenTu/claudian">GitHub</a></p>
+<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/YishenTu/claudian">GitHub</a></p>
 <hr>
 <h3>2. vite-plus - Web 开发统一工具链</h3>
 <p><font color="comment">⭐ +622 | 2,096</font></p>
@@ -257,8 +254,8 @@
 <li>`vp build` - 生产构建</li>
 <li>`vp run` - 单体仓库任务</li>
 </ul>
-<p><strong>安装</strong>：`curl -fsSL <a href="https://vite.plus">https://vite.plus</a> | bash`</p>
-<p><a href="https://github.com/voidzero-dev/vite-plus">GitHub</a></p>
+<p><strong>安装</strong>：`curl -fsSL <a target="_blank" rel="noopener noreferrer" href="https://vite.plus">https://vite.plus</a> | bash`</p>
+<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/voidzero-dev/vite-plus">GitHub</a></p>
 <hr>
 <h2>📰 TLDR 快讯</h2>
 <h3><font color="warning">Big Tech</font></h3>
@@ -374,24 +371,14 @@ function smoothScrollTo(target) {
     // localStorage flag is set by favorites page when clicking any card
     var CURRENT_DATE = '2026-03-16';
     var FAVS_ENTRY_KEY = 'ainews_enter_from_favs';
-    var NAV_MODE_KEY = 'ainews_nav_mode';
     var fromFavs = localStorage.getItem(FAVS_ENTRY_KEY) === '1';
-
-    // Persist nav mode: once in favorites, stay in favorites until explicitly leaving via homepage
-    if (fromFavs) {
-      localStorage.setItem(NAV_MODE_KEY, 'favorites');
-    } else {
-      // Clear mode when entering from homepage — unless already in favorites nav
-      var currentMode = localStorage.getItem(NAV_MODE_KEY);
-      if (currentMode !== 'favorites') {
-        localStorage.setItem(NAV_MODE_KEY, 'chronological');
-      }
-    }
-    // Clear the one-time entry flag
+    // Clear immediately so next direct page load defaults to homepage
     localStorage.removeItem(FAVS_ENTRY_KEY);
+    document.getElementById('homeBtn').href = fromFavs ? './favorites.html' : './index.html';
 
-    var NAV_MODE = localStorage.getItem(NAV_MODE_KEY) || 'chronological';
-    document.getElementById('homeBtn').href = NAV_MODE === 'favorites' ? './favorites.html' : './index.html';
+    // Navigation mode: favorites-only only if entering from favorites page
+    // Toggle favorite does NOT change nav mode — only the entry point matters
+    var NAV_MODE = fromFavs ? 'favorites' : 'chronological';
 
     // Theme toggle
     var btn = document.getElementById('navThemeToggle');
