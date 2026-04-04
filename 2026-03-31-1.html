@@ -308,14 +308,24 @@ function smoothScrollTo(target) {
     // localStorage flag is set by favorites page when clicking any card
     var CURRENT_DATE = '2026-03-31-1';
     var FAVS_ENTRY_KEY = 'ainews_enter_from_favs';
+    var NAV_MODE_KEY = 'ainews_nav_mode';
     var fromFavs = localStorage.getItem(FAVS_ENTRY_KEY) === '1';
-    // Clear immediately so next direct page load defaults to homepage
-    localStorage.removeItem(FAVS_ENTRY_KEY);
-    document.getElementById('homeBtn').href = fromFavs ? './favorites.html' : './index.html';
 
-    // Navigation mode: favorites-only only if entering from favorites page
-    // Toggle favorite does NOT change nav mode — only the entry point matters
-    var NAV_MODE = fromFavs ? 'favorites' : 'chronological';
+    // Persist nav mode: once in favorites, stay in favorites until explicitly leaving via homepage
+    if (fromFavs) {
+      localStorage.setItem(NAV_MODE_KEY, 'favorites');
+    } else {
+      // Clear mode when entering from homepage — unless already in favorites nav
+      var currentMode = localStorage.getItem(NAV_MODE_KEY);
+      if (currentMode !== 'favorites') {
+        localStorage.setItem(NAV_MODE_KEY, 'chronological');
+      }
+    }
+    // Clear the one-time entry flag
+    localStorage.removeItem(FAVS_ENTRY_KEY);
+
+    var NAV_MODE = localStorage.getItem(NAV_MODE_KEY) || 'chronological';
+    document.getElementById('homeBtn').href = NAV_MODE === 'favorites' ? './favorites.html' : './index.html';
 
     // Theme toggle
     var btn = document.getElementById('navThemeToggle');
