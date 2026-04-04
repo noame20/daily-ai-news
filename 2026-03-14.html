@@ -325,7 +325,7 @@ function smoothScrollTo(target) {
 })();
 
 
-    // ── Determine where home button should go ──
+    // ── Determine navigation mode & where home button should go ──
     // localStorage flag is set by favorites page when clicking any card
     var CURRENT_DATE = '2026-03-14';
     var FAVS_ENTRY_KEY = 'ainews_enter_from_favs';
@@ -333,6 +333,10 @@ function smoothScrollTo(target) {
     // Clear immediately so next direct page load defaults to homepage
     localStorage.removeItem(FAVS_ENTRY_KEY);
     document.getElementById('homeBtn').href = fromFavs ? './favorites.html' : './index.html';
+
+    // Navigation mode: favorites-only only if entering from favorites page
+    // Toggle favorite does NOT change nav mode — only the entry point matters
+    var NAV_MODE = fromFavs ? 'favorites' : 'chronological';
 
     // Theme toggle
     var btn = document.getElementById('navThemeToggle');
@@ -355,7 +359,7 @@ function smoothScrollTo(target) {
 
     // ── Favorites-aware prev/next navigation ──
     // prevDate/nextDate come from the HTML as chronological neighbors;
-    // if the current page is in favorites, override to navigate within favorites list.
+    // override to favorites-only navigation ONLY when entering from favorites page.
     var FAV_KEY = 'ainews_favs';
     var favDates = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
     var curIdx = favDates.indexOf(CURRENT_DATE);
@@ -364,8 +368,8 @@ function smoothScrollTo(target) {
     var nextLink = document.getElementById('favNextLink');
     var nextLabel = document.getElementById('favNextLabel');
 
-    if (curIdx !== -1 && favDates.length > 0) {
-      // Override with favorites-only navigation
+    if (NAV_MODE === 'favorites' && curIdx !== -1 && favDates.length > 0) {
+      // Favorites-only navigation (only when entering from favorites page)
       if (curIdx < favDates.length - 1) {
         var prevD = favDates[curIdx + 1];
         prevLink.href = './' + prevD + '.html';
