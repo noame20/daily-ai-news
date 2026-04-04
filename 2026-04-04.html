@@ -226,103 +226,70 @@
       </div>
       <div class="content"><h1>2026-04-04 AI 日报</h1>
 <h2>GitHub 项目</h2>
-<h3>1 <a href="https://github.com/jackwener/opencli">jackwener/opencli</a></h3>
-<p><strong>Make Any Website &amp; Tool Your CLI</strong> — 一个通用 CLI Hub 和 AI 原生运行时，可将任意网站、Electron 应用或本地二进制工具转换为标准化命令行界面，专为 AI Agent 通过统一 `AGENT.md` 集成来发现、学习和执行工具而构建。</p>
-<p><strong>核心技术亮点：</strong></p>
-<table>
-<thead>
-<tr>
-<th>维度</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>AI Agent 集成</strong></td>
-<td>提供 `opencli-operate` skill，Claude Code / Cursor 等 Agent 可直接控制浏览器</td>
-</tr>
-<tr>
-<td><strong>浏览器复用</strong></td>
-<td>重用 Chrome/Chromium 已登录状态，凭证不离开浏览器</td>
-</tr>
-<tr>
-<td><strong>反检测机制</strong></td>
-<td>内置反指纹措施，绕过 `navigator.webdriver` 检测</td>
-</tr>
-<tr>
-<td><strong>零 LLM 成本</strong></td>
-<td>运行时无需消耗 token</td>
-</tr>
-<tr>
-<td><strong>73+ 内置适配器</strong></td>
-<td>覆盖 Bilibili、知乎、小红书、Twitter、Reddit、YouTube 等主流平台</td>
-</tr>
-</tbody></table>
-<p><strong>技术栈：</strong> TypeScript (ESM) + Node.js/Bun + VitePress 文档 + vitest 测试</p>
-<p><strong>核心命令：</strong></p>
-<ul>
-<li>`opencli doctor` — 诊断连接状态</li>
-<li>`opencli explore` — 发现网站 API</li>
-<li>`opencli operate` — 浏览器自动化控制</li>
-<li>`opencli register` — 注册外部 CLI</li>
-</ul>
-<p><strong>安装：</strong> `npm install -g @jackwener/opencli` | 版本 1.6.1 | Apache-2.0</p>
-<p>⭐Stars 12411 🍴Forks 1085 🔀PR 46 🔖Issue 48</p>
+<p>（今日无 GitHub Trending 数据）</p>
 <hr>
 <h2>科技（TLDR）</h2>
-<p>（今日无 TLDR 新闻数据）</p>
+<blockquote>
+<p><strong>Gemma 4: Google 史上参数效率最高的开源模型家族</strong><br><a href="https://simonwillison.net/2026/Apr/2/gemma-4/%23atom-everything?utm_source=tldrnewsletter">原文链接</a></p>
+</blockquote>
+<p>Google DeepMind 发布 Gemma 4 系列，包含四个视觉多模态模型：2B（E2B）、4B（E4B）、31B 密集模型，以及 26B-A4B MoE 专家混合架构。其中 E2B/E4B 引入 Per-Layer Embeddings（PLE）技术，将每层decoder独立嵌入以最大化参数效率；E2B/E4B 原生支持音频输入，26B MoE 仅激活 3.8B 参数即可达到极低延迟。所有模型支持 128K~256K 上下文。<strong>Gemma 4 31B 在 Arena AI 排名全球第3，26B MoE 排名第6，击败 20 倍尺寸的模型。</strong> 生态已突破 4 亿次下载、10 万+ 变种。</p>
+<hr>
+<blockquote>
+<p><strong>Cursor 3 发布：从 VS Code 分叉走向原生 Agent 架构</strong><br><a href="https://cursor.com/blog/cursor-3?utm_source=tldrnewsletter">原文链接</a></p>
+</blockquote>
+<p>Cursor 3 核心变化是<strong>从零开始围绕智能体构建全新界面</strong>，不再基于 VS Code 分叉。新增多智能体协作：侧边栏统一显示来自移动端、Web、桌面端、Slack、GitHub、Linear 的所有本地和云端智能体，云端智能体可生成演示截图供用户确认。<strong>支持云端/本地智能体无缝切换</strong>（离线时本地运行，连网后迁移到云端继续）。Composer 2 提供更高用量上限，支持完整 PR 管理和全新差异视图。</p>
+<hr>
+<blockquote>
+<p><strong>Artemis II 升空：4 名宇航员开启 9 天绕月之旅</strong><br><a href="https://arstechnica.com/space/2026/04/four-astronauts-depart-for-the-moon-with-a-fiery-send-off-from-cape-canaveral/?utm_source=tldrnewsletter">原文链接</a></p>
+</blockquote>
+<p>NASA SLS 火箭于 2026年4月2日 22:35 UTC 从肯尼迪航天中心 39B 发射台升空，搭载 4 名宇航员（Reid Wiseman 指令长、Victor Glover 驾驶员、Christina Koch &amp; Jeremy Hansen 任务专家）。任务时长 9 天，飞行 252,799 英里（406,840 公里）——将<strong>创造人类最远飞行距离纪录</strong>。Glover 将手动驾驶 Orion 飞船执行 6 自由度接近演示（最近距上级火箭约 10 米）。预计 4 月 10 日溅落太平洋。Jeremy Hansen 成为首位参与绕月飞行的非美国人。Artemis II 不登月，正式登月任务定名为 Artemis IV（2028年）。</p>
+<hr>
+<blockquote>
+<p><strong>Sanctuary AI 机械手实现零样本仿真到真实的灵巧操作</strong><br><a href="https://www.therobotreport.com/sanctuary-ais-robotic-hand-demonstrates-zero-shot-in-hand-manpulation/?utm_source=tldrnewsletter">原文链接</a></p>
+</blockquote>
+<p>Sanctuary AI 发布视频，展示其 <strong>21 自由度液压驱动机械手</strong>在仿真中完全训练的策略，无须任何真实硬件微调即可直接部署到真机，连续 10 次成功将字母立方体定向到目标方向。液压驱动在力量、响应速度和控制精度上优于常见电驱动方案。Sanctuary 强调其专有 AI 控制系统 Carbon（模仿人脑子系统：记忆、视觉、听觉、触觉），配合 Phoenix 人形机器人，定位为通用具身 AI 领导者。</p>
+<hr>
+<blockquote>
+<p><strong>Web Neural Network API 成为 W3C Candidate Recommendation</strong><br><a href="https://www.w3.org/TR/webnn/?utm_source=tldrnewsletter">原文链接</a></p>
+</blockquote>
+<p>W3C 于 2026年3月27日 发布 Web Neural Network API（WebNN）候选推荐规范。WebNN 是专用于神经网络推理加速的低层 Web API，基于浏览器底层 ML 能力（Windows ML LiteRT、macOS Core ML），支持 CPU/GPU/NPU 硬件加速。相比 WebGPU，WebNN 基于预存着色器，<strong>隐私指纹风险更低</strong>，且 API 层级更高，适合 ML 框架开发者。<strong>Chromium M112+、macOS M122+ 已支持</strong>，支持 56+ 种神经网络操作符（matmul、conv2d、lstm、gru 等），数据类型覆盖 float32/float16/int8 等。</p>
 <hr>
 <h2>趋势分析</h2>
-<p><strong>核心关键词：</strong> 浏览器反检测、AGENT.md 标准化协议、CLI Hub 统一集成、Playwright API 兼容、WASM 沙箱</p>
-<p><strong>历史相关项目（2026-03-27）：</strong></p>
+<h3>历史搜索结果</h3>
+<p><strong>搜索 &quot;Gemma&quot;</strong>（3~4 周前）：</p>
 <ul>
-<li><a href="https://github.com/SawyerHood/dev-browser">SawyerHood/dev-browser</a> — Claude Code 浏览器自动化 Skill，QuickJS WASM 沙箱隔离，benchmark 最优（$0.88/任务）</li>
+<li>2026-03-20 提及 Unsloth 框架支持 Gemma 微调</li>
+<li>2026-03-19 提及 Unsloth 支持 Gemma 模型族</li>
+</ul>
+<p><strong>搜索 &quot;Cursor&quot; / &quot;AI 编程 Agent&quot;</strong>：</p>
+<ul>
+<li>2026-03-28 提及 Docker 化 Cursor 编程工作站</li>
+<li>2026-03-26 提及 Claude Code 官方仓库（83k stars）</li>
 </ul>
 <h3>技术连贯性</h3>
-<table>
-<thead>
-<tr>
-<th>维度</th>
-<th>2026-03-27 (dev-browser)</th>
-<th>2026-04-04 (opencli)</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>目标</strong></td>
-<td>Claude Code 专用浏览器控制</td>
-<td>任意 Agent/工具通用化</td>
-</tr>
-<tr>
-<td><strong>隔离方案</strong></td>
-<td>QuickJS WASM 沙箱</td>
-<td>反指纹 + 复用浏览器状态</td>
-</tr>
-<tr>
-<td><strong>协议</strong></td>
-<td>Skill 标准</td>
-<td>AGENT.md 标准化</td>
-</tr>
-<tr>
-<td><strong>覆盖</strong></td>
-<td>通用浏览器</td>
-<td>73+ 垂直平台适配器</td>
-</tr>
-<tr>
-<td><strong>成本</strong></td>
-<td>$0.88/任务</td>
-<td>零 token 消耗</td>
-</tr>
-</tbody></table>
-<p>两条技术路线同向演进：AI Agent 控制浏览器的能力正从「专用工具」向「通用平台」迁移，opencli 代表了更激进的整合策略——不仅控制浏览器，还统一管理所有外部 CLI 工具（gh、docker、obsidian 等）。</p>
-<h3>风向判断</h3>
+<ol>
+<li><p><strong>Gemma 4 MoE × 开源许可路线</strong>：Gemma 自 3 月以来持续迭代，本次转向 <strong>Apache 2.0 许可</strong>是关键转折——Google 回应了开发者社群对「真正开源」的诉求，标志着开源模型许可竞争进入新阶段（对比 Llama 的特定使用限制）。</p>
+</li>
+<li><p><strong>Cursor 3 × AI 编程 Agent 生态</strong>：3 月底 Docker 编程工作站已整合 Cursor，Cursor 3 本次从 VS Code 分叉转向<strong>原生 Agent 架构</strong>，代表 AI IDE 赛道正式进入「多 Agent 协作」时代，与 Claude Code、GitHub Copilot 的竞争进入新维度。</p>
+</li>
+<li><p><strong>Sanctuary AI × 具身 AI</strong>：人形机器人+灵巧手在 3 月无直接先例，但 Carbon 控制系统的「记忆/视觉/听觉/触觉多模态整合」方向，与同期大语言模型的多模态趋势高度一致。</p>
+</li>
+</ol>
+<h3>风向转变</h3>
 <ul>
-<li><strong>利好：</strong> opencli 的零 LLM 成本 + 反检测 + 多平台适配器组合，降低了 AI Agent 实际落地门槛</li>
-<li><strong>信号：</strong> 从单一浏览器自动化扩展到&quot;网站+应用+CLI&quot;的统一抽象层，Agent 工具生态正走向标准化协议层（AGENT.md）</li>
+<li><strong>正面信号</strong>：WebNN W3C 规范 Candidate Recommendation 阶段，意味着<strong>浏览器端侧 AI 推理</strong>即将标准化，Web AI 隐私优先范式正式落地。</li>
+<li><strong>值得观察</strong>：Artemis II 任务若生命支持系统检测未达标（月球引力辅助返回弹道的性能窗口极窄），可能影响后续 Artemis III/IV 时间表。</li>
 </ul>
 <h3>预测与行动建议</h3>
 <ol>
-<li><strong>接下来两周内</strong>，预计 AGENT.md 标准化方案会获得更多开源项目采纳，形成类似 MCP 的事实标准</li>
-<li><strong>建议 nagi 重点关注：</strong> opencli 的适配器生态增长速度（73+ 平台的覆盖质量和更新频率），这决定了其作为「AI Agent 操作系统」的真实价值</li>
-<li><strong>技术选型建议：</strong> 如果需要在多个平台做 Agent 自动化，opencli 的「零 token 成本 + 浏览器复用」组合值得关注；如果需要高隔离安全方案，dev-browser 的 WASM 沙箱路线仍有优势</li>
+<li><p><strong>Gemma 4 Apache 2.0 将加速企业采用</strong>：预计 2 周内会看到基于 Gemma 4 MoE 的本地部署方案大量涌现，尤其是 26B MoE 量化版（消费级 GPU 可跑），对自有模型部署需求强的团队值得关注。</p>
+</li>
+<li><p><strong>Cursor 3 的「多 Agent 无缝切换」将成为 AI IDE 新标配</strong>：预计 GitHub Copilot、Claude Code 均会在 Q2 跟进类似能力，关注多 Agent 状态迁移的标准化。</p>
+</li>
+<li><p><strong>具身 AI + 零样本迁移</strong>值得关注：Sanctuary 的 zero-shot sim-to-real 若可复制，将是人形机器人商业化的关键里程碑，值得持续跟踪其 Carbon 系统开源情况。</p>
+</li>
+<li><p><strong>WebNN 标准浏览器支持扩展</strong>：随着规范推进，预计 2026 年中 Chrome/Edge 全平台、Firefox 实验支持将陆续到来，前端 AI 应用开发可开始规划降级策略。</p>
+</li>
 </ol>
 </div>
       <div class="article-nav">
