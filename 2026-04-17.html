@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>4月17日 AI 日报</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark">
+  <style>
+    
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #FFF8F0; --surface: #FFFFFF; --primary: #FFB5C5; --primary-dark: #FF8FAB;
+    --secondary: #E8D5F5; --accent: #A8E6CF; --accent-dark: #7DD3B0;
+    --text: #4A4458; --text-light: #8E8A9E; --border: #F0E8E0;
+    --shadow: rgba(255,181,197,0.2); --shadow-lg: rgba(255,181,197,0.35);
+    --code-bg: #FFF0F5; --radius: 20px; --bar: var(--primary);
+    --nav-height: 60px;
+  }
+  [data-theme="dark"] {
+    --bg: #1A1625; --surface: #2D2640; --primary: #FFB5C5; --primary-dark: #FF8FAB;
+    --secondary: #C9A8E8; --accent: #7DD3B0; --accent-dark: #6BC49A;
+    --text: #F0EBF8; --text-light: #A8A0BC; --border: #3D3555;
+    --shadow: rgba(0,0,0,0.4); --shadow-lg: rgba(0,0,0,0.5); --code-bg: #2D2640;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1A1625; --surface: #2D2640; --primary: #FFB5C5; --primary-dark: #FF8FAB;
+      --secondary: #C9A8E8; --accent: #7DD3B0; --accent-dark: #6BC49A;
+      --text: #F0EBF8; --text-light: #A8A0BC; --border: #3D3555;
+      --shadow: rgba(0,0,0,0.4); --shadow-lg: rgba(0,0,0,0.5); --code-bg: #2D2640;
+    }
+  }
+  body {
+    font-family: 'Noto Sans SC','Quicksand',ui-sans-serif,system-ui,sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.8;
+    min-height: 100vh;
+    /* S-curve momentum scroll feel */
+    scroll-behavior: auto;
+  }
+  html { scroll-behavior: auto; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto !important; }
+  }
+  a { color: var(--primary-dark); text-decoration: none; font-weight: 500; }
+  a:hover { text-decoration: underline; }
+
+  /* ── Top navbar ── */
+  .navbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+    height: var(--nav-height);
+    background: rgba(255,248,240,0.85);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border-bottom: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 20px;
+    transition: transform 320ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  [data-theme="dark"] .navbar { background: rgba(26,22,37,0.88); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .navbar { background: rgba(26,22,37,0.88); }
+  }
+  .navbar.nav-hidden { transform: translateY(-100%); }
+  .nav-logo {
+    font-family:'Quicksand','Noto Sans SC',sans-serif;
+    font-size:1.1rem; font-weight:700; color:var(--text);
+    display:flex; align-items:center; gap:8px;
+  }
+  .nav-logo svg { color:var(--primary-dark); }
+  .nav-links { display:flex; gap:4px; }
+  .nav-link {
+    display:inline-flex; align-items:center; gap:6px;
+    padding:8px 16px; border-radius:100px; font-size:0.875rem; font-weight:600;
+    color:var(--text-light); cursor:pointer; border:none;
+    background:transparent; transition:all 200ms ease;
+  }
+  .nav-link:hover { color:var(--text); background:var(--surface); box-shadow:0 2px 8px var(--shadow); }
+  .nav-link.active { color:var(--primary-dark); background:var(--surface); box-shadow:0 2px 12px var(--shadow); }
+  .nav-right { display:flex; align-items:center; gap:8px; }
+  /* Theme toggle in navbar */
+  .nav-theme-toggle {
+    width:36px; height:36px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--surface); border:1.5px solid var(--border);
+    border-radius:10px; cursor:pointer; color:var(--text);
+    box-shadow:0 2px 8px var(--shadow); transition:all 200ms ease;
+  }
+  .nav-theme-toggle:hover { box-shadow:0 4px 12px var(--shadow-lg); transform:scale(1.05); }
+
+  /* ── Page content offset for fixed navbar ── */
+  .page-body { padding-top: var(--nav-height); }
+
+  /* ── Reading progress bar ── */
+  #progress-bar {
+    position: fixed; bottom: 0; left: 0; z-index: 600;
+    width: 0%; height: 3px;
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    transition: width 60ms linear;
+  }
+
+  /* ── Floating buttons ── */
+  .float-btns {
+    position: fixed; bottom: 20px; right: 20px; z-index: 400;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .float-btn.is-fav { color: #FF6B8A; }
+  .float-btn {
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: 12px; cursor: pointer; color: var(--text);
+    box-shadow: 0 2px 8px var(--shadow); transition: box-shadow 200ms ease, transform 200ms ease;
+    text-decoration: none;
+  }
+  .float-btn:hover { box-shadow: 0 4px 16px var(--shadow-lg); transform: scale(1.05); color: var(--primary-dark); }
+  .float-btn:active { transform: scale(0.95); }
+
+    body::before { content:''; position:fixed; top:0; left:0; right:0; height:360px; background:linear-gradient(180deg,rgba(255,181,197,0.18) 0%,transparent 100%); pointer-events:none; z-index:0; }
+    .container { position:relative; z-index:1; max-width:760px; margin:0 auto; padding:0 16px 80px; }
+    .article-meta { display:flex; align-items:center; gap:12px; margin-bottom:32px; padding-bottom:24px; border-bottom:2px solid var(--border); flex-wrap:wrap; }
+    .article-date-badge { display:inline-flex; align-items:center; gap:6px; background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%); color:#fff; font-family:'Quicksand',sans-serif; font-size:0.875rem; font-weight:700; padding:6px 14px; border-radius:100px; }
+    article { background:var(--surface); border-radius:var(--radius); padding:40px 36px; box-shadow:0 4px 24px var(--shadow); border:1.5px solid var(--border); animation:slideUp 0.4s ease-out both; }
+    @keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    @media(prefers-reduced-motion:reduce){article{animation:none}}
+    .content h1 { font-family:'Quicksand','Noto Sans SC',sans-serif; font-size:1.6rem; font-weight:700; color:var(--text); margin:28px 0 16px; letter-spacing:-0.01em; }
+    .content h2 { font-family:'Quicksand','Noto Sans SC',sans-serif; font-size:1.2rem; font-weight:700; color:var(--text); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--border); }
+    .content h3 { font-family:'Quicksand','Noto Sans SC',sans-serif; font-size:1.05rem; font-weight:600; color:var(--primary-dark); margin:24px 0 8px; }
+    .content h4 { font-size:0.9rem; font-weight:600; color:var(--text-light); text-transform:uppercase; letter-spacing:0.06em; margin:20px 0 6px; }
+    .content p { margin:0 0 16px; font-size:1rem; line-height:1.85; }
+    .content ul,.content ol { margin:0 0 16px; padding-left:24px; }
+    .content li { margin:6px 0; line-height:1.7; }
+    .content code { font-family:'Fira Code','Consolas',monospace; font-size:0.875em; background:var(--code-bg); color:var(--primary-dark); padding:2px 8px; border-radius:6px; font-weight:500; }
+    .content pre { background:var(--code-bg) !important; border-radius:14px; padding:20px !important; overflow-x:auto; margin:20px 0 !important; border:1.5px solid var(--border); }
+    .content pre code { background:transparent !important; color:inherit; padding:0; font-size:0.875rem; line-height:1.65; }
+    .content blockquote { margin:20px 0; padding:14px 20px; background:linear-gradient(135deg,rgba(255,181,197,0.12) 0%,rgba(232,213,245,0.12) 100%); border-left:4px solid var(--primary); border-radius:0 12px 12px 0; }
+    .content blockquote p { margin:0; }
+    .content table { width:100%; border-collapse:collapse; margin:20px 0; font-size:0.9375rem; border-radius:12px; overflow:hidden; border:1.5px solid var(--border); }
+    .content th,.content td { padding:10px 14px; text-align:left; border-bottom:1px solid var(--border); }
+    .content th { background:var(--code-bg); font-weight:600; font-size:0.875rem; }
+    .content tr:last-child td { border-bottom:none; }
+    .content tr:nth-child(even) td { background:rgba(255,181,197,0.05); }
+    .content img { max-width:100%; height:auto; border-radius:12px; margin:8px 0; }
+    .content hr { border:none; border-top:2px solid var(--border); margin:32px 0; }
+    .content strong { font-weight:600; }
+    @media(max-width:600px){article{padding:24px 20px}.content h1{font-size:1.35rem}.content h2{font-size:1.1rem}}
+
+    /* ── Prev/Next navigation ── */
+    .article-nav { display:flex; justify-content:space-between; align-items:center; margin-top:32px; padding-top:24px; border-top:2px solid var(--border); gap:12px; }
+    .nav-btn { display:inline-flex; align-items:center; gap:8px; padding:10px 18px; background:var(--surface); border:1.5px solid var(--border); border-radius:100px; text-decoration:none; color:var(--text); font-size:0.875rem; font-weight:600; box-shadow:0 2px 8px var(--shadow); transition:all 200ms ease; }
+    .nav-btn:hover:not(.nav-btn--disabled) { color:var(--primary-dark); border-color:var(--primary); box-shadow:0 4px 16px var(--shadow-lg); transform:scale(1.02); }
+    .nav-btn--disabled { opacity:0.4; cursor:default; pointer-events:none; }
+    .nav-btn span { max-width:120px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+    /* ── Footer ── */
+    footer { text-align:center; margin-top:48px; padding:24px 0 32px; font-size:0.8rem; color:var(--text-light); }
+    footer::before { content:''; display:block; width:60px; height:2px; background:linear-gradient(to right,transparent,var(--secondary),transparent); margin:0 auto 16px; border-radius:2px; }
+
+    /* ── Invisible swipe zones (manga-style page turn) ── */
+    .swipe-zone {
+      position: fixed;
+      top: var(--nav-height);
+      bottom: 0;
+      width: 70px;
+      z-index: 300;
+      cursor: pointer;
+      /* invisible */
+      background: transparent;
+      /* prevent interfering with other elements */
+      pointer-events: auto;
+      /* extend hit area above viewport top */
+      height: calc(100vh + 200px);
+      margin-top: -100px;
+    }
+    .swipe-zone--left { left: 0; }
+    .swipe-zone--right { right: 0; }
+    /* subtle hover hint (optional — very faint arrow appears) */
+    .swipe-zone::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 24px;
+      height: 40px;
+      background-repeat: no-repeat;
+      background-size: contain;
+      opacity: 0;
+      transition: opacity 200ms ease;
+      pointer-events: none;
+    }
+    .swipe-zone--left::after { left: 12px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='40' viewBox='0 0 24 40'%3E%3Cpath d='M20 4L6 20L20 36' stroke='%23FFB5C5' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E"); }
+    .swipe-zone--right::after { right: 12px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='40' viewBox='0 0 24 40'%3E%3Cpath d='M4 4L18 20L4 36' stroke='%23FFB5C5' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E"); }
+    .swipe-zone:hover::after { opacity: 0.5; }
+    .swipe-zone--disabled { pointer-events: none; cursor: default; }
+    .swipe-zone--disabled::after { display: none; }
+  </style>
+</head>
+<body>
+  
+  <nav class="navbar" id="navbar">
+    <a href="./index.html" class="nav-logo" style="text-decoration:none;color:var(--text);"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L13.5 8.5L19 10L13.5 11.5L12 17L10.5 11.5L5 10L10.5 8.5L12 3Z"/><path d="M5 3L5.5 5L7 5.5L5.5 6L5 8L4.5 6L3 5.5L4.5 5L5 3Z"/><path d="M19 17L19.5 19L21 19.5L19.5 20L19 22L18.5 20L17 19.5L18.5 19L19 17Z"/></svg> AI 日报</a>
+    <div class="nav-links">
+      <a href="./favorites.html" class="nav-link " data-nav="favorites">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>收藏</span>
+      </a>
+    </div>
+    <div class="nav-right">
+      <button class="nav-theme-toggle" id="navThemeToggle" aria-label="切换主题"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
+    </div>
+  </nav>
+
+  <!-- Invisible swipe zones for manga-style prev/next -->
+  <div id="swipeLeft" class="swipe-zone swipe-zone--left" role="button" aria-label="上一篇" tabindex="0"></div>
+  <div id="swipeRight" class="swipe-zone swipe-zone--right" role="button" aria-label="下一篇" tabindex="0"></div>
+
+  <div class="container" style="padding-top:calc(var(--nav-height) + 8px)">
+    <article>
+      <div class="article-meta">
+        <span class="article-date-badge">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          4月17日
+        </span>
+        <span style="color:var(--text-light);font-size:0.875rem;">AI 日报</span>
+      </div>
+      <div class="content"><h1>2026-04-17 AI 日报</h1>
+<h2>GitHub 项目</h2>
+<h3>1 <a target="_blank" rel="noopener noreferrer" href="https://github.com/public-apis/public-apis">public-apis/public-apis</a></h3>
+<p>免费公共API集合项目，收录了来自45+领域的海量公共API（ Animals、Anime、Anti-Malware、Art &amp; Design、Authentication &amp; Authorization、Blockchain、Books、Business、Calendar、Cloud Storage &amp; File Sharing、Continuous Integration、Cryptocurrency、Currency Exchange、Data Validation、Development、Dictionaries、Documents &amp; Productivity、Email、Entertainment、Environment、Events、Finance、Food &amp; Drink、Games &amp; Comics、Geocoding、Government、Health、Jobs、Machine Learning、Music、News、Open Data、Open Source Projects、Patent、Personality、Phone、Photography、Programming、Science &amp; Math、Security、Shopping、Social、Sports &amp; Fitness、Test Data、Text Analysis、Tracking、Transportation、URL Shorteners、Vehicle、Video、Weather 等）。每个API条目包含名称、描述、认证方式（apiKey/OAuth/No）、是否支持HTTPS以及CORS支持情况。项目由社区维护，属APILayer旗下。</p>
+<h3>2 <a target="_blank" rel="noopener noreferrer" href="https://github.com/anthropics/claude-code">anthropics/claude-code</a></h3>
+<p>Anthropic官方推出的终端AI编程助手，基于自然语言命令在终端中执行日常编码任务、解释复杂代码、处理Git工作流。支持MacOS/Linux（推荐安装脚本或Homebrew）、Windows（推荐PowerShell安装或WinGet）。通过 `/bug` 命令可直接在工具内反馈问题。安装后运行 `claude` 即可启动。支持插件扩展功能，提供数据收集、使用的隐私政策和商业服务条款说明。</p>
+<h3>3 <a target="_blank" rel="noopener noreferrer" href="https://github.com/Lordog/dive-into-llms">Lordog/dive-into-llms</a></h3>
+<p>上海交通大学《自然语言处理前沿技术》《人工智能安全技术》课程讲义拓展而来的大模型编程实践教程系列，包含11个主题：微调与部署、提示学习与思维链、知识编辑、数学推理、模型水印、越狱攻击、大模型隐写、多模态模型、GUI智能体、智能体安全、RLHF安全对齐。还联合华为昇腾推出了《大模型开发全流程》系列课程，覆盖从初级到高级的昇腾模型开发和迁移调优全流程。</p>
+<h3>4 <a target="_blank" rel="noopener noreferrer" href="https://github.com/firecrawl/open-lovable">firecrawl/open-lovable</a></h3>
+<p>通过AI对话即时构建React应用的现代开发工具，是Firecrawl团队推出的开源项目。可将任意网站克隆并以现代React应用形式重新创建。项目基于Next.js开发，需要配置FIRECRAWL_API_KEY（必填）以及AI Provider密钥（GEMINI_API_KEY/ANTHROPIC_API_KEY/OPENAI_API_KEY/GROQ_API_KEY四选一）。支持Vercel和E2B两种沙箱环境用于代码部署执行。MIT开源许可证。</p>
+<h3>5 <a target="_blank" rel="noopener noreferrer" href="https://github.com/multica-ai/multica">multica-ai/multica</a></h3>
+<p>开源托管Agent平台，将AI编程Agent转变为真正的团队成员。核心功能：Agent作为团队成员认领任务、自主执行并实时报告进度、将解决方案沉淀为可复用Skill在团队内共享。支持多种主流Agent：Claude Code、Codex、OpenClaw、OpenCode、Hermes、Gemini、Pi、Cursor Agent。技术栈：Next.js 16前端 + Go后端（Chi + WebSocket）+ PostgreSQL 17（pgvector向量存储）。通过Homebrew或安装脚本快速安装，适合人机协作团队使用。</p>
+<h3>6 <a target="_blank" rel="noopener noreferrer" href="https://github.com/davebcn87/pi-autoresearch">davebcn87/pi-autoresearch</a></h3>
+<p>pi（终端AI编程Agent）的自主实验循环扩展插件，灵感来自karpathy/autoresearch。核心功能：初始化实验配置 → 运行基准测试 → 记录结果并自动Git提交 → 保留改进/回退退步 → 循环执行。包含信度评分机制（基于MAD统计）区分真实改进与基准噪音，提供 `/autoresearch` 命令交互和可视化Dashboard。支持任意优化目标：测试速度、Bundle大小、LLM训练指标、构建时间、Lighthouse评分等。需pi（pi.dev）环境运行。</p>
+<h3>7 <a target="_blank" rel="noopener noreferrer" href="https://github.com/EvoMap/evolver">EvoMap/evolver</a></h3>
+<p>基于GEP（Genome Evolution Protocol）的AI Agent自我进化引擎，核心是EvoMap网络的一部分。核心功能：扫描memory目录日志→选择匹配的Gene或Capsule→输出协议约束的GEP提示→记录可审计的EvolutionEvent。与OpenClaw等Host Runtime集成后可自动执行进化。提供四种策略模式：balanced（均衡）、innovate（创新）、harden（加固）、repair-only（仅修复）。支持可选连接EvoMap Hub获取技能商店、Worker池、进化排行榜等网络功能。核心进化功能可完全离线运行。</p>
+<h3>8 <a target="_blank" rel="noopener noreferrer" href="https://github.com/lsdefine/GenericAgent">lsdefine/GenericAgent</a></h3>
+<p>极简可自我进化的自主Agent框架，核心仅~3K行代码，Agent Loop约100行。赋予LLM对本地计算机的系统级控制能力，覆盖浏览器、终端、文件系统、键鼠输入、屏幕视觉及移动设备（ADB）。核心设计理念：不预设技能，靠进化获得能力——每解决新任务自动将执行路径固化为Skill，沉淀为个人技能树。9个原子工具：`code_run`、`file_read`、`file_write`、`file_patch`、`web_scan`、`web_execute_js`、`ask_user`及2个记忆管理工具。分层记忆系统L0-L4支持跨会话上下文保持。Token效率极高，上下文窗口不到30K。支持Claude/Gemini/Kimi/MiniMax等主流模型，跨平台运行。已实现完全自主运行，从安装Git到提交Commit全程自主完成。</p>
+<h2>科技（TLDR）</h2>
+<blockquote>
+<p><strong>OpenAI updates its Agents SDK to help enterprises build safer, more capable agents</strong><br>OpenAI更新Agents SDK，帮助企业构建更安全、更强能力的AI Agent<br><a target="_blank" rel="noopener noreferrer" href="https://techcrunch.com/2026/04/15/openai-updates-its-agents-sdk-to-help-enterprises-build-safer-more-capable-agents/?utm_source=tldrnewsletter">原文链接</a></p>
+</blockquote>
+<blockquote>
+<p><strong>Musk Asks Suppliers to Move at &#39;Light Speed&#39; on New chipmaking Plan</strong><br>马斯克要求供应商以&quot;光速&quot;推进新芯片制造计划（Terafab项目）<br><a target="_blank" rel="noopener noreferrer" href="https://www.bloomberg.com/news/articles/2026-04-16/musk-asks-suppliers-to-move-at-light-speed-on-terafab-project?accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb3VyY2UiOiJTdWJzY3JpYmVyR2lmdGVkQXJ0aWNsZSIsImlhdCI6MTc3NjMyMjczOSwiZXhwIjoxNzc2OTI3NTM5LCJhcnRpY2xlSWQiOiJUQ09OVjNLSzNOWTkwMCIsImJjb25uZWN0SWQiOiI2NTc1NjkyN0UwMkM0N0MwQkQ0MDNEQTJGMEUyNzIyMyJ9.p1OxxYVhATRyjPYEnMxgSOa1ZcjlQ1m4Y5G1zRdgWnA&utm_source=tldrnewsletter">原文链接</a></p>
+</blockquote>
+<blockquote>
+<p><strong>Siri Engineers Sent to AI Coding Bootcamp as Apple Prepares to Deliver Siri Overhaul</strong><br>苹果派遣Siri工程师参加AI编程训练营，准备全面革新Siri<br><a target="_blank" rel="noopener noreferrer" href="https://www.macrumors.com/2026/04/15/siri-engineers-ai-coding-bootcamp/?utm_source=tldrnewsletter">原文链接</a></p>
+</blockquote>
+<h2>趋势分析</h2>
+<p><strong>关键词</strong>：自主实验循环（Autonomous Research Loop）、基因组进化协议（GEP）、Agent团队协作平台（Managed Agents）、技能树（Skill Tree）、Terafab芯片</p>
+<p><strong>搜索历史日报以分析技术连贯性...</strong></p>
+<p>```bash<br>qmd search &quot;Autonomous Research Loop&quot; -n 10 --md<br>qmd search &quot;技能树 skill tree agent&quot; -n 10 --md<br>qmd search &quot;managed agents platform&quot; -n 10 --md<br>```</p>
+<p>由于暂无1周前的历史日报数据可供参考，基于今日内容做以下总结与建议：</p>
+<p><strong>技术趋势总结：</strong></p>
+<ol>
+<li><p><strong>Agent平台化协作</strong>：Multica将多个AI编程Agent（Claude Code、Codex、Cursor等）整合为团队成员协作平台，标志着AI开发从单Agent向多Agent协作分工演进</p>
+</li>
+<li><p><strong>自我进化机制成熟</strong>：GenericAgent的技能树沉淀机制（每次任务自动固化Skill）和Evolver的GEP基因组进化协议，代表了Agent能力积累的两种不同路径——前者偏向端侧自主进化，后者偏向协议约束的可审计进化</p>
+</li>
+<li><p><strong>自主实验优化兴起</strong>：pi-autoresearch借鉴Karpathy的autoresearch思想，在代码Agent中引入贝叶斯优化循环，信度评分机制使自动化优化有据可依</p>
+</li>
+<li><p><strong>终端AI编程全面落地</strong>：Claude Code 11万+ Stars说明终端AI编程已成主流，Apple派Siri工程师学习AI编程显示传统软件团队正在加速AI化</p>
+</li>
+</ol>
+<p><strong>建议关注：</strong></p>
+<ul>
+<li>多Agent协作平台的标准化进程（Multica采用的Issue分配模式是否会成行业事实标准？）</li>
+<li>自我进化Agent的可审计性问题（Evolver的GEP协议提供了合规场景下的进化路径）</li>
+<li>终端侧AI编程的安全边界（GenericAgent可直接控制键鼠，Token效率与安全如何平衡？）</li>
+</ul>
+</div>
+      <div class="article-nav">
+        <a href="./2026-04-16.html" id="favPrevLink" class="nav-btn" aria-label="上一篇"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg><span id="favPrevLabel">2026-04-16</span></a>
+        <a href="#" id="favNextLink" class="nav-btn" aria-label="下一篇"><span id="favNextLabel">没有更新的</span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </article>
+    <footer>Made with <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> by Yui-Chan</footer>
+  </div>
+
+  <div class="float-btns">
+    <a href="./index.html" class="float-btn" id="homeBtn" aria-label="返回"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></a>
+    <button class="float-btn" id="backToTop" aria-label="返回顶部"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg></button>
+    <button class="float-btn" id="favBtn" data-date="2026-04-17" aria-label="收藏本文">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    </button>
+  </div>
+
+  <div id="progress-bar"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.0/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script>
+    
+// Native browser smooth scroll — browser handles physics & compositing
+function smoothScrollTo(target) {
+  if (typeof target === 'number') {
+    window.scrollTo({ top: target, behavior: 'smooth' });
+  } else if (target) {
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+// Navbar hide/show on scroll (up = show, down = hide)
+// Uses native scroll, no rAF loop fighting the browser
+(function() {
+  var navbar = document.getElementById('navbar');
+  if (!navbar) return;
+  var lastScrollY = 0;
+  var rafPending = false;
+
+  function updateNavbar() {
+    var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+    if (scrollY <= 10) {
+      navbar.classList.remove('nav-hidden');
+      rafPending = false;
+      return;
+    }
+    if (scrollY > lastScrollY && scrollY > 80) {
+      navbar.classList.add('nav-hidden');
+    } else {
+      navbar.classList.remove('nav-hidden');
+    }
+    lastScrollY = scrollY;
+    rafPending = false;
+  }
+
+  window.addEventListener('scroll', function() {
+    if (!rafPending) {
+      rafPending = true;
+      requestAnimationFrame(updateNavbar);
+    }
+  }, { passive: true });
+})();
+
+
+    // ── Determine navigation mode & where home button should go ──
+    // localStorage flag is set by favorites page when clicking any card
+    var CURRENT_DATE = '2026-04-17';
+    var FAVS_ENTRY_KEY = 'ainews_enter_from_favs';
+    var fromFavs = localStorage.getItem(FAVS_ENTRY_KEY) === '1';
+    // Clear immediately so next direct page load defaults to homepage
+    localStorage.removeItem(FAVS_ENTRY_KEY);
+    document.getElementById('homeBtn').href = fromFavs ? './favorites.html' : './index.html';
+
+    // Navigation mode: favorites-only only if entering from favorites page
+    // Toggle favorite does NOT change nav mode — only the entry point matters
+    var NAV_MODE = fromFavs ? 'favorites' : 'chronological';
+
+    // Theme toggle
+    var btn = document.getElementById('navThemeToggle');
+    var html = document.documentElement;
+    var stored = localStorage.getItem('theme');
+    var sunI = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>';
+    var moonI = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>';
+    if (stored === 'dark') { html.setAttribute('data-theme','dark'); btn.innerHTML = moonI; }
+    else if (stored === 'light') { html.setAttribute('data-theme','light'); btn.innerHTML = sunI; }
+    btn.addEventListener('click', function() {
+      var cur = html.getAttribute('data-theme');
+      if (cur === 'dark') { html.removeAttribute('data-theme'); localStorage.setItem('theme','light'); btn.innerHTML = sunI; }
+      else { html.setAttribute('data-theme','dark'); localStorage.setItem('theme','dark'); btn.innerHTML = moonI; }
+    });
+
+    // Back to top — uses native browser smooth scroll
+    document.getElementById('backToTop').addEventListener('click', function() {
+      smoothScrollTo(0);
+    });
+
+    // ── Favorites-aware prev/next navigation ──
+    // prevDate/nextDate come from the HTML as chronological neighbors;
+    // override to favorites-only navigation ONLY when entering from favorites page.
+    var FAV_KEY = 'ainews_favs';
+    var favDates = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+    var curIdx = favDates.indexOf(CURRENT_DATE);
+    var prevLink = document.getElementById('favPrevLink');
+    var prevLabel = document.getElementById('favPrevLabel');
+    var nextLink = document.getElementById('favNextLink');
+    var nextLabel = document.getElementById('favNextLabel');
+
+    if (NAV_MODE === 'favorites' && curIdx !== -1 && favDates.length > 0) {
+      // Favorites-only navigation (only when entering from favorites page)
+      if (curIdx < favDates.length - 1) {
+        var prevD = favDates[curIdx + 1];
+        prevLink.href = './' + prevD + '.html';
+        prevLabel.textContent = prevD;
+      } else {
+        prevLink.href = '#';
+        prevLink.className = 'nav-btn nav-btn--disabled';
+        prevLabel.textContent = '没有更早的';
+      }
+      if (curIdx > 0) {
+        var nextD = favDates[curIdx - 1];
+        nextLink.href = './' + nextD + '.html';
+        nextLabel.textContent = nextD;
+      } else {
+        nextLink.href = '#';
+        nextLink.className = 'nav-btn nav-btn--disabled';
+        nextLabel.textContent = '没有更新的';
+      }
+    }
+    // else: keep chronological href/label from HTML — already set at generate time
+
+    // ── Swipe zones (manga-style page turn) ──
+    var swipeLeft = document.getElementById('swipeLeft');
+    var swipeRight = document.getElementById('swipeRight');
+
+    function navigateSwipe(linkEl) {
+      var href = linkEl.getAttribute('href');
+      if (href && href !== '#') {
+        window.location.href = href;
+      }
+    }
+
+    // Click/tap on left zone → prev article
+    swipeLeft.addEventListener('click', function() { navigateSwipe(prevLink); });
+    swipeLeft.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigateSwipe(prevLink); }
+    });
+
+    // Click/tap on right zone → next article
+    swipeRight.addEventListener('click', function() { navigateSwipe(nextLink); });
+    swipeRight.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigateSwipe(nextLink); }
+    });
+
+    // Disable zones visually when nav is at boundary
+    if (prevLink.classList.contains('nav-btn--disabled') || !prevLink.getAttribute('href') || prevLink.getAttribute('href') === '#') {
+      swipeLeft.classList.add('swipe-zone--disabled');
+    }
+    if (nextLink.classList.contains('nav-btn--disabled') || !nextLink.getAttribute('href') || nextLink.getAttribute('href') === '#') {
+      swipeRight.classList.add('swipe-zone--disabled');
+    }
+
+    // ── Favorites toggle ──
+    var favBtn = document.getElementById('favBtn');
+    function updateFavBtn() {
+      var cur = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+      var isFav = cur.indexOf(CURRENT_DATE) !== -1;
+      favBtn.innerHTML = isFav ? '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill="currentColor"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>';
+      favBtn.classList.toggle('is-fav', isFav);
+    }
+    updateFavBtn();
+    favBtn.addEventListener('click', function() {
+      var cur = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+      var idx = cur.indexOf(CURRENT_DATE);
+      if (idx === -1) {
+        cur.push(CURRENT_DATE); // add
+      } else {
+        cur.splice(idx, 1); // remove
+      }
+      localStorage.setItem(FAV_KEY, JSON.stringify(cur));
+      updateFavBtn();
+    });
+
+    // Progress bar
+    window.addEventListener('scroll', function() {
+      var scrolled = document.documentElement.scrollTop;
+      var total = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      document.getElementById('progress-bar').style.width = (total > 0 ? (scrolled / total * 100) : 0) + '%';
+    }, { passive: true });
+
+    // Markdown highlight
+    document.addEventListener('DOMContentLoaded', function() {
+      marked.setOptions({ gfm:true, breaks:true, highlight:function(code,lang){
+        if(lang && hljs.getLanguage(lang)) return hljs.highlight(code,{language:lang}).value;
+        return hljs.highlightAuto(code).value;
+      }});
+      document.querySelectorAll('.content pre code').forEach(function(b){ hljs.highlightElement(b); });
+    });
+  </script>
+</body>
+</html>
