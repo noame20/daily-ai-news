@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>4月23日 AI 日报</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark">
+  <style>
+    
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #FFF8F0; --surface: #FFFFFF; --primary: #FFB5C5; --primary-dark: #FF8FAB;
+    --secondary: #E8D5F5; --accent: #A8E6CF; --accent-dark: #7DD3B0;
+    --text: #4A4458; --text-light: #8E8A9E; --border: #F0E8E0;
+    --shadow: rgba(255,181,197,0.2); --shadow-lg: rgba(255,181,197,0.35);
+    --code-bg: #FFF0F5; --radius: 20px; --bar: var(--primary);
+    --nav-height: 60px;
+  }
+  [data-theme="dark"] {
+    --bg: #1A1625; --surface: #2D2640; --primary: #FFB5C5; --primary-dark: #FF8FAB;
+    --secondary: #C9A8E8; --accent: #7DD3B0; --accent-dark: #6BC49A;
+    --text: #F0EBF8; --text-light: #A8A0BC; --border: #3D3555;
+    --shadow: rgba(0,0,0,0.4); --shadow-lg: rgba(0,0,0,0.5); --code-bg: #2D2640;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1A1625; --surface: #2D2640; --primary: #FFB5C5; --primary-dark: #FF8FAB;
+      --secondary: #C9A8E8; --accent: #7DD3B0; --accent-dark: #6BC49A;
+      --text: #F0EBF8; --text-light: #A8A0BC; --border: #3D3555;
+      --shadow: rgba(0,0,0,0.4); --shadow-lg: rgba(0,0,0,0.5); --code-bg: #2D2640;
+    }
+  }
+  body {
+    font-family: 'Noto Sans SC','Quicksand',ui-sans-serif,system-ui,sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.8;
+    min-height: 100vh;
+    /* S-curve momentum scroll feel */
+    scroll-behavior: auto;
+  }
+  html { scroll-behavior: auto; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto !important; }
+  }
+  a { color: var(--primary-dark); text-decoration: none; font-weight: 500; }
+  a:hover { text-decoration: underline; }
+
+  /* ── Top navbar ── */
+  .navbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+    height: var(--nav-height);
+    background: rgba(255,248,240,0.85);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border-bottom: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 20px;
+    transition: transform 320ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  [data-theme="dark"] .navbar { background: rgba(26,22,37,0.88); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .navbar { background: rgba(26,22,37,0.88); }
+  }
+  .navbar.nav-hidden { transform: translateY(-100%); }
+  .nav-logo {
+    font-family:'Quicksand','Noto Sans SC',sans-serif;
+    font-size:1.1rem; font-weight:700; color:var(--text);
+    display:flex; align-items:center; gap:8px;
+  }
+  .nav-logo svg { color:var(--primary-dark); }
+  .nav-links { display:flex; gap:4px; }
+  .nav-link {
+    display:inline-flex; align-items:center; gap:6px;
+    padding:8px 16px; border-radius:100px; font-size:0.875rem; font-weight:600;
+    color:var(--text-light); cursor:pointer; border:none;
+    background:transparent; transition:all 200ms ease;
+  }
+  .nav-link:hover { color:var(--text); background:var(--surface); box-shadow:0 2px 8px var(--shadow); }
+  .nav-link.active { color:var(--primary-dark); background:var(--surface); box-shadow:0 2px 12px var(--shadow); }
+  .nav-right { display:flex; align-items:center; gap:8px; }
+  /* Theme toggle in navbar */
+  .nav-theme-toggle {
+    width:36px; height:36px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--surface); border:1.5px solid var(--border);
+    border-radius:10px; cursor:pointer; color:var(--text);
+    box-shadow:0 2px 8px var(--shadow); transition:all 200ms ease;
+  }
+  .nav-theme-toggle:hover { box-shadow:0 4px 12px var(--shadow-lg); transform:scale(1.05); }
+
+  /* ── Page content offset for fixed navbar ── */
+  .page-body { padding-top: var(--nav-height); }
+
+  /* ── Reading progress bar ── */
+  #progress-bar {
+    position: fixed; bottom: 0; left: 0; z-index: 600;
+    width: 0%; height: 3px;
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    transition: width 60ms linear;
+  }
+
+  /* ── Floating buttons ── */
+  .float-btns {
+    position: fixed; bottom: 20px; right: 20px; z-index: 400;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .float-btn.is-fav { color: #FF6B8A; }
+  .float-btn {
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: 12px; cursor: pointer; color: var(--text);
+    box-shadow: 0 2px 8px var(--shadow); transition: box-shadow 200ms ease, transform 200ms ease;
+    text-decoration: none;
+  }
+  .float-btn:hover { box-shadow: 0 4px 16px var(--shadow-lg); transform: scale(1.05); color: var(--primary-dark); }
+  .float-btn:active { transform: scale(0.95); }
+
+    body::before { content:''; position:fixed; top:0; left:0; right:0; height:360px; background:linear-gradient(180deg,rgba(255,181,197,0.18) 0%,transparent 100%); pointer-events:none; z-index:0; }
+    .container { position:relative; z-index:1; max-width:760px; margin:0 auto; padding:0 16px 80px; }
+    .article-meta { display:flex; align-items:center; gap:12px; margin-bottom:32px; padding-bottom:24px; border-bottom:2px solid var(--border); flex-wrap:wrap; }
+    .article-date-badge { display:inline-flex; align-items:center; gap:6px; background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%); color:#fff; font-family:'Quicksand',sans-serif; font-size:0.875rem; font-weight:700; padding:6px 14px; border-radius:100px; }
+    article { background:var(--surface); border-radius:var(--radius); padding:40px 36px; box-shadow:0 4px 24px var(--shadow); border:1.5px solid var(--border); animation:slideUp 0.4s ease-out both; }
+    @keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    @media(prefers-reduced-motion:reduce){article{animation:none}}
+    .content h1 { font-family:'Quicksand','Noto Sans SC',sans-serif; font-size:1.6rem; font-weight:700; color:var(--text); margin:28px 0 16px; letter-spacing:-0.01em; }
+    .content h2 { font-family:'Quicksand','Noto Sans SC',sans-serif; font-size:1.2rem; font-weight:700; color:var(--text); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--border); }
+    .content h3 { font-family:'Quicksand','Noto Sans SC',sans-serif; font-size:1.05rem; font-weight:600; color:var(--primary-dark); margin:24px 0 8px; }
+    .content h4 { font-size:0.9rem; font-weight:600; color:var(--text-light); text-transform:uppercase; letter-spacing:0.06em; margin:20px 0 6px; }
+    .content p { margin:0 0 16px; font-size:1rem; line-height:1.85; }
+    .content ul,.content ol { margin:0 0 16px; padding-left:24px; }
+    .content li { margin:6px 0; line-height:1.7; }
+    .content code { font-family:'Fira Code','Consolas',monospace; font-size:0.875em; background:var(--code-bg); color:var(--primary-dark); padding:2px 8px; border-radius:6px; font-weight:500; }
+    .content pre { background:var(--code-bg) !important; border-radius:14px; padding:20px !important; overflow-x:auto; margin:20px 0 !important; border:1.5px solid var(--border); }
+    .content pre code { background:transparent !important; color:inherit; padding:0; font-size:0.875rem; line-height:1.65; }
+    .content blockquote { margin:20px 0; padding:14px 20px; background:linear-gradient(135deg,rgba(255,181,197,0.12) 0%,rgba(232,213,245,0.12) 100%); border-left:4px solid var(--primary); border-radius:0 12px 12px 0; }
+    .content blockquote p { margin:0; }
+    .content table { width:100%; border-collapse:collapse; margin:20px 0; font-size:0.9375rem; border-radius:12px; overflow:hidden; border:1.5px solid var(--border); }
+    .content th,.content td { padding:10px 14px; text-align:left; border-bottom:1px solid var(--border); }
+    .content th { background:var(--code-bg); font-weight:600; font-size:0.875rem; }
+    .content tr:last-child td { border-bottom:none; }
+    .content tr:nth-child(even) td { background:rgba(255,181,197,0.05); }
+    .content img { max-width:100%; height:auto; border-radius:12px; margin:8px 0; }
+    .content hr { border:none; border-top:2px solid var(--border); margin:32px 0; }
+    .content strong { font-weight:600; }
+    @media(max-width:600px){article{padding:24px 20px}.content h1{font-size:1.35rem}.content h2{font-size:1.1rem}}
+
+    /* ── Prev/Next navigation ── */
+    .article-nav { display:flex; justify-content:space-between; align-items:center; margin-top:32px; padding-top:24px; border-top:2px solid var(--border); gap:12px; }
+    .nav-btn { display:inline-flex; align-items:center; gap:8px; padding:10px 18px; background:var(--surface); border:1.5px solid var(--border); border-radius:100px; text-decoration:none; color:var(--text); font-size:0.875rem; font-weight:600; box-shadow:0 2px 8px var(--shadow); transition:all 200ms ease; }
+    .nav-btn:hover:not(.nav-btn--disabled) { color:var(--primary-dark); border-color:var(--primary); box-shadow:0 4px 16px var(--shadow-lg); transform:scale(1.02); }
+    .nav-btn--disabled { opacity:0.4; cursor:default; pointer-events:none; }
+    .nav-btn span { max-width:120px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+    /* ── Footer ── */
+    footer { text-align:center; margin-top:48px; padding:24px 0 32px; font-size:0.8rem; color:var(--text-light); }
+    footer::before { content:''; display:block; width:60px; height:2px; background:linear-gradient(to right,transparent,var(--secondary),transparent); margin:0 auto 16px; border-radius:2px; }
+
+    /* ── Invisible swipe zones (manga-style page turn) ── */
+    .swipe-zone {
+      position: fixed;
+      top: var(--nav-height);
+      bottom: 0;
+      width: 70px;
+      z-index: 300;
+      cursor: pointer;
+      /* invisible */
+      background: transparent;
+      /* prevent interfering with other elements */
+      pointer-events: auto;
+      /* extend hit area above viewport top */
+      height: calc(100vh + 200px);
+      margin-top: -100px;
+    }
+    .swipe-zone--left { left: 0; }
+    .swipe-zone--right { right: 0; }
+    /* subtle hover hint (optional — very faint arrow appears) */
+    .swipe-zone::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 24px;
+      height: 40px;
+      background-repeat: no-repeat;
+      background-size: contain;
+      opacity: 0;
+      transition: opacity 200ms ease;
+      pointer-events: none;
+    }
+    .swipe-zone--left::after { left: 12px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='40' viewBox='0 0 24 40'%3E%3Cpath d='M20 4L6 20L20 36' stroke='%23FFB5C5' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E"); }
+    .swipe-zone--right::after { right: 12px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='40' viewBox='0 0 24 40'%3E%3Cpath d='M4 4L18 20L4 36' stroke='%23FFB5C5' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E"); }
+    .swipe-zone:hover::after { opacity: 0.5; }
+    .swipe-zone--disabled { pointer-events: none; cursor: default; }
+    .swipe-zone--disabled::after { display: none; }
+  </style>
+</head>
+<body>
+  
+  <nav class="navbar" id="navbar">
+    <a href="./index.html" class="nav-logo" style="text-decoration:none;color:var(--text);"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L13.5 8.5L19 10L13.5 11.5L12 17L10.5 11.5L5 10L10.5 8.5L12 3Z"/><path d="M5 3L5.5 5L7 5.5L5.5 6L5 8L4.5 6L3 5.5L4.5 5L5 3Z"/><path d="M19 17L19.5 19L21 19.5L19.5 20L19 22L18.5 20L17 19.5L18.5 19L19 17Z"/></svg> AI 日报</a>
+    <div class="nav-links">
+      <a href="./favorites.html" class="nav-link " data-nav="favorites">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>收藏</span>
+      </a>
+    </div>
+    <div class="nav-right">
+      <button class="nav-theme-toggle" id="navThemeToggle" aria-label="切换主题"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
+    </div>
+  </nav>
+
+  <!-- Invisible swipe zones for manga-style prev/next -->
+  <div id="swipeLeft" class="swipe-zone swipe-zone--left" role="button" aria-label="上一篇" tabindex="0"></div>
+  <div id="swipeRight" class="swipe-zone swipe-zone--right" role="button" aria-label="下一篇" tabindex="0"></div>
+
+  <div class="container" style="padding-top:calc(var(--nav-height) + 8px)">
+    <article>
+      <div class="article-meta">
+        <span class="article-date-badge">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          4月23日
+        </span>
+        <span style="color:var(--text-light);font-size:0.875rem;">AI 日报</span>
+      </div>
+      <div class="content"><h1>2026-04-23 AI 日报</h1>
+<h2>GitHub 项目</h2>
+<h3>N <a target="_blank" rel="noopener noreferrer" href="https://github.com/addyosmani/agent-skills">addyosmani/agent-skills</a></h3>
+<p>生产级 AI 编码 Agent 工程技能包。将资深工程师的软件开发工作流程封装为 20 个结构化技能，覆盖 Define→Plan→Build→Verify→Review→Ship 全生命周期。每个技能包含步骤、验证门和&quot;反理性化表格&quot;——记录 Agent 常用来跳过步骤的借口及反驳论据。</p>
+<p><strong>核心亮点：</strong></p>
+<ul>
+<li><strong>7 个 slash 命令</strong>：`/spec`、`/plan`、`/build`、`/test`、`/review`、`/code-simplify`、`/ship`，映射开发周期各阶段</li>
+<li><strong>20 个底层技能</strong>：如 TDD（红-绿-重构）、增量实现、上下文工程、前端 UI 工程、API 设计、安全加固、性能优化等</li>
+<li><strong>3 个 Agent Persona</strong>：code-reviewer（高级工程师视角）、test-engineer（QA 专家）、security-auditor（安全审计）</li>
+<li><strong>Anti-rationalization 机制</strong>：防止 Agent 跳过验证步骤，解决 AI agent&quot;走捷径&quot;的通病</li>
+<li><strong>多工具支持</strong>：Claude Code（推荐）、Cursor、Gemini CLI、Windsurf、GitHub Copilot、Kiro 等</li>
+</ul>
+<p>项目源自 Google 工程文化，融合 <em>Software Engineering at Google</em> 实践，如 Hyrum&#39;s Law（API 设计）、Beyonce Rule（测试）、Chesterton&#39;s Fence（简化）、Shift Left（CI/CD）等。</p>
+<p>⭐Stars 21,155 🍴Forks 2,575 🔀PR 22 🔖Issue 20</p>
+<hr>
+<h3>N <a target="_blank" rel="noopener noreferrer" href="https://github.com/HKUDS/RAG-Anything">HKUDS/RAG-Anything</a></h3>
+<p>基于 LightRAG 的全能型多模态文档 RAG 框架，支持 PDF、Office、图片等任意格式文档的端到端摄取、解析与检索。</p>
+<p><strong>技术流程：</strong> 文档解析 → 内容分析 → 知识图谱 → 智能检索</p>
+<ul>
+<li><strong>高保真解析</strong>：集成 MinerU/Docling/PaddleOCR 多种解析器，自动处理复杂布局</li>
+<li><strong>多模态内容理解</strong>：图像、表格、数学公式各有专用处理器，自动分类路由</li>
+<li><strong>多模态知识图谱</strong>：自动实体提取 + 跨模态关系发现，构建结构化知识网络</li>
+<li><strong>融合检索</strong>：向量+图融合搜索，模态感知排序，支持纯文本/VLM增强/多模态混合查询</li>
+<li><strong>安装即用</strong>：`pip install raganything` 或 `pip install &#39;raganything[all]&#39;`</li>
+</ul>
+<p>⭐Stars 17,512 🍴Forks 2,057 🔀PR 19 🔖Issue 105</p>
+<hr>
+<h3>N <a target="_blank" rel="noopener noreferrer" href="https://github.com/VoltAgent/awesome-agent-skills">VoltAgent/awesome-agent-skills</a></h3>
+<p>1100+ Agent Skills 精选集合，收录来自 Anthropic、Google、Vercel、Stripe、Cloudflare、Microsoft 等知名团队的官方 Skills，兼容 Claude Code、Codex、Gemini CLI、Cursor、Windsurf 等主流 Agent 工具。</p>
+<p><strong>亮点分类：</strong></p>
+<ul>
+<li><strong>Anthropic (Claude)</strong>：18 个官方 Skills（docx、pptx、xlsx、pdf、canvas-design、frontend-design、mcp-builder 等）</li>
+<li><strong>Microsoft</strong>：133 个 Skills，覆盖 Azure SDK、AI Foundry、.NET/Java/Python/Go/JS</li>
+<li><strong>Google Gemini</strong>：API 开发、Live API、Interactions API</li>
+<li><strong>Stripe</strong>：SDK 升级最佳实践</li>
+<li><strong>Cloudflare</strong>：Workers、Pages、存储、AI、网络安全、IaC</li>
+<li><strong>Trail of Bits</strong>：智能合约安全、静态分析、模糊测试</li>
+</ul>
+<p>⭐Stars 17,455 🍴Forks 1,881 🔀PR 7 🔖Issue 0</p>
+<hr>
+<h3>N <a target="_blank" rel="noopener noreferrer" href="https://github.com/zilliztech/claude-context">zilliztech/claude-context</a></h3>
+<p>为 Claude Code 等 AI 编码助手提供语义代码搜索的 MCP 插件，将整个代码库转化为可搜索上下文，解决 Agent&quot;大海捞针&quot;困境。</p>
+<p><strong>核心功能：</strong></p>
+<ul>
+<li><strong>全代码库语义搜索</strong>：用自然语言在百万行代码中找到所有相关内容，无需多轮发现</li>
+<li><strong>成本控制</strong>：代码库存向量库，只在上下文实际使用时消耗 token</li>
+<li><strong>混合搜索</strong>：BM25 + 密集向量融合，兼顾关键词精确性和语义相关性</li>
+<li><strong>Merkle 树增量索引</strong>：仅重新索引变更文件，高效维护大规模代码库</li>
+<li><strong>AST 智能分块</strong>：基于抽象语法树分析进行代码分割，保留语义完整性</li>
+<li><strong>评估结果</strong>：在检索质量相当的情况下，Token 消耗减少约 <strong>40%</strong></li>
+</ul>
+<p><strong>技术栈</strong>：支持 OpenAI/VoyageAI/Ollama/Gemini 嵌入，Milvus/Zilliz Cloud 向量库，16+ 编程语言。</p>
+<p>⭐Stars 7,471 🍴Forks 622 🔀PR 40 🔖Issue 75</p>
+<hr>
+<h3>N <a target="_blank" rel="noopener noreferrer" href="https://github.com/TencentCloud/CubeSandbox">TencentCloud/CubeSandbox</a></h3>
+<p>基于 RustVMM + KVM 的高性能安全沙箱服务，专为 AI Agent 设计，60ms 内创建硬件隔离沙箱，内存开销 &lt;5MB，原生兼容 E2B SDK 接口。</p>
+<p><strong>对比优势：</strong></p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>Docker 容器</th>
+<th>传统 VM</th>
+<th>CubeSandbox</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>隔离级别</strong></td>
+<td>低（共享内核）</td>
+<td>高（专用内核）</td>
+<td><strong>极高（专用内核+eBPF）</strong></td>
+</tr>
+<tr>
+<td><strong>启动速度</strong></td>
+<td>~200ms</td>
+<td>秒级</td>
+<td><strong>亚毫秒（&lt;60ms）</strong></td>
+</tr>
+<tr>
+<td><strong>内存开销</strong></td>
+<td>共享</td>
+<td>完整 OS</td>
+<td><strong>&lt;5MB（激进裁剪）</strong></td>
+</tr>
+<tr>
+<td><strong>E2B SDK 兼容</strong></td>
+<td>—</td>
+<td>—</td>
+<td><strong>✅ 即插即用</strong></td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>零成本迁移</strong>：更换 URL 环境变量即可从 E2B 闭源沙箱迁移到 CubeSandbox</li>
+<li><strong>CubeVS eBPF 网络隔离</strong>：内核级沙箱间网络隔离，细粒度出口流量过滤</li>
+<li><strong>事件级快照回滚</strong>（即将推出）：毫秒粒度高频快照，快速创建 Fork 探索环境</li>
+</ul>
+<p>⭐Stars 2,351 🍴Forks 154 🔀PR 7 🔖Issue 12</p>
+<hr>
+<h2>科技（TLDR）</h2>
+<blockquote>
+<p><strong>ChatGPT&#39;s new Images 2.0 model is surprisingly good at generating text</strong><br>ChatGPT 新图像模型 Images 2.0 在文字生成方面表现超预期<br><a target="_blank" rel="noopener noreferrer" href="https://techcrunch.com/2026/04/21/chatgpts-new-images-2-0-model-is-surprisingly-good-at-generating-text/?utm_source=tldrnewsletter">原文链接</a></p>
+</blockquote>
+<hr>
+<blockquote>
+<p><strong>Announcing TypeScript 7.0 Beta</strong><br>TypeScript 7.0 Beta 发布：基于全新 Go 重写，性能提升约 10 倍<br><a target="_blank" rel="noopener noreferrer" href="https://devblogs.microsoft.com/typescript/announcing-typescript-7-0-beta/?utm_source=tldrnewsletter">原文链接</a></p>
+</blockquote>
+<hr>
+<blockquote>
+<p><strong>SpaceX says it can buy Cursor later this year for $60 billion or pay $10 billion for &#39;our work together&#39;</strong><br>SpaceX 声称可于年底以 600 亿美元收购 Cursor，或支付 100 亿美元&quot;合作费用&quot;<br><a target="_blank" rel="noopener noreferrer" href="https://www.cnbc.com/2026/04/21/spacex-says-it-can-buy-cursor-later-this-year-for-60-billion-or-pay-10-billion-for-our-work-together.html?utm_source=tldrnewsletter">原文链接</a></p>
+</blockquote>
+<hr>
+<h2>趋势分析</h2>
+<h3>核心关键词</h3>
+<ol>
+<li><strong>Agent Skills 工程化</strong>（addyosmani/agent-skills、awesome-agent-skills）</li>
+<li><strong>语义代码搜索 MCP</strong>（zilliztech/claude-context）</li>
+<li><strong>RAG 知识图谱化</strong>（HKUDS/RAG-Anything）</li>
+<li><strong>沙箱安全隔离</strong>（CubeSandbox RustVMM/KVM）</li>
+<li><strong>TypeScript 7 Go 重写</strong>（性能 10 倍提升）</li>
+</ol>
+<h3>技术连贯性</h3>
+<p><strong>Agent Skills → MCP 生态加速整合</strong></p>
+<p>4月14日 Addy Osmani 提出 AEO（Agentic Engine Optimization）概念，强调 AI Agent 读取文档的方式与人类不同，需要 `skill.md`、`llms.txt` 等机器可读索引。今日 addyosmani/agent-skills 和 VoltAgent/awesome-agent-skills 的爆发式传播（双双 17k+ stars）印证：<strong>Agent 工作流标准化已从概念走向大规模采信</strong>。</p>
+<p>同日的 zilliztech/claude-context 则解决另一个 Agent 落地痛点——代码库上下文不足。该项目与 AEO 思路高度互补：AEO 管文档消费，Claude Context 管代码检索，二者共同构成 Agent&quot;读懂环境&quot;的基础设施层。</p>
+<p><strong>沙箱隔离技术收敛</strong></p>
+<p>4月16日 vercel-labs/open-agents 提出&quot;沙箱外部运行、工具 API 交互&quot;的解耦架构；今日 CubeSandbox 将这一理念推向硬件级隔离（KVM MicroVM + eBPF），同时保持 &lt;60ms 启动和 &lt;5MB 内存开销。<strong>Rust + 虚拟化的安全沙箱路线已从概念验证进入生产级可用阶段。</strong></p>
+<p><strong>RAG 从向量检索走向知识图谱</strong></p>
+<p>RAG-Anything 展示多模态文档处理 + 知识图谱构建能力，代表 RAG 技术正从&quot;向量最近邻检索&quot;向&quot;结构化知识表示 + 跨模态关系推理&quot;演进。</p>
+<h3>风向转变</h3>
+<p><strong>TypeScript 7 Go 重写</strong>是一个值得警惕的信号：微软选择用 Go 重写 TypeScript 核心（性能提升 10 倍），意味着 TypeScript 团队认为类型检查器性能瓶颈已无法靠增量优化突破，也预示着<strong>静态类型生态正快速向&quot;极速编译/检查&quot;收敛</strong>。</p>
+<h3>预测与行动建议</h3>
+<ol>
+<li><p><strong>Agent Skills 标准化浪潮</strong>：未来两周内，预计会有更多主流开发团队（JetBrains、GitHub 等）跟进发布官方 Skills 包。建议 nagi 关注 awesome-agent-skills 的 Skills 提交增长曲线，作为行业采用率的领先指标。</p>
+</li>
+<li><p><strong>Claude Context 类工具爆发</strong>：全代码库语义搜索 + 40% Token 节省这一组合对企业客户极具吸引力。预计类似 MCP 工具（代码库索引、语义搜索）将在 Cursor/Windsurf 等平台快速复制。建议 nagi 评估内部工具链是否可集成此类能力。</p>
+</li>
+<li><p><strong>AI 安全沙箱国产替代</strong>：CubeSandbox E2B 兼容 + 开源路线若持续迭代，可能对国内 AI Agent 平台产生吸引力。建议关注其 GitHub issue 活跃度和腾讯云生产落地案例。</p>
+</li>
+<li><p><strong>TypeScript 7 迁移准备</strong>：虽然 Beta 阶段距正式发布尚需时日，但 10 倍性能提升意味着大型代码库的 CI 流程、LSP 响应速度将显著改善。建议提前阅读 TypeScript 7 Beta 博客，了解 Breaking Changes 清单。</p>
+</li>
+</ol>
+</div>
+      <div class="article-nav">
+        <a href="./2026-04-22.html" id="favPrevLink" class="nav-btn" aria-label="上一篇"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg><span id="favPrevLabel">2026-04-22</span></a>
+        <a href="#" id="favNextLink" class="nav-btn" aria-label="下一篇"><span id="favNextLabel">没有更新的</span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </article>
+    <footer>Made with <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> by Yui-Chan</footer>
+  </div>
+
+  <div class="float-btns">
+    <a href="./index.html" class="float-btn" id="homeBtn" aria-label="返回"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></a>
+    <button class="float-btn" id="backToTop" aria-label="返回顶部"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg></button>
+    <button class="float-btn" id="favBtn" data-date="2026-04-23" aria-label="收藏本文">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    </button>
+  </div>
+
+  <div id="progress-bar"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.0/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script>
+    
+// Native browser smooth scroll — browser handles physics & compositing
+function smoothScrollTo(target) {
+  if (typeof target === 'number') {
+    window.scrollTo({ top: target, behavior: 'smooth' });
+  } else if (target) {
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+// Navbar hide/show on scroll (up = show, down = hide)
+// Uses native scroll, no rAF loop fighting the browser
+(function() {
+  var navbar = document.getElementById('navbar');
+  if (!navbar) return;
+  var lastScrollY = 0;
+  var rafPending = false;
+
+  function updateNavbar() {
+    var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+    if (scrollY <= 10) {
+      navbar.classList.remove('nav-hidden');
+      rafPending = false;
+      return;
+    }
+    if (scrollY > lastScrollY && scrollY > 80) {
+      navbar.classList.add('nav-hidden');
+    } else {
+      navbar.classList.remove('nav-hidden');
+    }
+    lastScrollY = scrollY;
+    rafPending = false;
+  }
+
+  window.addEventListener('scroll', function() {
+    if (!rafPending) {
+      rafPending = true;
+      requestAnimationFrame(updateNavbar);
+    }
+  }, { passive: true });
+})();
+
+
+    // ── Determine navigation mode & where home button should go ──
+    // localStorage flag is set by favorites page when clicking any card
+    var CURRENT_DATE = '2026-04-23';
+    var FAVS_ENTRY_KEY = 'ainews_enter_from_favs';
+    var fromFavs = localStorage.getItem(FAVS_ENTRY_KEY) === '1';
+    // Clear immediately so next direct page load defaults to homepage
+    localStorage.removeItem(FAVS_ENTRY_KEY);
+    document.getElementById('homeBtn').href = fromFavs ? './favorites.html' : './index.html';
+
+    // Navigation mode: favorites-only only if entering from favorites page
+    // Toggle favorite does NOT change nav mode — only the entry point matters
+    var NAV_MODE = fromFavs ? 'favorites' : 'chronological';
+
+    // Theme toggle
+    var btn = document.getElementById('navThemeToggle');
+    var html = document.documentElement;
+    var stored = localStorage.getItem('theme');
+    var sunI = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>';
+    var moonI = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>';
+    if (stored === 'dark') { html.setAttribute('data-theme','dark'); btn.innerHTML = moonI; }
+    else if (stored === 'light') { html.setAttribute('data-theme','light'); btn.innerHTML = sunI; }
+    btn.addEventListener('click', function() {
+      var cur = html.getAttribute('data-theme');
+      if (cur === 'dark') { html.removeAttribute('data-theme'); localStorage.setItem('theme','light'); btn.innerHTML = sunI; }
+      else { html.setAttribute('data-theme','dark'); localStorage.setItem('theme','dark'); btn.innerHTML = moonI; }
+    });
+
+    // Back to top — uses native browser smooth scroll
+    document.getElementById('backToTop').addEventListener('click', function() {
+      smoothScrollTo(0);
+    });
+
+    // ── Favorites-aware prev/next navigation ──
+    // prevDate/nextDate come from the HTML as chronological neighbors;
+    // override to favorites-only navigation ONLY when entering from favorites page.
+    var FAV_KEY = 'ainews_favs';
+    var favDates = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+    var curIdx = favDates.indexOf(CURRENT_DATE);
+    var prevLink = document.getElementById('favPrevLink');
+    var prevLabel = document.getElementById('favPrevLabel');
+    var nextLink = document.getElementById('favNextLink');
+    var nextLabel = document.getElementById('favNextLabel');
+
+    if (NAV_MODE === 'favorites' && curIdx !== -1 && favDates.length > 0) {
+      // Favorites-only navigation (only when entering from favorites page)
+      if (curIdx < favDates.length - 1) {
+        var prevD = favDates[curIdx + 1];
+        prevLink.href = './' + prevD + '.html';
+        prevLabel.textContent = prevD;
+      } else {
+        prevLink.href = '#';
+        prevLink.className = 'nav-btn nav-btn--disabled';
+        prevLabel.textContent = '没有更早的';
+      }
+      if (curIdx > 0) {
+        var nextD = favDates[curIdx - 1];
+        nextLink.href = './' + nextD + '.html';
+        nextLabel.textContent = nextD;
+      } else {
+        nextLink.href = '#';
+        nextLink.className = 'nav-btn nav-btn--disabled';
+        nextLabel.textContent = '没有更新的';
+      }
+    }
+    // else: keep chronological href/label from HTML — already set at generate time
+
+    // ── Swipe zones (manga-style page turn) ──
+    var swipeLeft = document.getElementById('swipeLeft');
+    var swipeRight = document.getElementById('swipeRight');
+
+    function navigateSwipe(linkEl) {
+      var href = linkEl.getAttribute('href');
+      if (href && href !== '#') {
+        window.location.href = href;
+      }
+    }
+
+    // Click/tap on left zone → prev article
+    swipeLeft.addEventListener('click', function() { navigateSwipe(prevLink); });
+    swipeLeft.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigateSwipe(prevLink); }
+    });
+
+    // Click/tap on right zone → next article
+    swipeRight.addEventListener('click', function() { navigateSwipe(nextLink); });
+    swipeRight.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigateSwipe(nextLink); }
+    });
+
+    // Disable zones visually when nav is at boundary
+    if (prevLink.classList.contains('nav-btn--disabled') || !prevLink.getAttribute('href') || prevLink.getAttribute('href') === '#') {
+      swipeLeft.classList.add('swipe-zone--disabled');
+    }
+    if (nextLink.classList.contains('nav-btn--disabled') || !nextLink.getAttribute('href') || nextLink.getAttribute('href') === '#') {
+      swipeRight.classList.add('swipe-zone--disabled');
+    }
+
+    // ── Favorites toggle ──
+    var favBtn = document.getElementById('favBtn');
+    function updateFavBtn() {
+      var cur = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+      var isFav = cur.indexOf(CURRENT_DATE) !== -1;
+      favBtn.innerHTML = isFav ? '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill="currentColor"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>';
+      favBtn.classList.toggle('is-fav', isFav);
+    }
+    updateFavBtn();
+    favBtn.addEventListener('click', function() {
+      var cur = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+      var idx = cur.indexOf(CURRENT_DATE);
+      if (idx === -1) {
+        cur.push(CURRENT_DATE); // add
+      } else {
+        cur.splice(idx, 1); // remove
+      }
+      localStorage.setItem(FAV_KEY, JSON.stringify(cur));
+      updateFavBtn();
+    });
+
+    // Progress bar
+    window.addEventListener('scroll', function() {
+      var scrolled = document.documentElement.scrollTop;
+      var total = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      document.getElementById('progress-bar').style.width = (total > 0 ? (scrolled / total * 100) : 0) + '%';
+    }, { passive: true });
+
+    // Markdown highlight
+    document.addEventListener('DOMContentLoaded', function() {
+      marked.setOptions({ gfm:true, breaks:true, highlight:function(code,lang){
+        if(lang && hljs.getLanguage(lang)) return hljs.highlight(code,{language:lang}).value;
+        return hljs.highlightAuto(code).value;
+      }});
+      document.querySelectorAll('.content pre code').forEach(function(b){ hljs.highlightElement(b); });
+    });
+  </script>
+</body>
+</html>
