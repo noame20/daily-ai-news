@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>4月24日 AI 日报</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark">
+  <style>
+    
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #FFF8F0; --surface: #FFFFFF; --primary: #FFB5C5; --primary-dark: #FF8FAB;
+    --secondary: #E8D5F5; --accent: #A8E6CF; --accent-dark: #7DD3B0;
+    --text: #4A4458; --text-light: #8E8A9E; --border: #F0E8E0;
+    --shadow: rgba(255,181,197,0.2); --shadow-lg: rgba(255,181,197,0.35);
+    --code-bg: #FFF0F5; --radius: 20px; --bar: var(--primary);
+    --nav-height: 60px;
+  }
+  [data-theme="dark"] {
+    --bg: #1A1625; --surface: #2D2640; --primary: #FFB5C5; --primary-dark: #FF8FAB;
+    --secondary: #C9A8E8; --accent: #7DD3B0; --accent-dark: #6BC49A;
+    --text: #F0EBF8; --text-light: #A8A0BC; --border: #3D3555;
+    --shadow: rgba(0,0,0,0.4); --shadow-lg: rgba(0,0,0,0.5); --code-bg: #2D2640;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1A1625; --surface: #2D2640; --primary: #FFB5C5; --primary-dark: #FF8FAB;
+      --secondary: #C9A8E8; --accent: #7DD3B0; --accent-dark: #6BC49A;
+      --text: #F0EBF8; --text-light: #A8A0BC; --border: #3D3555;
+      --shadow: rgba(0,0,0,0.4); --shadow-lg: rgba(0,0,0,0.5); --code-bg: #2D2640;
+    }
+  }
+  body {
+    font-family: 'Noto Sans SC','Quicksand',ui-sans-serif,system-ui,sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.8;
+    min-height: 100vh;
+    /* S-curve momentum scroll feel */
+    scroll-behavior: auto;
+  }
+  html { scroll-behavior: auto; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto !important; }
+  }
+  a { color: var(--primary-dark); text-decoration: none; font-weight: 500; }
+  a:hover { text-decoration: underline; }
+
+  /* ── Top navbar ── */
+  .navbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+    height: var(--nav-height);
+    background: rgba(255,248,240,0.85);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border-bottom: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 20px;
+    transition: transform 320ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  [data-theme="dark"] .navbar { background: rgba(26,22,37,0.88); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .navbar { background: rgba(26,22,37,0.88); }
+  }
+  .navbar.nav-hidden { transform: translateY(-100%); }
+  .nav-logo {
+    font-family:'Quicksand','Noto Sans SC',sans-serif;
+    font-size:1.1rem; font-weight:700; color:var(--text);
+    display:flex; align-items:center; gap:8px;
+  }
+  .nav-logo svg { color:var(--primary-dark); }
+  .nav-links { display:flex; gap:4px; }
+  .nav-link {
+    display:inline-flex; align-items:center; gap:6px;
+    padding:8px 16px; border-radius:100px; font-size:0.875rem; font-weight:600;
+    color:var(--text-light); cursor:pointer; border:none;
+    background:transparent; transition:all 200ms ease;
+  }
+  .nav-link:hover { color:var(--text); background:var(--surface); box-shadow:0 2px 8px var(--shadow); }
+  .nav-link.active { color:var(--primary-dark); background:var(--surface); box-shadow:0 2px 12px var(--shadow); }
+  .nav-right { display:flex; align-items:center; gap:8px; }
+  /* Theme toggle in navbar */
+  .nav-theme-toggle {
+    width:36px; height:36px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--surface); border:1.5px solid var(--border);
+    border-radius:10px; cursor:pointer; color:var(--text);
+    box-shadow:0 2px 8px var(--shadow); transition:all 200ms ease;
+  }
+  .nav-theme-toggle:hover { box-shadow:0 4px 12px var(--shadow-lg); transform:scale(1.05); }
+
+  /* ── Page content offset for fixed navbar ── */
+  .page-body { padding-top: var(--nav-height); }
+
+  /* ── Reading progress bar ── */
+  #progress-bar {
+    position: fixed; bottom: 0; left: 0; z-index: 600;
+    width: 0%; height: 3px;
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    transition: width 60ms linear;
+  }
+
+  /* ── Floating buttons ── */
+  .float-btns {
+    position: fixed; bottom: 20px; right: 20px; z-index: 400;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .float-btn.is-fav { color: #FF6B8A; }
+  .float-btn {
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: 12px; cursor: pointer; color: var(--text);
+    box-shadow: 0 2px 8px var(--shadow); transition: box-shadow 200ms ease, transform 200ms ease;
+    text-decoration: none;
+  }
+  .float-btn:hover { box-shadow: 0 4px 16px var(--shadow-lg); transform: scale(1.05); color: var(--primary-dark); }
+  .float-btn:active { transform: scale(0.95); }
+
+    body::before { content:''; position:fixed; top:0; left:0; right:0; height:360px; background:linear-gradient(180deg,rgba(255,181,197,0.18) 0%,transparent 100%); pointer-events:none; z-index:0; }
+    .container { position:relative; z-index:1; max-width:760px; margin:0 auto; padding:0 16px 80px; }
+    .article-meta { display:flex; align-items:center; gap:12px; margin-bottom:32px; padding-bottom:24px; border-bottom:2px solid var(--border); flex-wrap:wrap; }
+    .article-date-badge { display:inline-flex; align-items:center; gap:6px; background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%); color:#fff; font-family:'Quicksand',sans-serif; font-size:0.875rem; font-weight:700; padding:6px 14px; border-radius:100px; }
+    article { background:var(--surface); border-radius:var(--radius); padding:40px 36px; box-shadow:0 4px 24px var(--shadow); border:1.5px solid var(--border); animation:slideUp 0.4s ease-out both; }
+    @keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    @media(prefers-reduced-motion:reduce){article{animation:none}}
+    .content h1 { font-family:'Quicksand','Noto Sans SC',sans-serif; font-size:1.6rem; font-weight:700; color:var(--text); margin:28px 0 16px; letter-spacing:-0.01em; }
+    .content h2 { font-family:'Quicksand','Noto Sans SC',sans-serif; font-size:1.2rem; font-weight:700; color:var(--text); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--border); }
+    .content h3 { font-family:'Quicksand','Noto Sans SC',sans-serif; font-size:1.05rem; font-weight:600; color:var(--primary-dark); margin:24px 0 8px; }
+    .content h4 { font-size:0.9rem; font-weight:600; color:var(--text-light); text-transform:uppercase; letter-spacing:0.06em; margin:20px 0 6px; }
+    .content p { margin:0 0 16px; font-size:1rem; line-height:1.85; }
+    .content ul,.content ol { margin:0 0 16px; padding-left:24px; }
+    .content li { margin:6px 0; line-height:1.7; }
+    .content code { font-family:'Fira Code','Consolas',monospace; font-size:0.875em; background:var(--code-bg); color:var(--primary-dark); padding:2px 8px; border-radius:6px; font-weight:500; }
+    .content pre { background:var(--code-bg) !important; border-radius:14px; padding:20px !important; overflow-x:auto; margin:20px 0 !important; border:1.5px solid var(--border); }
+    .content pre code { background:transparent !important; color:inherit; padding:0; font-size:0.875rem; line-height:1.65; }
+    .content blockquote { margin:20px 0; padding:14px 20px; background:linear-gradient(135deg,rgba(255,181,197,0.12) 0%,rgba(232,213,245,0.12) 100%); border-left:4px solid var(--primary); border-radius:0 12px 12px 0; }
+    .content blockquote p { margin:0; }
+    .content table { width:100%; border-collapse:collapse; margin:20px 0; font-size:0.9375rem; border-radius:12px; overflow:hidden; border:1.5px solid var(--border); }
+    .content th,.content td { padding:10px 14px; text-align:left; border-bottom:1px solid var(--border); }
+    .content th { background:var(--code-bg); font-weight:600; font-size:0.875rem; }
+    .content tr:last-child td { border-bottom:none; }
+    .content tr:nth-child(even) td { background:rgba(255,181,197,0.05); }
+    .content img { max-width:100%; height:auto; border-radius:12px; margin:8px 0; }
+    .content hr { border:none; border-top:2px solid var(--border); margin:32px 0; }
+    .content strong { font-weight:600; }
+    @media(max-width:600px){article{padding:24px 20px}.content h1{font-size:1.35rem}.content h2{font-size:1.1rem}}
+
+    /* ── Prev/Next navigation ── */
+    .article-nav { display:flex; justify-content:space-between; align-items:center; margin-top:32px; padding-top:24px; border-top:2px solid var(--border); gap:12px; }
+    .nav-btn { display:inline-flex; align-items:center; gap:8px; padding:10px 18px; background:var(--surface); border:1.5px solid var(--border); border-radius:100px; text-decoration:none; color:var(--text); font-size:0.875rem; font-weight:600; box-shadow:0 2px 8px var(--shadow); transition:all 200ms ease; }
+    .nav-btn:hover:not(.nav-btn--disabled) { color:var(--primary-dark); border-color:var(--primary); box-shadow:0 4px 16px var(--shadow-lg); transform:scale(1.02); }
+    .nav-btn--disabled { opacity:0.4; cursor:default; pointer-events:none; }
+    .nav-btn span { max-width:120px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+    /* ── Footer ── */
+    footer { text-align:center; margin-top:48px; padding:24px 0 32px; font-size:0.8rem; color:var(--text-light); }
+    footer::before { content:''; display:block; width:60px; height:2px; background:linear-gradient(to right,transparent,var(--secondary),transparent); margin:0 auto 16px; border-radius:2px; }
+
+    /* ── Invisible swipe zones (manga-style page turn) ── */
+    .swipe-zone {
+      position: fixed;
+      top: var(--nav-height);
+      bottom: 0;
+      width: 70px;
+      z-index: 300;
+      cursor: pointer;
+      /* invisible */
+      background: transparent;
+      /* prevent interfering with other elements */
+      pointer-events: auto;
+      /* extend hit area above viewport top */
+      height: calc(100vh + 200px);
+      margin-top: -100px;
+    }
+    .swipe-zone--left { left: 0; }
+    .swipe-zone--right { right: 0; }
+    /* subtle hover hint (optional — very faint arrow appears) */
+    .swipe-zone::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 24px;
+      height: 40px;
+      background-repeat: no-repeat;
+      background-size: contain;
+      opacity: 0;
+      transition: opacity 200ms ease;
+      pointer-events: none;
+    }
+    .swipe-zone--left::after { left: 12px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='40' viewBox='0 0 24 40'%3E%3Cpath d='M20 4L6 20L20 36' stroke='%23FFB5C5' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E"); }
+    .swipe-zone--right::after { right: 12px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='40' viewBox='0 0 24 40'%3E%3Cpath d='M4 4L18 20L4 36' stroke='%23FFB5C5' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E"); }
+    .swipe-zone:hover::after { opacity: 0.5; }
+    .swipe-zone--disabled { pointer-events: none; cursor: default; }
+    .swipe-zone--disabled::after { display: none; }
+  </style>
+</head>
+<body>
+  
+  <nav class="navbar" id="navbar">
+    <a href="./index.html" class="nav-logo" style="text-decoration:none;color:var(--text);"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L13.5 8.5L19 10L13.5 11.5L12 17L10.5 11.5L5 10L10.5 8.5L12 3Z"/><path d="M5 3L5.5 5L7 5.5L5.5 6L5 8L4.5 6L3 5.5L4.5 5L5 3Z"/><path d="M19 17L19.5 19L21 19.5L19.5 20L19 22L18.5 20L17 19.5L18.5 19L19 17Z"/></svg> AI 日报</a>
+    <div class="nav-links">
+      <a href="./favorites.html" class="nav-link " data-nav="favorites">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>收藏</span>
+      </a>
+    </div>
+    <div class="nav-right">
+      <button class="nav-theme-toggle" id="navThemeToggle" aria-label="切换主题"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
+    </div>
+  </nav>
+
+  <!-- Invisible swipe zones for manga-style prev/next -->
+  <div id="swipeLeft" class="swipe-zone swipe-zone--left" role="button" aria-label="上一篇" tabindex="0"></div>
+  <div id="swipeRight" class="swipe-zone swipe-zone--right" role="button" aria-label="下一篇" tabindex="0"></div>
+
+  <div class="container" style="padding-top:calc(var(--nav-height) + 8px)">
+    <article>
+      <div class="article-meta">
+        <span class="article-date-badge">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          4月24日
+        </span>
+        <span style="color:var(--text-light);font-size:0.875rem;">AI 日报</span>
+      </div>
+      <div class="content"><h1>2026-04-24 AI 日报</h1>
+<h2>GitHub 项目</h2>
+<h3>1 <a target="_blank" rel="noopener noreferrer" href="https://github.com/forrestchang/andrej-karpathy-skills">forrestchang/andrej-karpathy-skills</a></h3>
+<p>源自 Andrej Karpathy 关于 LLM 编码陷阱的观察——模型常做错误假设、不管理自己的困惑、不寻求澄清、不呈现权衡取舍、代码过度复杂化。该项目将 Karpathy 的洞见凝练为四大原则写入 CLAUDE.md：</p>
+<ul>
+<li><strong>Think Before Coding</strong>：不假想，显式陈述假设，困惑时停下来问</li>
+<li><strong>Simplicity First</strong>：最少代码解决问题，不做投机性抽象</li>
+<li><strong>Surgical Changes</strong>：只改必要的，改完自己清理孤立的 import/variables</li>
+<li><strong>Goal-Driven Execution</strong>：把指令转化为可验证目标，用测试循环验证</li>
+</ul>
+<p>支持 Claude Code 插件安装、Cursor 规则文件，以及合并到现有项目 CLAUDE.md。已获 80.3k stars。<br>⭐Stars 🍴Forks 🔀RR 🔖Issue</p>
+<hr>
+<h3>2 <a target="_blank" rel="noopener noreferrer" href="https://github.com/KeygraphHQ/shannon">KeygraphHQ/shannon</a></h3>
+<p>Shannon Lite——白盒自主 AI 渗透测试工具，面向 Web 应用和 API。通过分析源代码识别攻击向量，然后执行真实漏洞利用（注入、认证绕过、SSRF、XSS），只报告有可工作的 PoEx 的漏洞，全程无需人工干预。</p>
+<p>核心流程五阶段：Pre-Recon → Recon → Vulnerability Analysis（并行）→ Exploitation（&quot;No Exploit, No Report&quot;原则）→ Reporting。在 XBOW benchmark 上达到 96.15%（100/104 exploits）。覆盖 OWASP Juice Shop、crAPI 等靶场。AGPL-3.0 开源，Pro 版为商业闭源。<br>⭐Stars 🍴Forks 🔀RR 🔖Issue</p>
+<hr>
+<h3>3 <a target="_blank" rel="noopener noreferrer" href="https://github.com/vercel-labs/skills">vercel-labs/skills</a></h3>
+<p>开源 Agent Skills 生态的 CLI 工具 `npx skills`，让各 Coding Agent（Claude Code、Cursor、Codex、OpenCode 等 41+ Agent）共享同一套可复用的 SKILL.md 指令集。</p>
+<p>核心功能：安装/移除/更新/搜索 Skills，支持 GitHub shorthand、完整 URL、本地路径、Git URL 等多种来源格式；安装范围分 Project（`./<agent>/skills/`）和 Global（`~/.config/<agent>/skills/`）两种；Symlink 方式保持单一真相源。Skills 规范遵循 <a target="_blank" rel="noopener noreferrer" href="https://agentskills.io">agentskills.io</a>，可在任意 Agent 间迁移。`skills init` 命令可创建 SKILL.md 模板。<br>⭐Stars 🍴Forks 🔀RR 🔖Issue</p>
+<hr>
+<h3>4 <a target="_blank" rel="noopener noreferrer" href="https://github.com/Alishahryar1/free-claude-code">Alishahryar1/free-claude-code</a></h3>
+<p>轻量级代理，将 Claude Code 的 Anthropic API 调用路由到免费/低成本替代 LLM 提供商，实现零成本使用 Claude Code。</p>
+<p>支持的 Providers：</p>
+<ul>
+<li><strong>NVIDIA NIM</strong>：每分钟 40 请求免费</li>
+<li><strong>OpenRouter</strong>：数百种模型</li>
+<li><strong>DeepSeek</strong>：直接 API</li>
+<li><strong>LM Studio</strong>：完全本地</li>
+<li><strong>llama.cpp</strong>：本地 + Anthropic 兼容端点</li>
+</ul>
+<p>仅需 2 个环境变量即可切换，无需修改 Claude Code 本身。支持 Per-Model Mapping（可将 Opus/Sonnet/Haiku 路由到不同模型）和 Thinking Token 解析。MIT License，Python 3.14 + uv 包管理。<br>⭐Stars 🍴Forks 🔀RR 🔖Issue</p>
+<hr>
+<h3>5 <a target="_blank" rel="noopener noreferrer" href="https://github.com/nesquena/hermes-webui">nesquena/hermes-webui</a></h3>
+<p>Hermes Agent 的 Web UI 界面，无需构建步骤、无框架、无打包器，Python + 原生 JS 实现。暗黑主题三栏布局（左侧会话导航 + 中央聊天 + 右侧工作区文件浏览），Composer Footer 包含模型/Profile/工作区控制，上下文环直观显示 Token 使用量。</p>
+<p>支持 SSE 流式响应、多提供商模型（OpenAI/Anthropic/Google/DeepSeek/OpenRouter 等）、会话管理、文件编辑、语音输入、7 种内置主题、密码认证、Slash 命令。Docker 支持单/双/三容器部署。测试覆盖率极高（1898 测试/53 文件）。<br>⭐Stars 🍴Forks 🔀RR 🔖Issue</p>
+<hr>
+<h3>6 <a target="_blank" rel="noopener noreferrer" href="https://github.com/YouMind-OpenLab/awesome-gpt-image-2">YouMind-OpenLab/awesome-gpt-image-2</a></h3>
+<p>GPT Image 2 精选提示词库，共收录 1526 条创意提示，涵盖头像、社交媒体、信息图、YouTube 缩略图、漫画、产品营销、电商主图、游戏资产、海报等多个场景，支持摄影、动漫、3D 渲染、像素艺术、水彩、赛博朋克等数十种风格。</p>
+<p>GPT Image 2 核心能力：像素级文字渲染（中/英/日三语）、跨图一致性（同一角色/风格在系列中保持一致）、商业级插画无需手动润色、真实风格引导（抓取风格感觉而非复制）。CC BY 4.0 开源。<br>⭐Stars 🍴Forks 🔀RR 🔖Issue</p>
+<hr>
+<h2>科技（TLDR）</h2>
+<blockquote>
+<p><strong>Google unveils two new TPUs designed for the &quot;agentic era&quot;</strong> / Google 发布专为&quot;Agent 时代&quot;设计的两款新 TPU<br><a target="_blank" rel="noopener noreferrer" href="https://arstechnica.com/ai/2026/04/google-unveils-two-new-tpus-designed-for-the-agentic-era/">原文链接</a></p>
+</blockquote>
+<blockquote>
+<p><strong>AI-powered robot beats elite table tennis players</strong> / 索尼 AI 机器人 Ace 击败精英乒乓球选手<br><a target="_blank" rel="noopener noreferrer" href="https://www.theguardian.com/science/2026/apr/22/ai-powered-robot-beats-elite-table-tennis-players-milestone-robotics">原文链接</a></p>
+</blockquote>
+<blockquote>
+<p><strong>The AI-native interview</strong> / AI 原生面试<br><a target="_blank" rel="noopener noreferrer" href="https://sierra.ai/blog/the-ai-native-interview">原文链接</a></p>
+</blockquote>
+<hr>
+<h2>趋势分析</h2>
+<p><strong>核心关键词</strong>：TPU v8 芯片 / 自主渗透测试 / Agent Skills 生态 / 零成本 Coding Agent / 具身机器人</p>
+<p><strong>技术连贯性</strong>：</p>
+<ul>
+<li>今日 Shannon（AI Pentester）获 40k stars 说明<strong>安全测试自动化</strong>赛道持续升温，Autonomous Pentesting 正在从 CTF 走向 Production——XBOW benchmark 96.15% 的数字值得关注，这已接近可商用水准。</li>
+<li>vercel-labs/skills 打造的跨 Agent（41+）Skills 生态与 forrestchang/karpathy-skills（80k stars）形成呼应：整个 Coding Agent 社区正在从&quot;单一 Agent 工具&quot;向&quot;可组合技能生态&quot;演进，这与 Intercom 内部 13 插件 + 100+ Skills 的实践一致。</li>
+<li>NVIDIA NIM + free-claude-code 的组合说明<strong>推理成本</strong>正在被快速压缩，Claude Code 本身的 API 壁垒正在被开源方案绕过。</li>
+</ul>
+<p><strong>风向转变</strong>：</p>
+<ul>
+<li><strong>Agent 基础设施层</strong>今天出现明确信号：Skills/Skills CLI 正成为标配，而非可选扩展。vercel-labs/skills 的多 Agent 支持意味着技能市场开始形成跨平台流通性。</li>
+<li><strong>安全 + AI 交叉</strong>值得关注：Shannon 的白盒方法（分析源码再打 Exploit）与传统黑盒扫描完全不同，这代表 AppSec 工具链正在被 AI 原生方案重构。</li>
+</ul>
+<p><strong>行动建议</strong>：</p>
+<ol>
+<li><strong>重点关注</strong>：Agent Skills 规范（agentskills.io）是否会演变为类似 npm 的技能市场？vercel-labs/skills 的生态扩张速度值得追踪。</li>
+<li><strong>建议评估</strong>：Shannon 这类 AI Pentesting 工具对现有 SAST/DAST 工具链的替代程度，以及何时能在真实生产环境中发挥作用。</li>
+<li><strong>关注节点</strong>：NVIDIA NIM 免费额度和 Claude Code 替代方案的成熟度——若达到可用水准，会对 Anthropic 商业模式产生压力。</li>
+</ol>
+</div>
+      <div class="article-nav">
+        <a href="./2026-04-23.html" id="favPrevLink" class="nav-btn" aria-label="上一篇"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg><span id="favPrevLabel">2026-04-23</span></a>
+        <a href="#" id="favNextLink" class="nav-btn" aria-label="下一篇"><span id="favNextLabel">没有更新的</span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </article>
+    <footer>Made with <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> by Yui-Chan</footer>
+  </div>
+
+  <div class="float-btns">
+    <a href="./index.html" class="float-btn" id="homeBtn" aria-label="返回"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></a>
+    <button class="float-btn" id="backToTop" aria-label="返回顶部"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg></button>
+    <button class="float-btn" id="favBtn" data-date="2026-04-24" aria-label="收藏本文">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    </button>
+  </div>
+
+  <div id="progress-bar"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.0/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script>
+    
+// Native browser smooth scroll — browser handles physics & compositing
+function smoothScrollTo(target) {
+  if (typeof target === 'number') {
+    window.scrollTo({ top: target, behavior: 'smooth' });
+  } else if (target) {
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+// Navbar hide/show on scroll (up = show, down = hide)
+// Uses native scroll, no rAF loop fighting the browser
+(function() {
+  var navbar = document.getElementById('navbar');
+  if (!navbar) return;
+  var lastScrollY = 0;
+  var rafPending = false;
+
+  function updateNavbar() {
+    var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+    if (scrollY <= 10) {
+      navbar.classList.remove('nav-hidden');
+      rafPending = false;
+      return;
+    }
+    if (scrollY > lastScrollY && scrollY > 80) {
+      navbar.classList.add('nav-hidden');
+    } else {
+      navbar.classList.remove('nav-hidden');
+    }
+    lastScrollY = scrollY;
+    rafPending = false;
+  }
+
+  window.addEventListener('scroll', function() {
+    if (!rafPending) {
+      rafPending = true;
+      requestAnimationFrame(updateNavbar);
+    }
+  }, { passive: true });
+})();
+
+
+    // ── Determine navigation mode & where home button should go ──
+    // localStorage flag is set by favorites page when clicking any card
+    var CURRENT_DATE = '2026-04-24';
+    var FAVS_ENTRY_KEY = 'ainews_enter_from_favs';
+    var fromFavs = localStorage.getItem(FAVS_ENTRY_KEY) === '1';
+    // Clear immediately so next direct page load defaults to homepage
+    localStorage.removeItem(FAVS_ENTRY_KEY);
+    document.getElementById('homeBtn').href = fromFavs ? './favorites.html' : './index.html';
+
+    // Navigation mode: favorites-only only if entering from favorites page
+    // Toggle favorite does NOT change nav mode — only the entry point matters
+    var NAV_MODE = fromFavs ? 'favorites' : 'chronological';
+
+    // Theme toggle
+    var btn = document.getElementById('navThemeToggle');
+    var html = document.documentElement;
+    var stored = localStorage.getItem('theme');
+    var sunI = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>';
+    var moonI = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>';
+    if (stored === 'dark') { html.setAttribute('data-theme','dark'); btn.innerHTML = moonI; }
+    else if (stored === 'light') { html.setAttribute('data-theme','light'); btn.innerHTML = sunI; }
+    btn.addEventListener('click', function() {
+      var cur = html.getAttribute('data-theme');
+      if (cur === 'dark') { html.removeAttribute('data-theme'); localStorage.setItem('theme','light'); btn.innerHTML = sunI; }
+      else { html.setAttribute('data-theme','dark'); localStorage.setItem('theme','dark'); btn.innerHTML = moonI; }
+    });
+
+    // Back to top — uses native browser smooth scroll
+    document.getElementById('backToTop').addEventListener('click', function() {
+      smoothScrollTo(0);
+    });
+
+    // ── Favorites-aware prev/next navigation ──
+    // prevDate/nextDate come from the HTML as chronological neighbors;
+    // override to favorites-only navigation ONLY when entering from favorites page.
+    var FAV_KEY = 'ainews_favs';
+    var favDates = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+    var curIdx = favDates.indexOf(CURRENT_DATE);
+    var prevLink = document.getElementById('favPrevLink');
+    var prevLabel = document.getElementById('favPrevLabel');
+    var nextLink = document.getElementById('favNextLink');
+    var nextLabel = document.getElementById('favNextLabel');
+
+    if (NAV_MODE === 'favorites' && curIdx !== -1 && favDates.length > 0) {
+      // Favorites-only navigation (only when entering from favorites page)
+      if (curIdx < favDates.length - 1) {
+        var prevD = favDates[curIdx + 1];
+        prevLink.href = './' + prevD + '.html';
+        prevLabel.textContent = prevD;
+      } else {
+        prevLink.href = '#';
+        prevLink.className = 'nav-btn nav-btn--disabled';
+        prevLabel.textContent = '没有更早的';
+      }
+      if (curIdx > 0) {
+        var nextD = favDates[curIdx - 1];
+        nextLink.href = './' + nextD + '.html';
+        nextLabel.textContent = nextD;
+      } else {
+        nextLink.href = '#';
+        nextLink.className = 'nav-btn nav-btn--disabled';
+        nextLabel.textContent = '没有更新的';
+      }
+    }
+    // else: keep chronological href/label from HTML — already set at generate time
+
+    // ── Swipe zones (manga-style page turn) ──
+    var swipeLeft = document.getElementById('swipeLeft');
+    var swipeRight = document.getElementById('swipeRight');
+
+    function navigateSwipe(linkEl) {
+      var href = linkEl.getAttribute('href');
+      if (href && href !== '#') {
+        window.location.href = href;
+      }
+    }
+
+    // Click/tap on left zone → prev article
+    swipeLeft.addEventListener('click', function() { navigateSwipe(prevLink); });
+    swipeLeft.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigateSwipe(prevLink); }
+    });
+
+    // Click/tap on right zone → next article
+    swipeRight.addEventListener('click', function() { navigateSwipe(nextLink); });
+    swipeRight.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigateSwipe(nextLink); }
+    });
+
+    // Disable zones visually when nav is at boundary
+    if (prevLink.classList.contains('nav-btn--disabled') || !prevLink.getAttribute('href') || prevLink.getAttribute('href') === '#') {
+      swipeLeft.classList.add('swipe-zone--disabled');
+    }
+    if (nextLink.classList.contains('nav-btn--disabled') || !nextLink.getAttribute('href') || nextLink.getAttribute('href') === '#') {
+      swipeRight.classList.add('swipe-zone--disabled');
+    }
+
+    // ── Favorites toggle ──
+    var favBtn = document.getElementById('favBtn');
+    function updateFavBtn() {
+      var cur = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+      var isFav = cur.indexOf(CURRENT_DATE) !== -1;
+      favBtn.innerHTML = isFav ? '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill="currentColor"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>';
+      favBtn.classList.toggle('is-fav', isFav);
+    }
+    updateFavBtn();
+    favBtn.addEventListener('click', function() {
+      var cur = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+      var idx = cur.indexOf(CURRENT_DATE);
+      if (idx === -1) {
+        cur.push(CURRENT_DATE); // add
+      } else {
+        cur.splice(idx, 1); // remove
+      }
+      localStorage.setItem(FAV_KEY, JSON.stringify(cur));
+      updateFavBtn();
+    });
+
+    // Progress bar
+    window.addEventListener('scroll', function() {
+      var scrolled = document.documentElement.scrollTop;
+      var total = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      document.getElementById('progress-bar').style.width = (total > 0 ? (scrolled / total * 100) : 0) + '%';
+    }, { passive: true });
+
+    // Markdown highlight
+    document.addEventListener('DOMContentLoaded', function() {
+      marked.setOptions({ gfm:true, breaks:true, highlight:function(code,lang){
+        if(lang && hljs.getLanguage(lang)) return hljs.highlight(code,{language:lang}).value;
+        return hljs.highlightAuto(code).value;
+      }});
+      document.querySelectorAll('.content pre code').forEach(function(b){ hljs.highlightElement(b); });
+    });
+  </script>
+</body>
+</html>
