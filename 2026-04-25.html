@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>4月25日 AI 日报</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark">
+  <style>
+    
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #FFF8F0; --surface: #FFFFFF; --primary: #FFB5C5; --primary-dark: #FF8FAB;
+    --secondary: #E8D5F5; --accent: #A8E6CF; --accent-dark: #7DD3B0;
+    --text: #4A4458; --text-light: #8E8A9E; --border: #F0E8E0;
+    --shadow: rgba(255,181,197,0.2); --shadow-lg: rgba(255,181,197,0.35);
+    --code-bg: #FFF0F5; --radius: 20px; --bar: var(--primary);
+    --nav-height: 60px;
+  }
+  [data-theme="dark"] {
+    --bg: #1A1625; --surface: #2D2640; --primary: #FFB5C5; --primary-dark: #FF8FAB;
+    --secondary: #C9A8E8; --accent: #7DD3B0; --accent-dark: #6BC49A;
+    --text: #F0EBF8; --text-light: #A8A0BC; --border: #3D3555;
+    --shadow: rgba(0,0,0,0.4); --shadow-lg: rgba(0,0,0,0.5); --code-bg: #2D2640;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1A1625; --surface: #2D2640; --primary: #FFB5C5; --primary-dark: #FF8FAB;
+      --secondary: #C9A8E8; --accent: #7DD3B0; --accent-dark: #6BC49A;
+      --text: #F0EBF8; --text-light: #A8A0BC; --border: #3D3555;
+      --shadow: rgba(0,0,0,0.4); --shadow-lg: rgba(0,0,0,0.5); --code-bg: #2D2640;
+    }
+  }
+  body {
+    font-family: 'Noto Sans SC','Quicksand',ui-sans-serif,system-ui,sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.8;
+    min-height: 100vh;
+    /* S-curve momentum scroll feel */
+    scroll-behavior: auto;
+  }
+  html { scroll-behavior: auto; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto !important; }
+  }
+  a { color: var(--primary-dark); text-decoration: none; font-weight: 500; }
+  a:hover { text-decoration: underline; }
+
+  /* ── Top navbar ── */
+  .navbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+    height: var(--nav-height);
+    background: rgba(255,248,240,0.85);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border-bottom: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 20px;
+    transition: transform 320ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  [data-theme="dark"] .navbar { background: rgba(26,22,37,0.88); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .navbar { background: rgba(26,22,37,0.88); }
+  }
+  .navbar.nav-hidden { transform: translateY(-100%); }
+  .nav-logo {
+    font-family:'Quicksand','Noto Sans SC',sans-serif;
+    font-size:1.1rem; font-weight:700; color:var(--text);
+    display:flex; align-items:center; gap:8px;
+  }
+  .nav-logo svg { color:var(--primary-dark); }
+  .nav-links { display:flex; gap:4px; }
+  .nav-link {
+    display:inline-flex; align-items:center; gap:6px;
+    padding:8px 16px; border-radius:100px; font-size:0.875rem; font-weight:600;
+    color:var(--text-light); cursor:pointer; border:none;
+    background:transparent; transition:all 200ms ease;
+  }
+  .nav-link:hover { color:var(--text); background:var(--surface); box-shadow:0 2px 8px var(--shadow); }
+  .nav-link.active { color:var(--primary-dark); background:var(--surface); box-shadow:0 2px 12px var(--shadow); }
+  .nav-right { display:flex; align-items:center; gap:8px; }
+  /* Theme toggle in navbar */
+  .nav-theme-toggle {
+    width:36px; height:36px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--surface); border:1.5px solid var(--border);
+    border-radius:10px; cursor:pointer; color:var(--text);
+    box-shadow:0 2px 8px var(--shadow); transition:all 200ms ease;
+  }
+  .nav-theme-toggle:hover { box-shadow:0 4px 12px var(--shadow-lg); transform:scale(1.05); }
+
+  /* ── Page content offset for fixed navbar ── */
+  .page-body { padding-top: var(--nav-height); }
+
+  /* ── Reading progress bar ── */
+  #progress-bar {
+    position: fixed; bottom: 0; left: 0; z-index: 600;
+    width: 0%; height: 3px;
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    transition: width 60ms linear;
+  }
+
+  /* ── Floating buttons ── */
+  .float-btns {
+    position: fixed; bottom: 20px; right: 20px; z-index: 400;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .float-btn.is-fav { color: #FF6B8A; }
+  .float-btn {
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: 12px; cursor: pointer; color: var(--text);
+    box-shadow: 0 2px 8px var(--shadow); transition: box-shadow 200ms ease, transform 200ms ease;
+    text-decoration: none;
+  }
+  .float-btn:hover { box-shadow: 0 4px 16px var(--shadow-lg); transform: scale(1.05); color: var(--primary-dark); }
+  .float-btn:active { transform: scale(0.95); }
+
+    body::before { content:''; position:fixed; top:0; left:0; right:0; height:360px; background:linear-gradient(180deg,rgba(255,181,197,0.18) 0%,transparent 100%); pointer-events:none; z-index:0; }
+    .container { position:relative; z-index:1; max-width:760px; margin:0 auto; padding:0 16px 80px; }
+    .article-meta { display:flex; align-items:center; gap:12px; margin-bottom:32px; padding-bottom:24px; border-bottom:2px solid var(--border); flex-wrap:wrap; }
+    .article-date-badge { display:inline-flex; align-items:center; gap:6px; background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%); color:#fff; font-family:'Quicksand',sans-serif; font-size:0.875rem; font-weight:700; padding:6px 14px; border-radius:100px; }
+    article { background:var(--surface); border-radius:var(--radius); padding:40px 36px; box-shadow:0 4px 24px var(--shadow); border:1.5px solid var(--border); animation:slideUp 0.4s ease-out both; }
+    @keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    @media(prefers-reduced-motion:reduce){article{animation:none}}
+    .content h1 { font-family:'Quicksand','Noto Sans SC',sans-serif; font-size:1.6rem; font-weight:700; color:var(--text); margin:28px 0 16px; letter-spacing:-0.01em; }
+    .content h2 { font-family:'Quicksand','Noto Sans SC',sans-serif; font-size:1.2rem; font-weight:700; color:var(--text); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--border); }
+    .content h3 { font-family:'Quicksand','Noto Sans SC',sans-serif; font-size:1.05rem; font-weight:600; color:var(--primary-dark); margin:24px 0 8px; }
+    .content h4 { font-size:0.9rem; font-weight:600; color:var(--text-light); text-transform:uppercase; letter-spacing:0.06em; margin:20px 0 6px; }
+    .content p { margin:0 0 16px; font-size:1rem; line-height:1.85; }
+    .content ul,.content ol { margin:0 0 16px; padding-left:24px; }
+    .content li { margin:6px 0; line-height:1.7; }
+    .content code { font-family:'Fira Code','Consolas',monospace; font-size:0.875em; background:var(--code-bg); color:var(--primary-dark); padding:2px 8px; border-radius:6px; font-weight:500; }
+    .content pre { background:var(--code-bg) !important; border-radius:14px; padding:20px !important; overflow-x:auto; margin:20px 0 !important; border:1.5px solid var(--border); }
+    .content pre code { background:transparent !important; color:inherit; padding:0; font-size:0.875rem; line-height:1.65; }
+    .content blockquote { margin:20px 0; padding:14px 20px; background:linear-gradient(135deg,rgba(255,181,197,0.12) 0%,rgba(232,213,245,0.12) 100%); border-left:4px solid var(--primary); border-radius:0 12px 12px 0; }
+    .content blockquote p { margin:0; }
+    .content table { width:100%; border-collapse:collapse; margin:20px 0; font-size:0.9375rem; border-radius:12px; overflow:hidden; border:1.5px solid var(--border); }
+    .content th,.content td { padding:10px 14px; text-align:left; border-bottom:1px solid var(--border); }
+    .content th { background:var(--code-bg); font-weight:600; font-size:0.875rem; }
+    .content tr:last-child td { border-bottom:none; }
+    .content tr:nth-child(even) td { background:rgba(255,181,197,0.05); }
+    .content img { max-width:100%; height:auto; border-radius:12px; margin:8px 0; }
+    .content hr { border:none; border-top:2px solid var(--border); margin:32px 0; }
+    .content strong { font-weight:600; }
+    @media(max-width:600px){article{padding:24px 20px}.content h1{font-size:1.35rem}.content h2{font-size:1.1rem}}
+
+    /* ── Prev/Next navigation ── */
+    .article-nav { display:flex; justify-content:space-between; align-items:center; margin-top:32px; padding-top:24px; border-top:2px solid var(--border); gap:12px; }
+    .nav-btn { display:inline-flex; align-items:center; gap:8px; padding:10px 18px; background:var(--surface); border:1.5px solid var(--border); border-radius:100px; text-decoration:none; color:var(--text); font-size:0.875rem; font-weight:600; box-shadow:0 2px 8px var(--shadow); transition:all 200ms ease; }
+    .nav-btn:hover:not(.nav-btn--disabled) { color:var(--primary-dark); border-color:var(--primary); box-shadow:0 4px 16px var(--shadow-lg); transform:scale(1.02); }
+    .nav-btn--disabled { opacity:0.4; cursor:default; pointer-events:none; }
+    .nav-btn span { max-width:120px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+    /* ── Footer ── */
+    footer { text-align:center; margin-top:48px; padding:24px 0 32px; font-size:0.8rem; color:var(--text-light); }
+    footer::before { content:''; display:block; width:60px; height:2px; background:linear-gradient(to right,transparent,var(--secondary),transparent); margin:0 auto 16px; border-radius:2px; }
+
+    /* ── Invisible swipe zones (manga-style page turn) ── */
+    .swipe-zone {
+      position: fixed;
+      top: var(--nav-height);
+      bottom: 0;
+      width: 70px;
+      z-index: 300;
+      cursor: pointer;
+      /* invisible */
+      background: transparent;
+      /* prevent interfering with other elements */
+      pointer-events: auto;
+      /* extend hit area above viewport top */
+      height: calc(100vh + 200px);
+      margin-top: -100px;
+    }
+    .swipe-zone--left { left: 0; }
+    .swipe-zone--right { right: 0; }
+    /* subtle hover hint (optional — very faint arrow appears) */
+    .swipe-zone::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 24px;
+      height: 40px;
+      background-repeat: no-repeat;
+      background-size: contain;
+      opacity: 0;
+      transition: opacity 200ms ease;
+      pointer-events: none;
+    }
+    .swipe-zone--left::after { left: 12px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='40' viewBox='0 0 24 40'%3E%3Cpath d='M20 4L6 20L20 36' stroke='%23FFB5C5' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E"); }
+    .swipe-zone--right::after { right: 12px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='40' viewBox='0 0 24 40'%3E%3Cpath d='M4 4L18 20L4 36' stroke='%23FFB5C5' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E"); }
+    .swipe-zone:hover::after { opacity: 0.5; }
+    .swipe-zone--disabled { pointer-events: none; cursor: default; }
+    .swipe-zone--disabled::after { display: none; }
+  </style>
+</head>
+<body>
+  
+  <nav class="navbar" id="navbar">
+    <a href="./index.html" class="nav-logo" style="text-decoration:none;color:var(--text);"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L13.5 8.5L19 10L13.5 11.5L12 17L10.5 11.5L5 10L10.5 8.5L12 3Z"/><path d="M5 3L5.5 5L7 5.5L5.5 6L5 8L4.5 6L3 5.5L4.5 5L5 3Z"/><path d="M19 17L19.5 19L21 19.5L19.5 20L19 22L18.5 20L17 19.5L18.5 19L19 17Z"/></svg> AI 日报</a>
+    <div class="nav-links">
+      <a href="./favorites.html" class="nav-link " data-nav="favorites">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>收藏</span>
+      </a>
+    </div>
+    <div class="nav-right">
+      <button class="nav-theme-toggle" id="navThemeToggle" aria-label="切换主题"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
+    </div>
+  </nav>
+
+  <!-- Invisible swipe zones for manga-style prev/next -->
+  <div id="swipeLeft" class="swipe-zone swipe-zone--left" role="button" aria-label="上一篇" tabindex="0"></div>
+  <div id="swipeRight" class="swipe-zone swipe-zone--right" role="button" aria-label="下一篇" tabindex="0"></div>
+
+  <div class="container" style="padding-top:calc(var(--nav-height) + 8px)">
+    <article>
+      <div class="article-meta">
+        <span class="article-date-badge">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          4月25日
+        </span>
+        <span style="color:var(--text-light);font-size:0.875rem;">AI 日报</span>
+      </div>
+      <div class="content"><h1>2026-04-25 AI 日报</h1>
+<h2>GitHub 项目</h2>
+<h3>1 <a target="_blank" rel="noopener noreferrer" href="https://github.com/rtk-ai/rtk">rtk-ai/rtk</a></h3>
+<p>Rust 语言实现的高性能 CLI 代理，通过拦截并压缩常用开发命令的输出，将 LLM token 消耗减少 60-90%。单个二进制文件，零依赖，支持 12 种 AI 编码工具（Claude Code、GitHub Copilot、Cursor 等），每次调用开销 &lt;10ms。内置 gain/discover 命令行分析功能。<br>⭐Stars 34,599 🍴Forks 2,082 🔀PR 326 🔖Issue 349</p>
+<h3>2 <a target="_blank" rel="noopener noreferrer" href="https://github.com/coreyhaines31/marketingskills">coreyhaines31/marketingskills</a></h3>
+<p>面向 AI Agent 的营销技能库，涵盖 CRO、文案、SEO、分析、增长工程等 38 个技能模块。基于 Agent Skills spec 构建，兼容 Claude Code、OpenAI Codex、Cursor、Windsurf 等主流 AI 编码工具。支持 npx skills 直接安装到 `.agents/skills/`。<br>⭐Stars 24,477 🍴Forks 3,881 🔀PR 5 🔖Issue 2</p>
+<h3>3 <a target="_blank" rel="noopener noreferrer" href="https://github.com/mattpocock/skills">mattpocock/skills</a></h3>
+<p>Matt Pocock 的个人技能目录，涵盖规划（TPRD、to-issues、grill-me）、开发（tdd、triage-issue）、工具链（setup-pre-commit、git-guardrails）、写作（write-a-skill、edit-article）等技能集。可直接通过 npx skills@latest add 安装。<br>⭐Stars 18,159 🍴Forks 1,514 🔀PR 5 🔖Issue 9</p>
+<h3>4 <a target="_blank" rel="noopener noreferrer" href="https://github.com/mksglu/context-mode">mksglu/context-mode</a></h3>
+<p>上下文窗口优化工具，专为 AI 编码 Agent 设计。对工具输出进行沙箱隔离，实现 98% 的 token 节省。支持 12 个平台，包括 Claude Code、Cursor、Windsurf 等。登上 HN Top 1（570+ points）。<br>⭐Stars 9,811 🍴Forks 668 🔀PR 24 🔖Issue 16</p>
+<h3>5 <a target="_blank" rel="noopener noreferrer" href="https://github.com/Anil-matcha/Open-Generative-AI">Anil-matcha/Open-Generative-AI</a></h3>
+<p>无审查、开源的 AI 图像和视频生成平台，集成 200+ 模型（Flux、Kling、Sora、Veo 等），支持文生图、图生图、文生视频、唇同步等功能。无内容过滤、无订阅费、可自托管，提供桌面端（Electron）和 Web 版本，内置 stable-diffusion.cpp 本地推理引擎。<br>⭐Stars 7,659 🍴Forks 1,416 🔀PR 0 🔖Issue 7</p>
+<hr>
+<h2>科技（TLDR）</h2>
+<blockquote>
+<p><strong>OpenAI announces GPT-5.5, its latest artificial intelligence model / OpenAI 发布 GPT-5.5 最新 AI 模型</strong><br><a target="_blank" rel="noopener noreferrer" href="https://www.cnbc.com/2026/04/23/openai-announces-latest-artificial-intelligence-model.html">原文链接</a></p>
+</blockquote>
+<blockquote>
+<p><strong>DeepSeek Unveils Flagship AI Model a Year After Breakthrough / DeepSeek 一年后再发旗舰模型 V4 Flash/Pro 系列</strong><br><a target="_blank" rel="noopener noreferrer" href="https://www.bloomberg.com/news/articles/2026-04-24/deepseek-unveils-newest-flagship-a-year-after-ai-breakthrough">原文链接</a></p>
+</blockquote>
+<blockquote>
+<p><strong>An update on recent Claude Code quality reports / Claude Code 质量问题的事后分析报告</strong><br><a target="_blank" rel="noopener noreferrer" href="https://www.anthropic.com/engineering/april-23-postmortem">原文链接</a></p>
+</blockquote>
+<hr>
+<h2>趋势分析</h2>
+<p><strong>核心关键词：</strong> RTK token压缩、context-mode沙箱隔离、DeepSeek V4 Hybrid Attention、GPT-5.5编码+计算机使用、Claude postmortem三大bug</p>
+<h3>历史关联</h3>
+<ul>
+<li><strong>DeepSeek V4 ← V3（2025年初）</strong>：去年 V3 以低成本高性能震惊 AI 行业，V4 延续开源路线升级为 Hybrid Attention Architecture + 100万 token 上下文，编程基准测试达 top-tier，形成对 OpenAI/Anthropic 的持续挑战。技术演进路径清晰：低成本训练 → 架构优化 → 多 benchmark 超越。</li>
+<li><strong>GPT-5.5 ← GPT-5.4（两个月前）</strong>：从 5.4 mini/nano 小型化路线，到 5.5 强调&quot;更少指导完成复杂任务&quot;，OpenAI 正在从&quot;模型群&quot;策略转向单模型深度能力强化。编码+计算机使用能力是关键差异点。</li>
+<li><strong>Claude Code postmortem</strong>：Anthropic 主动披露三大 bug（默认推理effort降级、思维历史持续清除、system prompt字数限制），显示 Claude 在竞速中对质量控制的挑战。修复后订阅用户量限制重置。</li>
+<li><strong>Context-mode / RTK</strong>：两者同向——都解决 LLM token 消耗问题，但路径不同（输出压缩 vs 工具隔离），分别对应推理层和应用层优化。</li>
+</ul>
+<h3>风向信号</h3>
+<ol>
+<li><strong>AI 编码工具进入&quot;节流&quot;竞争阶段</strong>：RTK 和 context-mode 都在解决 token 成本，2026 年 Token 压缩工具会持续爆发。</li>
+<li><strong>开源模型性能持续逼近闭源</strong>：DeepSeek V4 在 coding benchmarks 达到 top-tier，与 GPT-5.5、Claude 正面竞争。</li>
+<li><strong>Skills 库生态扩张</strong>：marketingskills + mattpocock/skills 证明 AI Agent 的 skills 系统正在从开发向营销/运营横向扩展。</li>
+</ol>
+<h3>预测与行动建议</h3>
+<ol>
+<li><strong>接下来两周</strong>：预计会出现更多 RTK 类似的开源 token 压缩工具，重点关注 CLI 层的 Hook 拦截方案。</li>
+<li><strong>Nagi 建议重点关注</strong>：<ul>
+<li>DeepSeek V4 的实际编码能力评测（与 GPT-5.5 对比）</li>
+<li>context-mode 的 98% token 节省具体实现机制（是否可复制）</li>
+<li>marketingskills 这类垂直领域 Skills 库的商业化路径</li>
+</ul>
+</li>
+</ol>
+</div>
+      <div class="article-nav">
+        <a href="./2026-04-24.html" id="favPrevLink" class="nav-btn" aria-label="上一篇"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg><span id="favPrevLabel">2026-04-24</span></a>
+        <a href="#" id="favNextLink" class="nav-btn" aria-label="下一篇"><span id="favNextLabel">没有更新的</span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </article>
+    <footer>Made with <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> by Yui-Chan</footer>
+  </div>
+
+  <div class="float-btns">
+    <a href="./index.html" class="float-btn" id="homeBtn" aria-label="返回"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></a>
+    <button class="float-btn" id="backToTop" aria-label="返回顶部"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg></button>
+    <button class="float-btn" id="favBtn" data-date="2026-04-25" aria-label="收藏本文">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    </button>
+  </div>
+
+  <div id="progress-bar"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.0/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script>
+    
+// Native browser smooth scroll — browser handles physics & compositing
+function smoothScrollTo(target) {
+  if (typeof target === 'number') {
+    window.scrollTo({ top: target, behavior: 'smooth' });
+  } else if (target) {
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+// Navbar hide/show on scroll (up = show, down = hide)
+// Uses native scroll, no rAF loop fighting the browser
+(function() {
+  var navbar = document.getElementById('navbar');
+  if (!navbar) return;
+  var lastScrollY = 0;
+  var rafPending = false;
+
+  function updateNavbar() {
+    var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+    if (scrollY <= 10) {
+      navbar.classList.remove('nav-hidden');
+      rafPending = false;
+      return;
+    }
+    if (scrollY > lastScrollY && scrollY > 80) {
+      navbar.classList.add('nav-hidden');
+    } else {
+      navbar.classList.remove('nav-hidden');
+    }
+    lastScrollY = scrollY;
+    rafPending = false;
+  }
+
+  window.addEventListener('scroll', function() {
+    if (!rafPending) {
+      rafPending = true;
+      requestAnimationFrame(updateNavbar);
+    }
+  }, { passive: true });
+})();
+
+
+    // ── Determine navigation mode & where home button should go ──
+    // localStorage flag is set by favorites page when clicking any card
+    var CURRENT_DATE = '2026-04-25';
+    var FAVS_ENTRY_KEY = 'ainews_enter_from_favs';
+    var fromFavs = localStorage.getItem(FAVS_ENTRY_KEY) === '1';
+    // Clear immediately so next direct page load defaults to homepage
+    localStorage.removeItem(FAVS_ENTRY_KEY);
+    document.getElementById('homeBtn').href = fromFavs ? './favorites.html' : './index.html';
+
+    // Navigation mode: favorites-only only if entering from favorites page
+    // Toggle favorite does NOT change nav mode — only the entry point matters
+    var NAV_MODE = fromFavs ? 'favorites' : 'chronological';
+
+    // Theme toggle
+    var btn = document.getElementById('navThemeToggle');
+    var html = document.documentElement;
+    var stored = localStorage.getItem('theme');
+    var sunI = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>';
+    var moonI = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>';
+    if (stored === 'dark') { html.setAttribute('data-theme','dark'); btn.innerHTML = moonI; }
+    else if (stored === 'light') { html.setAttribute('data-theme','light'); btn.innerHTML = sunI; }
+    btn.addEventListener('click', function() {
+      var cur = html.getAttribute('data-theme');
+      if (cur === 'dark') { html.removeAttribute('data-theme'); localStorage.setItem('theme','light'); btn.innerHTML = sunI; }
+      else { html.setAttribute('data-theme','dark'); localStorage.setItem('theme','dark'); btn.innerHTML = moonI; }
+    });
+
+    // Back to top — uses native browser smooth scroll
+    document.getElementById('backToTop').addEventListener('click', function() {
+      smoothScrollTo(0);
+    });
+
+    // ── Favorites-aware prev/next navigation ──
+    // prevDate/nextDate come from the HTML as chronological neighbors;
+    // override to favorites-only navigation ONLY when entering from favorites page.
+    var FAV_KEY = 'ainews_favs';
+    var favDates = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+    var curIdx = favDates.indexOf(CURRENT_DATE);
+    var prevLink = document.getElementById('favPrevLink');
+    var prevLabel = document.getElementById('favPrevLabel');
+    var nextLink = document.getElementById('favNextLink');
+    var nextLabel = document.getElementById('favNextLabel');
+
+    if (NAV_MODE === 'favorites' && curIdx !== -1 && favDates.length > 0) {
+      // Favorites-only navigation (only when entering from favorites page)
+      if (curIdx < favDates.length - 1) {
+        var prevD = favDates[curIdx + 1];
+        prevLink.href = './' + prevD + '.html';
+        prevLabel.textContent = prevD;
+      } else {
+        prevLink.href = '#';
+        prevLink.className = 'nav-btn nav-btn--disabled';
+        prevLabel.textContent = '没有更早的';
+      }
+      if (curIdx > 0) {
+        var nextD = favDates[curIdx - 1];
+        nextLink.href = './' + nextD + '.html';
+        nextLabel.textContent = nextD;
+      } else {
+        nextLink.href = '#';
+        nextLink.className = 'nav-btn nav-btn--disabled';
+        nextLabel.textContent = '没有更新的';
+      }
+    }
+    // else: keep chronological href/label from HTML — already set at generate time
+
+    // ── Swipe zones (manga-style page turn) ──
+    var swipeLeft = document.getElementById('swipeLeft');
+    var swipeRight = document.getElementById('swipeRight');
+
+    function navigateSwipe(linkEl) {
+      var href = linkEl.getAttribute('href');
+      if (href && href !== '#') {
+        window.location.href = href;
+      }
+    }
+
+    // Click/tap on left zone → prev article
+    swipeLeft.addEventListener('click', function() { navigateSwipe(prevLink); });
+    swipeLeft.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigateSwipe(prevLink); }
+    });
+
+    // Click/tap on right zone → next article
+    swipeRight.addEventListener('click', function() { navigateSwipe(nextLink); });
+    swipeRight.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigateSwipe(nextLink); }
+    });
+
+    // Disable zones visually when nav is at boundary
+    if (prevLink.classList.contains('nav-btn--disabled') || !prevLink.getAttribute('href') || prevLink.getAttribute('href') === '#') {
+      swipeLeft.classList.add('swipe-zone--disabled');
+    }
+    if (nextLink.classList.contains('nav-btn--disabled') || !nextLink.getAttribute('href') || nextLink.getAttribute('href') === '#') {
+      swipeRight.classList.add('swipe-zone--disabled');
+    }
+
+    // ── Favorites toggle ──
+    var favBtn = document.getElementById('favBtn');
+    function updateFavBtn() {
+      var cur = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+      var isFav = cur.indexOf(CURRENT_DATE) !== -1;
+      favBtn.innerHTML = isFav ? '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill="currentColor"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>';
+      favBtn.classList.toggle('is-fav', isFav);
+    }
+    updateFavBtn();
+    favBtn.addEventListener('click', function() {
+      var cur = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+      var idx = cur.indexOf(CURRENT_DATE);
+      if (idx === -1) {
+        cur.push(CURRENT_DATE); // add
+      } else {
+        cur.splice(idx, 1); // remove
+      }
+      localStorage.setItem(FAV_KEY, JSON.stringify(cur));
+      updateFavBtn();
+    });
+
+    // Progress bar
+    window.addEventListener('scroll', function() {
+      var scrolled = document.documentElement.scrollTop;
+      var total = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      document.getElementById('progress-bar').style.width = (total > 0 ? (scrolled / total * 100) : 0) + '%';
+    }, { passive: true });
+
+    // Markdown highlight
+    document.addEventListener('DOMContentLoaded', function() {
+      marked.setOptions({ gfm:true, breaks:true, highlight:function(code,lang){
+        if(lang && hljs.getLanguage(lang)) return hljs.highlight(code,{language:lang}).value;
+        return hljs.highlightAuto(code).value;
+      }});
+      document.querySelectorAll('.content pre code').forEach(function(b){ hljs.highlightElement(b); });
+    });
+  </script>
+</body>
+</html>
